@@ -121,8 +121,13 @@
   <image source="tileset.png" width="160" height="160"/>
  </tileset>
  <layer name="Tile Layer 1" width="6" height="1">
-  <data encoding="csv">
-2,19,36,53,69,86
-</data>
+  <data>
+   <tile gid="2"/>
+   <tile gid="19"/>
+   <tile gid="36"/>
+   <tile gid="53"/>
+   <tile gid="69"/>
+   <tile gid="86"/>
+  </data>
  </layer>
 </map>
