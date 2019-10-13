@@ -25,5 +25,8 @@
   <map>
     <folder>maps/</folder>
   </map>
+  <player>
+    <folder>maps/</folder>
+  </player>
 
 </config>
