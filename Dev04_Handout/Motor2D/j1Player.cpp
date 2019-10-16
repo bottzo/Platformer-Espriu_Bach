@@ -22,9 +22,11 @@ bool j1Player::Awake(pugi::xml_node&config) {
 }
 
 void j1Player::LoadAnimations(pugi::xml_node&node) {
+	LOG("Loading player animations");
 	for (node.child("animation"); node; node = node.next_sibling("animation")) {
 		PlayerAnimation*animation = new PlayerAnimation();
 		animation->name = node.attribute("name").as_string();
+		LOG("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa %s animation", animation->name);
 		animation->texture = sprite_tilesets.start->data->texture;
 		int i = 0;
 		for (pugi::xml_node frame_node = node.child("frame"); frame_node; frame_node = frame_node.next_sibling("frame"),++i) {
@@ -33,6 +35,7 @@ void j1Player::LoadAnimations(pugi::xml_node&node) {
 			animation->frames[i].rect = sprite_tilesets.start->data->TilesetRect(tileset_id);
 		}
 		Animations.add(animation);
+		LOG("Succesfully loaded %s animation", animation->name);
 	}
 }
 
