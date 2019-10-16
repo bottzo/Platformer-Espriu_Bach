@@ -1,7 +1,10 @@
 #include "j1Player.h"
 #include "p2Log.h"
+#include "j1App.h"
+#include "j1Textures.h"
+#include "j1Map.h"
 j1Player::j1Player():j1Module(),player_loaded(false) {
-
+	name.create("player");
 }
 
 j1Player::~j1Player() {
@@ -16,6 +19,21 @@ bool j1Player::Awake(pugi::xml_node&config) {
 		folder.create(config.child("folder").child_value());
 
 		return ret;
+}
+
+void j1Player::LoadAnimations(pugi::xml_node&node) {
+	for (node.child("animation"); node; node = node.next_sibling("animation")) {
+		PlayerAnimation*animation = new PlayerAnimation();
+		animation->name = node.attribute("name").as_string();
+		animation->texture = sprite_tilesets.start->data->texture;
+		int i = 0;
+		for (pugi::xml_node frame_node = node.child("frame"); frame_node; frame_node = frame_node.next_sibling("frame"),++i) {
+			animation->frames[i].duration = frame_node.attribute("duration").as_float();
+			uint tileset_id = frame_node.attribute("tileid").as_uint();
+			animation->frames[i].rect = sprite_tilesets.start->data->TilesetRect(tileset_id);
+		}
+		Animations.add(animation);
+	}
 }
 
 bool j1Player::Load(const char* file_name) {
@@ -34,8 +52,7 @@ bool j1Player::Load(const char* file_name) {
 	if (ret == true)
 	{
 		bool ret = true;
-		pugi::xml_node player_node = player_doc.child("tileset");
-
+		pugi::xml_node player_node = player_doc.child("map").child("tileset");
 		if (player_node == NULL)
 		{
 			LOG("Error parsing player xml file: Cannot find 'tileset' tag.");
@@ -43,14 +60,32 @@ bool j1Player::Load(const char* file_name) {
 		}
 		else
 		{
-			//Cal crear ara una struct animation i guardarli les dades del tilset traientles del xml file el qual ia li e posat el xml_node player_node.
-			//Mirar la funcio loadtilesetdetails del modulemap i load tileset image
+			pugi::xml_node tileset;
+			for (tileset = player_node; tileset && ret; tileset = tileset.next_sibling("tileset"))
+			{
+				TileSet* set = new TileSet();
+
+				if (ret == true)
+				{
+					ret = App->map->LoadTilesetDetails(tileset, set);
+				}
+
+				if (ret == true)
+				{
+					ret = App->map->LoadTilesetImage(tileset, set,this);
+				}
+
+				sprite_tilesets.add(set);
+			}
+			LoadAnimations(player_node);
 		}
 	}
 	return ret;
 }
 
 bool j1Player::CleanUp() {
+	Animations.clear();
+	sprite_tilesets.clear();
 	player_doc.reset();
 	return true;
 }

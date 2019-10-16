@@ -4,7 +4,8 @@
 #include "j1Render.h"
 #include "j1Textures.h"
 #include "j1Map.h"
-#include <math.h>
+#include "j1Player.h"
+//#include <math.h>
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
 {
@@ -89,14 +90,14 @@ bool j1Map::CleanUp()
 	LOG("Unloading map");
 
 	// Remove all tilesets
-	p2List_item<TileSet*>* item;
+/*	p2List_item<TileSet*>* item;
 	item = data.tilesets.start;
 
 	while(item != NULL)
 	{
 		RELEASE(item->data);
 		item = item->next;
-	}
+	}*/
 	data.tilesets.clear();
 
 	// TODO 2: clean up all layer data
@@ -143,7 +144,7 @@ bool j1Map::Load(const char* file_name)
 
 		if(ret == true)
 		{
-			ret = LoadTilesetImage(tileset, set);
+			ret = LoadTilesetImage(tileset, set,this);
 		}
 
 		data.tilesets.add(set);
@@ -285,7 +286,7 @@ bool j1Map::LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set)
 	return ret;
 }
 
-bool j1Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
+bool j1Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set,j1Module*module)
 {
 	bool ret = true;
 	pugi::xml_node image = tileset_node.child("image");
@@ -297,7 +298,10 @@ bool j1Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 	}
 	else
 	{
-		set->texture = App->tex->Load(PATH(folder.GetString(), image.attribute("source").as_string()));
+		if (module==this)
+			set->texture = App->tex->Load(PATH(folder.GetString(), image.attribute("source").as_string()));
+		else
+			set->texture = App->tex->Load(PATH(App->player->folder.GetString(), image.attribute("source").as_string()));
 		int w, h;
 		SDL_QueryTexture(set->texture, NULL, NULL, &w, &h);
 		set->tex_width = image.attribute("width").as_int();

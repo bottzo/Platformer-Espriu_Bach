@@ -89,7 +89,7 @@ private:
 
 	bool LoadMap();
 	bool LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set);
-	bool LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set);
+	bool LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set,j1Module*module);
 	bool LoadLayer(pugi::xml_node& tileset_node, map_layer* layer);
 	// TODO 3: Create a method that loads a single laye
 	// bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
@@ -103,6 +103,7 @@ private:
 	pugi::xml_document	map_file;
 	p2SString			folder;
 	bool				map_loaded;
+	friend class j1Player;
 };
 
 #endif // __j1MAP_H__
