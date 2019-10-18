@@ -13,6 +13,7 @@ struct Frame {
 
 struct PlayerAnimation {
 	const char* name;
+	uint total_frames;
 	SDL_Texture* texture;
 	Frame* frames;
 };

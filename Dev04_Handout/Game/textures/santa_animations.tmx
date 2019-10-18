@@ -3,7 +3,11 @@
  <tileset firstgid="1" name="sprite noel(220x149)" tilewidth="220" tileheight="149" tilecount="102" columns="17">
   <image source="sprite noel(220x149).png" width="3740" height="899"/>
   <tile id="0">
-   <animation name="idle">
+   <properties>
+    <property name="name" value="idle"/>
+    <property name="total_frames" type="int" value="16"/>
+   </properties>
+   <animation>
     <frame tileid="0" duration="100"/>
     <frame tileid="1" duration="100"/>
     <frame tileid="2" duration="100"/>
@@ -23,7 +27,11 @@
    </animation>
   </tile>
   <tile id="17">
-   <animation name="walk">
+   <properties>
+    <property name="name" value="walk"/>
+    <property name="total_frames" type="int" value="13"/>
+   </properties>
+   <animation>
     <frame tileid="17" duration="100"/>
     <frame tileid="18" duration="100"/>
     <frame tileid="19" duration="100"/>
@@ -40,7 +48,11 @@
    </animation>
   </tile>
   <tile id="34">
-   <animation name="run">
+   <properties>
+    <property name="name" value="run"/>
+    <property name="total_frames" type="int" value="11"/>
+   </properties>
+   <animation>
     <frame tileid="34" duration="100"/>
     <frame tileid="35" duration="100"/>
     <frame tileid="36" duration="100"/>
@@ -55,7 +67,11 @@
    </animation>
   </tile>
   <tile id="51">
-   <animation name="jump">
+   <properties>
+    <property name="name" value="jump"/>
+    <property name="total_frames" type="int" value="16"/>
+   </properties>
+   <animation>
     <frame tileid="51" duration="100"/>
     <frame tileid="52" duration="100"/>
     <frame tileid="53" duration="100"/>
@@ -75,7 +91,11 @@
    </animation>
   </tile>
   <tile id="68">
-   <animation name="slide">
+   <properties>
+    <property name="name" value="slide"/>
+    <property name="total_frames" type="int" value="11"/>
+   </properties>
+   <animation>
     <frame tileid="68" duration="100"/>
     <frame tileid="69" duration="100"/>
     <frame tileid="70" duration="100"/>
@@ -90,7 +110,11 @@
    </animation>
   </tile>
   <tile id="85">
-   <animation name="death">
+   <properties>
+    <property name="name" value="death"/>
+    <property name="total_frames" type="int" value="17"/>
+   </properties>
+   <animation>
     <frame tileid="85" duration="100"/>
     <frame tileid="86" duration="100"/>
     <frame tileid="87" duration="100"/>

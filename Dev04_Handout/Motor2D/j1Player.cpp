@@ -23,15 +23,17 @@ bool j1Player::Awake(pugi::xml_node&config) {
 
 void j1Player::LoadAnimations(pugi::xml_node&node) {
 	LOG("Loading player animations");
-	for (node.child("animation"); node; node = node.next_sibling("animation")) {
+	for (node; node; node = node.next_sibling("tile")) {
 		PlayerAnimation*animation = new PlayerAnimation();
-		animation->name = node.attribute("name").as_string();
-		LOG("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa %s animation", animation->name);
+		animation->name = node.child("properties").child("property").attribute("value").as_string();
+		animation->total_frames = node.child("properties").child("property").next_sibling("property").attribute("value").as_uint();
+		LOG("Loading %s animation with %d frames", animation->name,animation->total_frames);
 		animation->texture = sprite_tilesets.start->data->texture;
-		int i = 0;
-		for (pugi::xml_node frame_node = node.child("frame"); frame_node; frame_node = frame_node.next_sibling("frame"),++i) {
-			animation->frames[i].duration = frame_node.attribute("duration").as_float();
+		pugi::xml_node frame_node = node.child("animation").child("frame");
+		animation->frames = new Frame[animation->total_frames];
+		for (int i = 0;i<animation->total_frames; frame_node = frame_node.next_sibling("frame"),++i) {
 			uint tileset_id = frame_node.attribute("tileid").as_uint();
+			animation->frames[i].duration = frame_node.attribute("duration").as_float();
 			animation->frames[i].rect = sprite_tilesets.start->data->TilesetRect(tileset_id);
 		}
 		Animations.add(animation);
@@ -80,6 +82,7 @@ bool j1Player::Load(const char* file_name) {
 
 				sprite_tilesets.add(set);
 			}
+			player_node = player_node.child("tile");
 			LoadAnimations(player_node);
 		}
 	}
