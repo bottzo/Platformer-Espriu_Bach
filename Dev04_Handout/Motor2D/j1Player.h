@@ -25,6 +25,7 @@ public:
 	bool Awake(pugi::xml_node&config);
 	bool Load(const char* file_name);
 	void LoadAnimations(pugi::xml_node&node);
+	void Draw_player();
 	bool CleanUp();
 
 private:

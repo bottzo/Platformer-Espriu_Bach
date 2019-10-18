@@ -41,6 +41,10 @@ void j1Player::LoadAnimations(pugi::xml_node&node) {
 	}
 }
 
+void j1Player::Draw_player() {
+	//Cal crear la struc del player amb la seva posicio i les animacions ia fetes i renderitzar-lo amb la position i l'animation
+}
+
 bool j1Player::Load(const char* file_name) {
 
 	bool ret = true;
