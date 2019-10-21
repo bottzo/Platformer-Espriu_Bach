@@ -14,8 +14,10 @@ struct Frame {
 struct PlayerAnimation {
 	const char* name;
 	uint total_frames;
+	float current_frame;
 	SDL_Texture* texture;
 	Frame* frames;
+	SDL_Rect& GetCurrentFrame();
 };
 
 class j1Player :public j1Module {

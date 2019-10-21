@@ -22,6 +22,13 @@ bool j1Player::Awake(pugi::xml_node&config) {
 		return ret;
 }
 
+SDL_Rect&PlayerAnimation::GetCurrentFrame() {
+	current_frame += frames->duration;
+	if (current_frame >= total_frames)
+		current_frame = 0;
+	return frames[(int)current_frame].rect;
+}
+
 void j1Player::LoadAnimations(pugi::xml_node&node) {
 	LOG("Loading player animations");
 	for (node; node; node = node.next_sibling("tile")) {
@@ -34,8 +41,8 @@ void j1Player::LoadAnimations(pugi::xml_node&node) {
 		animation->frames = new Frame[animation->total_frames];
 		for (int i = 0;i<animation->total_frames; frame_node = frame_node.next_sibling("frame"),++i) {
 			uint tileset_id = frame_node.attribute("tileid").as_uint();
-			animation->frames[i].duration = frame_node.attribute("duration").as_float();
-			animation->frames[i].rect = sprite_tilesets.start->data->TilesetRect(tileset_id);
+			animation->frames[i].duration = frame_node.attribute("duration").as_float()/250;//Cal buscar entre que dividir la duration pk quedi en linia amb la velocitat a la que esta en el tmx
+			animation->frames[i].rect = sprite_tilesets.start->data->TilesetRect(tileset_id+1);//pk el +1???
 		}
 		Animations.add(animation);
 		LOG("Succesfully loaded %s animation", animation->name);
@@ -43,8 +50,8 @@ void j1Player::LoadAnimations(pugi::xml_node&node) {
 }
 
 void j1Player::Draw_player() {
-	//Cal crear la struc del player amb la seva posicio i les animacions ia fetes i renderitzar-lo amb la position i l'animation
-	App->render->Blit(Animations.start->data->texture, 0, 0, &Animations.start->data->frames[0].rect);
+	//Cal identificar quina animacio blitejar en cada moment
+	App->render->Blit(Animations.start->data->texture, 0, 0, &Animations.start->next->data->GetCurrentFrame());
 }
 
 bool j1Player::Load(const char* file_name) {
