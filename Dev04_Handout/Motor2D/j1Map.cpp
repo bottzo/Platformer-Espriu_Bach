@@ -66,7 +66,12 @@ SDL_Rect TileSet::TilesetRect(uint tiled_gid) {
 	rect.h = tile_height;
 	int column=0;
 	int row = 0;
-	for (int i = firstgid; i <= (num_tiles_height*num_tiles_width); ++i) {
+	for (int i = firstgid-1; i <= (num_tiles_height*num_tiles_width); ++i) {
+		if (tiled_gid == 0) {
+			rect.x = 0 + margin;
+			rect.y = 0 + margin+(spacing*row);
+			break;
+		}
 		if (tiled_gid == i) {
 			if (i%num_tiles_width==0) {
 				row = (i / num_tiles_width) - 1;

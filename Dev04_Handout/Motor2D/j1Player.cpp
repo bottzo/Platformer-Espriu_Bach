@@ -2,6 +2,7 @@
 #include "p2Log.h"
 #include "j1App.h"
 #include "j1Textures.h"
+#include "j1Render.h"
 #include "j1Map.h"
 j1Player::j1Player():j1Module(),player_loaded(false) {
 	name.create("player");
@@ -43,6 +44,7 @@ void j1Player::LoadAnimations(pugi::xml_node&node) {
 
 void j1Player::Draw_player() {
 	//Cal crear la struc del player amb la seva posicio i les animacions ia fetes i renderitzar-lo amb la position i l'animation
+	App->render->Blit(Animations.start->data->texture, 0, 0, &Animations.start->data->frames[0].rect);
 }
 
 bool j1Player::Load(const char* file_name) {
