@@ -51,7 +51,7 @@ void j1Player::LoadAnimations(pugi::xml_node&node) {
 
 void j1Player::Draw_player() {
 	//Cal identificar quina animacio blitejar en cada moment
-	App->render->Blit(Animations.start->data->texture, 0, 0, &Animations.start->next->data->GetCurrentFrame());
+	//App->render->Blit(Animations.start->data->texture, 0, 0, &Animations.start->next->next->next->data->GetCurrentFrame());
 }
 
 bool j1Player::Load(const char* file_name) {
