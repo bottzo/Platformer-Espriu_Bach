@@ -33,13 +33,17 @@ void j1Map::Draw()
 		return;
 
 	// TODO 5: Prepare the loop to iterate all the tiles in a layer
-	for (int x = 0; x < data.layer.start->data->width;++x) {
-		for (int y = 0; y < data.layer.start->data->height; ++y) {
-			if (data.layer.start->data->Get(x, y) != 0) {
-				SDL_Rect rect = data.tilesets.start->data->TilesetRect(data.layer.start->data->Get(x, y));
-				App->render->Blit(data.tilesets.start->data->texture, translate_x(x), translate_y(y), &rect);
+	p2List_item<map_layer*>*it = data.layer.start;
+	while (it != NULL) {
+		for (int x = 0; x < it->data->width; ++x) {
+			for (int y = 0; y < it->data->height; ++y) {
+				if (data.layer.start->data->Get(x, y) != 0) {
+					SDL_Rect rect = data.tilesets.start->data->TilesetRect(it->data->Get(x, y));
+					App->render->Blit(data.tilesets.start->next->data->texture, translate_x(x), translate_y(y), &rect);
+				}
 			}
 		}
+		it = it->next;
 	}
 	// TODO 9: Complete the draw function
 
