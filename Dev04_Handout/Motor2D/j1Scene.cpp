@@ -20,19 +20,20 @@ j1Scene::~j1Scene()
 {}
 
 // Called before render is available
-bool j1Scene::Awake()
+bool j1Scene::Awake(pugi::xml_node&config)
 {
 	LOG("Loading Scene");
 	bool ret = true;
-
+	map_name.create(config.child("map_name").attribute("name").as_string());
+	player_sprite.create(config.child("player_sprite").attribute("name").as_string());
 	return ret;
 }
 
 // Called before the first frame
 bool j1Scene::Start()
 {
-	App->map->Load("Santa's delivering.tmx");
-	App->player->Load("santa_animations.tmx");
+	App->map->Load(map_name.GetString());
+	App->player->Load(player_sprite.GetString());
 	return true;
 }
 

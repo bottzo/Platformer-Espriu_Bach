@@ -36,6 +36,7 @@ private:
 	bool player_loaded;
 	p2List<TileSet*>sprite_tilesets;
 	p2List<PlayerAnimation*>Animations;
+	p2Point<int> position;
 	friend class j1Map;
 };
 #endif // __j1RENDER_H__
