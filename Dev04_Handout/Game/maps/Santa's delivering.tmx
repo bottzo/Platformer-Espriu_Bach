@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="right-down" width="319" height="60" tilewidth="32" tileheight="32" infinite="0" nextobjectid="46">
  <tileset firstgid="1" name="tileset 1" tilewidth="32" tileheight="32" tilecount="25" columns="5">
-  <image source="../tileset.png" trans="ff00ff" width="160" height="160"/>
+  <image source="tileset.png" trans="ff00ff" width="160" height="160"/>
  </tileset>
  <tileset firstgid="26" name="parallax tilesets" tilewidth="384" tileheight="216" tilecount="25" columns="5">
   <image source="parallax tileset.png" trans="ff00ff" width="1920" height="1080"/>
