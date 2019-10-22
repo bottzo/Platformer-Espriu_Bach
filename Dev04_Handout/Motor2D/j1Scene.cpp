@@ -65,7 +65,7 @@ bool j1Scene::Update(float dt)
 
 	//App->render->Blit(img, 0, 0);
 	App->map->Draw();
-	App->player->Draw_player();
+	//App->player->Draw_player();
 
 	p2SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d",
 					App->map->data.width, App->map->data.height,
