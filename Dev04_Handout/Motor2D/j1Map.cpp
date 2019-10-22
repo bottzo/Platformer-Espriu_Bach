@@ -37,16 +37,32 @@ void j1Map::Draw()
 	while (it != NULL) {
 		for (int x = 0; x < it->data->width; ++x) {
 			for (int y = 0; y < it->data->height; ++y) {
-				if (data.layer.start->data->Get(x, y) != 0) {
-					SDL_Rect rect = data.tilesets.start->data->TilesetRect(it->data->Get(x, y));
-					App->render->Blit(data.tilesets.start->next->data->texture, translate_x(x), translate_y(y), &rect);
+				if (it->data->Get(x, y) != 0) {
+					TileSet* tileset = GetTilesetFromTileId(it->data->Get(x, y));
+					SDL_Rect rect = tileset->TilesetRect(it->data->Get(x, y)+1-tileset->firstgid);
+					App->render->Blit(tileset->texture, translate_x(x), translate_y(y), &rect);
 				}
 			}
 		}
 		it = it->next;
 	}
-	// TODO 9: Complete the draw function
+}
 
+TileSet* j1Map::GetTilesetFromTileId(int id) const
+{
+	p2List_item<TileSet*>* item;
+	item = data.tilesets.start;
+
+	while (item != NULL) {
+		if (item->next == NULL) {
+			break;
+		}
+		if (item->next->data->firstgid > id) {
+			break;
+		}
+		item = item->next;
+	}
+	return item->data;
 }
 
 int j1Map::translate_x(int x) {
