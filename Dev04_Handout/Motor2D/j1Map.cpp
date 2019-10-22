@@ -350,9 +350,10 @@ bool j1Map::LoadLayer(pugi::xml_node& layer_node, map_layer* layer) {
 	layer->width = layer_node.attribute("width").as_uint();
 	layer->height = layer_node.attribute("height").as_uint();
 	layer->tiled_gid = new uint[layer->width * layer->height]();
-	uint i = 0;
-	for (pugi::xml_node lay = map_file.child("map").child("layer").child("data").child("tile"); lay; lay = lay.next_sibling("tile"),++i) {
-		layer->tiled_gid[i] = lay.attribute("gid").as_uint();
+	int i = 0;
+	pugi::xml_node lay = layer_node.child("data").child("tile");
+	for (lay; lay; lay = lay.next_sibling("tile"),++i) {
+		layer->tiled_gid[i] = lay.attribute("gid").as_int();
 	}
 	return ret;
 }
