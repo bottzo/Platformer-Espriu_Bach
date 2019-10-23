@@ -105,20 +105,37 @@ bool j1Map::CleanUp()
 	LOG("Unloading map");
 
 	// Remove all tilesets
-/*	p2List_item<TileSet*>* item;
+	p2List_item<TileSet*>* item;
 	item = data.tilesets.start;
 
 	while(item != NULL)
 	{
 		RELEASE(item->data);
 		item = item->next;
-	}*/
+	}
 	data.tilesets.clear();
 
 	// TODO 2: clean up all layer data
 	// Remove all layers
+	p2List_item<map_layer*>* it;
+	it = data.layer.start;
+
+	while (it != NULL)
+	{
+		RELEASE(it->data);
+		it = it->next;
+	}
 	data.layer.clear();
 
+	p2List_item<objectgroup*>* iteration;
+	iteration = data.objectgroup.start;
+
+	while (iteration != NULL)
+	{
+		RELEASE(iteration->data);
+		iteration = iteration->next;
+	}
+	data.objectgroup.clear();
 
 	// Clean up the pugui tree
 	map_file.reset();
@@ -171,6 +188,31 @@ bool j1Map::Load(const char* file_name)
 		map_layer*lay = new map_layer();
 		LoadLayer(layer, lay);
 		data.layer.add(lay);
+	}
+
+	//Load objects info
+	for (pugi::xml_node objects_node = map_file.child("map").child("objectgroup"); objects_node; objects_node = objects_node.next_sibling("objectgroup")) {
+		objectgroup* group = new objectgroup();
+		group->name.create(objects_node.attribute("name").as_string());
+		int total_objects = 0;
+		for (pugi::xml_node count_node = objects_node.child("object"); count_node; count_node = count_node.next_sibling("object")) {
+			++total_objects;
+		}
+		group->num_objects = total_objects;
+		object*objectgroup = new object[group->num_objects];
+		int i = 0;
+		for (pugi::xml_node node = objects_node.child("object"); node; node = node.next_sibling("object"),++i) {
+			objectgroup[i].name.create(node.attribute("name").as_string());
+			objectgroup[i].id = node.attribute("id").as_int();
+			SDL_Rect rectangle;
+			rectangle.x = node.attribute("x").as_int();
+			rectangle.y = node.attribute("y").as_int();
+			rectangle.w = node.attribute("width").as_int();
+			rectangle.h = node.attribute("height").as_int();
+			objectgroup[i].rect = rectangle;
+		}
+		data.objectgroup.add(group);
+		LOG("Succesfully loaded objectsgroup: %s", group->name.GetString());
 	}
 
 

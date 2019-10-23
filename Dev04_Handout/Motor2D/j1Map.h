@@ -38,6 +38,18 @@ struct TileSet
 	SDL_Rect TilesetRect(uint tiled_gid);
 };
 
+struct object {
+	p2SString name;
+	uint id;
+	SDL_Rect rect;
+};
+
+struct objectgroup {
+	p2SString name;
+	uint num_objects;
+	object* objects;
+};
+
 enum MapTypes
 {
 	MAPTYPE_UNKNOWN = 0,
@@ -55,8 +67,8 @@ struct MapData
 	SDL_Color			background_color;
 	MapTypes			type;
 	p2List<TileSet*>	tilesets;
-	// TODO 2: Add a list/array of layers to the map!
-	p2List<map_layer*> layer;
+	p2List<map_layer*>  layer;
+	p2List<objectgroup*>objectgroup;
 };
 
 // ----------------------------------------------------
@@ -92,8 +104,6 @@ private:
 	bool LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set,j1Module*module);
 	bool LoadLayer(pugi::xml_node& tileset_node, map_layer* layer);
 	TileSet* GetTilesetFromTileId(int id) const;
-	// TODO 3: Create a method that loads a single laye
-	// bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
 
 public:
 
