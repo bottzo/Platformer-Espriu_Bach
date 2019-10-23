@@ -41,8 +41,8 @@ void j1Player::LoadAnimations(pugi::xml_node&node) {
 		animation->frames = new Frame[animation->total_frames];
 		for (int i = 0;i<animation->total_frames; frame_node = frame_node.next_sibling("frame"),++i) {
 			uint tileset_id = frame_node.attribute("tileid").as_uint();
-			animation->frames[i].duration = frame_node.attribute("duration").as_float()/250;//Cal buscar entre que dividir la duration pk quedi en linia amb la velocitat a la que esta en el tmx
-			animation->frames[i].rect = sprite_tilesets.start->data->TilesetRect(tileset_id+1);//pk el +1???
+			animation->frames[i].duration = frame_node.attribute("duration").as_float()/1000;//Dividir entre 1000 pk sigui canvi d'e frame de l0'animacio en cada segon (esta en milisegons en el tmx)
+			animation->frames[i].rect = sprite_tilesets.start->data->TilesetRect(tileset_id+1);//pk el +1??? pk la funcio tilesetrect conta el primer tile com si fos un 1 i no el zero
 		}
 		Animations.add(animation);
 		LOG("Succesfully loaded %s animation", animation->name);
@@ -50,7 +50,6 @@ void j1Player::LoadAnimations(pugi::xml_node&node) {
 }
 
 void j1Player::Draw_player() {
-	//Cal identificar quina animacio blitejar en cada moment
 	App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->next->data->GetCurrentFrame());
 }
 
@@ -103,7 +102,23 @@ bool j1Player::Load(const char* file_name) {
 }
 
 bool j1Player::CleanUp() {
+	p2List_item<PlayerAnimation*>* item;
+	item = Animations.start;
+
+	while (item != NULL)
+	{
+		RELEASE(item->data);
+		item = item->next;
+	}
 	Animations.clear();
+	p2List_item<TileSet*>* it;
+	it = sprite_tilesets.start;
+
+	while (it != NULL)
+	{
+		RELEASE(it->data);
+		it = it->next;
+	}
 	sprite_tilesets.clear();
 	player_doc.reset();
 	return true;
