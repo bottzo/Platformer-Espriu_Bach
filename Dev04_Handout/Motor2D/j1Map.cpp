@@ -210,15 +210,16 @@ bool j1Map::Load(const char* file_name)
 			rectangle.w = node.attribute("width").as_int();
 			rectangle.h = node.attribute("height").as_int();
 			objectgroup[i].rect = rectangle;
-			group->objects = objectgroup;
 		}
+		group->objects = objectgroup;
 		data.objectgroup.add(group);
 		LOG("Succesfully loaded objectsgroup: %s", group->name.GetString());
 	}
+	/* Comprovar que carrega be els objectgroups
 	for (int i = 0; i < data.objectgroup.start->data->num_objects; ++i) {
 		LOG("%d: %s", i, data.objectgroup.start->data->objects[i].name.GetString());
 		LOG("%d: %d", i, data.objectgroup.start->data->objects[i].id);
-	}
+	}*/
 
 	if(ret == true)
 	{
