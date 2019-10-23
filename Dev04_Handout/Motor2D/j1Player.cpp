@@ -41,7 +41,7 @@ void j1Player::LoadAnimations(pugi::xml_node&node) {
 		animation->frames = new Frame[animation->total_frames];
 		for (int i = 0;i<animation->total_frames; frame_node = frame_node.next_sibling("frame"),++i) {
 			uint tileset_id = frame_node.attribute("tileid").as_uint();
-			animation->frames[i].duration = frame_node.attribute("duration").as_float()/1000;//Dividir entre 1000 pk sigui canvi d'e frame de l0'animacio en cada segon (esta en milisegons en el tmx)
+			animation->frames[i].duration = frame_node.attribute("duration").as_float()/100;//Dividir entre 1000 pk sigui canvi d'e frame de l0'animacio en cada segon (esta en milisegons en el tmx)
 			animation->frames[i].rect = sprite_tilesets.start->data->TilesetRect(tileset_id+1);//pk el +1??? pk la funcio tilesetrect conta el primer tile com si fos un 1 i no el zero
 		}
 		Animations.add(animation);
@@ -50,7 +50,7 @@ void j1Player::LoadAnimations(pugi::xml_node&node) {
 }
 
 void j1Player::Draw_player() {
-	App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->next->data->GetCurrentFrame());
+	App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->data->GetCurrentFrame());
 }
 
 bool j1Player::Load(const char* file_name) {
@@ -89,16 +89,39 @@ bool j1Player::Load(const char* file_name) {
 
 				if (ret == true)
 				{
-					ret = App->map->LoadTilesetImage(tileset, set,this);
+					ret = App->map->LoadTilesetImage(tileset, set, this);
 				}
 
 				sprite_tilesets.add(set);
 			}
 			player_node = player_node.child("tile");
 			LoadAnimations(player_node);
+			LoadPlayerPosition();
 		}
+		return ret;
 	}
-	return ret;
+}
+
+void j1Player::LoadPlayerPosition() {
+	//Loading player starting position
+	p2SString start; start.create("Start");
+	bool escape = false;
+	p2List_item<objectgroup*>*it = App->map->data.objectgroup.start;
+	while (it != NULL) {
+		objectgroup*ptr = it->data;
+		for (int i = 0; i < ptr->num_objects; ++i) {
+			if (ptr->objects[i].name == start) {
+				position.x = ptr->objects[i].rect.x;
+				position.y = ptr->objects[i].rect.y;
+				escape = true;
+				break;
+			}
+		}
+		if (escape) {
+			break;
+		}
+		it = it->next;
+	}
 }
 
 bool j1Player::CleanUp() {

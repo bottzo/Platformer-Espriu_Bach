@@ -27,6 +27,7 @@ public:
 	bool Awake(pugi::xml_node&config);
 	bool Load(const char* file_name);
 	void LoadAnimations(pugi::xml_node&node);
+	void j1Player::LoadPlayerPosition();
 	void Draw_player();
 	bool CleanUp();
 
@@ -36,7 +37,7 @@ private:
 	bool player_loaded;
 	p2List<TileSet*>sprite_tilesets;
 	p2List<PlayerAnimation*>Animations;
-	p2Point<int> position;
+	p2Point<float> position;
 	friend class j1Map;
 };
 #endif // __j1RENDER_H__

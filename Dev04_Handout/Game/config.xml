@@ -8,6 +8,7 @@
 	
   <renderer>
     <vsync value="true"/>
+    <camera x="0" y="-1085"/>
   </renderer>
 
   <window>
