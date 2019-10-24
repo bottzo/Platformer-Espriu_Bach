@@ -24,10 +24,6 @@ bool j1Audio::Awake(pugi::xml_node& config)
 	bool ret = true;
 	SDL_Init(0);
 
-	audio.create(config.child("audio").attribute("name").as_string());
-
-	return ret;
-
 	if(SDL_InitSubSystem(SDL_INIT_AUDIO) < 0)
 	{
 		LOG("SDL_INIT_AUDIO could not initialize! SDL_Error: %s\n", SDL_GetError());
@@ -88,7 +84,6 @@ bool j1Audio::PlayMusic(const char* path, float fade_time)
 {
 	bool ret = true;
 	path = "audio/music/music_sadpiano.ogg";
-	
 
 	if(!active)
 		return false;

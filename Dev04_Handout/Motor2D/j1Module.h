@@ -18,7 +18,6 @@ enum update_status
 	UPDATE_ERROR
 };
 
-struct Collider;
 class j1App;
 
 class j1Module
@@ -83,7 +82,7 @@ public:
 
 	p2SString	name;
 	bool		active;
-	virtual void OnCollision(Collider*, Collider*) {};
+	//virtual void OnCollision(Collider*, Collider*) {};
 
 };
 
