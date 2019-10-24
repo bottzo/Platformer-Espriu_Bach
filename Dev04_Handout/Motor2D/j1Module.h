@@ -8,6 +8,15 @@
 
 #include "p2SString.h"
 #include "PugiXml\src\pugixml.hpp"
+#include "SDL\include\SDL_rect.h"
+
+
+enum update_status
+{
+	UPDATE_CONTINUE = 1,
+	UPDATE_STOP,
+	UPDATE_ERROR
+};
 
 class j1App;
 
@@ -73,6 +82,7 @@ public:
 
 	p2SString	name;
 	bool		active;
+	//virtual void OnCollision(Collider*, Collider*) {};
 
 };
 

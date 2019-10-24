@@ -14,6 +14,7 @@ class j1Audio;
 class j1Scene;
 class j1Map;
 class j1Player;
+class j1Module;
 
 class j1App
 {
