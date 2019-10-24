@@ -65,7 +65,7 @@ public:
 	void Updateposition();
 	bool CleanUp();
 	p2Point<float> speed;
-	p2Qeue<santa_inputs> key_inputs;
+	p2Qeue<santa_inputs> key_inputs;//recordar que em falta borrarla de la memoria
 	santa_states j1Player::current_santa_state(p2Qeue<santa_inputs>& inputs);
 
 private:

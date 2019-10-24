@@ -84,89 +84,97 @@ bool j1Input::PreUpdate()
 	static bool down = false;
 	static bool up = false;
 
+
+
+
+
 	while(SDL_PollEvent(&event) != 0)
 	{
-		switch(event.type)
+		switch (event.type)
 		{
-			case SDL_QUIT:
-				windowEvents[WE_QUIT] = true;
+		case SDL_QUIT:
+			windowEvents[WE_QUIT] = true;
 			break;
 
-			case SDL_WINDOWEVENT:
-				switch(event.window.event)
+		case SDL_WINDOWEVENT:
+			switch (event.window.event)
+			{
+				//case SDL_WINDOWEVENT_LEAVE:
+			case SDL_WINDOWEVENT_HIDDEN:
+			case SDL_WINDOWEVENT_MINIMIZED:
+			case SDL_WINDOWEVENT_FOCUS_LOST:
+				windowEvents[WE_HIDE] = true;
+				break;
+
+				//case SDL_WINDOWEVENT_ENTER:
+			case SDL_WINDOWEVENT_SHOWN:
+			case SDL_WINDOWEVENT_FOCUS_GAINED:
+			case SDL_WINDOWEVENT_MAXIMIZED:
+			case SDL_WINDOWEVENT_RESTORED:
+				windowEvents[WE_SHOW] = true;
+				break;
+			}
+			break;
+
+		case SDL_MOUSEBUTTONDOWN:
+			mouse_buttons[event.button.button - 1] = KEY_DOWN;
+			//LOG("Mouse button %d down", event.button.button-1);
+			break;
+
+		case SDL_MOUSEBUTTONUP:
+			mouse_buttons[event.button.button - 1] = KEY_UP;
+			//LOG("Mouse button %d up", event.button.button-1);
+			break;
+
+		case SDL_MOUSEMOTION:
+			int scale = App->win->GetScale();
+			mouse_motion_x = event.motion.xrel / scale;
+			mouse_motion_y = event.motion.yrel / scale;
+			mouse_x = event.motion.x / scale;
+			mouse_y = event.motion.y / scale;
+			//LOG("Mouse motion x %d y %d", mouse_motion_x, mouse_motion_y);
+			break;
+		}
+		switch (event.type)
+		{
+		case SDL_KEYUP:
+			if (event.key.repeat == 0) {
+				switch (event.key.keysym.sym)
 				{
-					//case SDL_WINDOWEVENT_LEAVE:
-					case SDL_WINDOWEVENT_HIDDEN:
-					case SDL_WINDOWEVENT_MINIMIZED:
-					case SDL_WINDOWEVENT_FOCUS_LOST:
-					windowEvents[WE_HIDE] = true;
+				case SDLK_SPACE:
+					App->player->key_inputs.Push(IN_SLIDE_UP); down = false; break;
+				case SDLK_w:
+					up = false; break;
+				case SDLK_a:
+					App->player->key_inputs.Push(IN_LEFT_UP); left = false; break;
+				case SDLK_d:
+					App->player->key_inputs.Push(IN_RIGHT_UP); right = false; break;
+				}
+			}
+			break;
+
+		case SDL_KEYDOWN:
+			if (event.key.repeat == 0) {
+				switch (event.key.keysym.sym)
+				{
+				case SDLK_w:
+					up = true;
 					break;
-
-					//case SDL_WINDOWEVENT_ENTER:
-					case SDL_WINDOWEVENT_SHOWN:
-					case SDL_WINDOWEVENT_FOCUS_GAINED:
-					case SDL_WINDOWEVENT_MAXIMIZED:
-					case SDL_WINDOWEVENT_RESTORED:
-					windowEvents[WE_SHOW] = true;
-					break;
+				case SDLK_SPACE:
+					down = true; break;
+				case SDLK_a:
+					left = true; break;
+				case SDLK_d:
+					right = true; break;
 				}
-			break;
-
-			case SDL_MOUSEBUTTONDOWN:
-				mouse_buttons[event.button.button - 1] = KEY_DOWN;
-				//LOG("Mouse button %d down", event.button.button-1);
-			break;
-
-			case SDL_MOUSEBUTTONUP:
-				mouse_buttons[event.button.button - 1] = KEY_UP;
-				//LOG("Mouse button %d up", event.button.button-1);
-			break;
-
-			case SDL_MOUSEMOTION:
-				int scale = App->win->GetScale();
-				mouse_motion_x = event.motion.xrel / scale;
-				mouse_motion_y = event.motion.yrel / scale;
-				mouse_x = event.motion.x / scale;
-				mouse_y = event.motion.y / scale;
-				//LOG("Mouse motion x %d y %d", mouse_motion_x, mouse_motion_y);
-			break;
-			case SDL_KEYUP:
-				if (event.key.repeat == 0) {
-					switch (event.key.keysym.sym)
-					{
-					case SDLK_SPACE:
-						App->player->key_inputs.Push(IN_SLIDE_UP); down = false; break;
-					case SDLK_UP:
-						up = false; break;
-					case SDLK_LEFT:
-						App->player->key_inputs.Push(IN_LEFT_UP);
-						left = false;
-						break;
-					case SDLK_RIGHT:
-						App->player->key_inputs.Push(IN_RIGHT_UP);
-						right = false;
-						break;
-					}
-				}
-			break;
-			case SDL_KEYDOWN:
-				if (event.key.repeat == 0) {
-					switch (event.key.keysym.sym)
-					{
-					case SDLK_UP:
-						up = true;
-						break;
-					case SDLK_SPACE:
-						down = true; break;
-					case SDLK_LEFT:
-						left = true; break;
-					case SDLK_RIGHT:
-						right = true; break;
-					}
-				}
+			}
 			break;
 		}
 	}
+
+
+
+
 	if (left && right)
 		App->player->key_inputs.Push(IN_LEFT_AND_RIGHT);
 	{

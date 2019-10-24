@@ -85,7 +85,8 @@ bool j1Scene::Update(float dt)
 		App->player->speed.x = -10;
 	}
 
-	App->player->Updateposition();
+	//App->player->Updateposition();
+	LOG("%d", App->player->current_santa_state(App->player->key_inputs));
 	//App->render->Blit(img, 0, 0);
 	App->map->Draw();
 	App->player->Draw_player();
