@@ -102,6 +102,13 @@ bool j1Player::Load(const char* file_name) {
 	}
 }
 
+p2Point<float> Updateposition() {
+	next_closest_collision_x_axis();
+	if (next_closest_collision_x_axis())...
+	position.x += velocity.x;
+	position.y += velocity.y;
+}
+
 void j1Player::LoadPlayerPosition() {
 	//Loading player starting position
 	p2SString start; start.create("Start");

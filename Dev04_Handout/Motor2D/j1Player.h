@@ -30,6 +30,7 @@ public:
 	void LoadAnimations(pugi::xml_node&node);
 	void j1Player::LoadPlayerPosition();
 	void Draw_player();
+	p2Point<float> Updateposition();
 	bool CleanUp();
 
 private:
