@@ -227,6 +227,7 @@ void j1Player::LoadPlayerPosition() {
 }
 
 bool j1Player::CleanUp() {
+	key_inputs.Clear();
 	p2List_item<PlayerAnimation*>* item;
 	item = Animations.start;
 
