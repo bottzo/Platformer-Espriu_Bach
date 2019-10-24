@@ -83,6 +83,7 @@ bool j1Audio::CleanUp()
 bool j1Audio::PlayMusic(const char* path, float fade_time)
 {
 	bool ret = true;
+	path = "audio/music/music_sadpiano.ogg";
 
 	if(!active)
 		return false;
@@ -136,6 +137,7 @@ bool j1Audio::PlayMusic(const char* path, float fade_time)
 // Load WAV
 unsigned int j1Audio::LoadFx(const char* path)
 {
+	path = "audio/fx/jump_08";
 	unsigned int ret = 0;
 
 	if(!active)
