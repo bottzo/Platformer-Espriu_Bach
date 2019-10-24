@@ -25,6 +25,7 @@ public:
 	j1Player();
 	~j1Player();
 	bool Awake(pugi::xml_node&config);
+
 	bool Load(const char* file_name);
 	void LoadAnimations(pugi::xml_node&node);
 	void j1Player::LoadPlayerPosition();

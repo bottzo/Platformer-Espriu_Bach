@@ -64,6 +64,21 @@ bool j1Scene::Update(float dt)
 	if(App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		App->render->camera.x += 30;
 
+	/*switch (App->input->GetKey) {
+	case SDL_SCANCODE_A:
+		App->player.velocity.Y -= 10;
+		break;
+	case SDL_SCANCODE_D:
+		App->player.velocity.X += 10;
+		break;
+	case SDL_SCANCODE_W:
+		App->player.velocity.y += 10;
+		break;
+	case SDL_SCANCODE_S:
+		App->player.velocity.y -= 10;
+		break;
+	}*/
+
 	//App->render->Blit(img, 0, 0);
 	App->map->Draw();
 	App->player->Draw_player();
