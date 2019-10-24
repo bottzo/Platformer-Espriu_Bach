@@ -6,6 +6,36 @@
 #include "SDL/include/SDL_render.h"
 #include "j1Map.h"
 
+enum santa_states
+{
+	ST_UNKNOWN,
+
+	ST_IDLE,
+	ST_WALK_FORWARD,
+	ST_WALK_BACKWARD,
+	ST_RUN_FORWRD,
+	ST_RUN_BACKWARD,
+	ST_JUMP_NEUTRAL,
+	ST_JUMP_FORWARD,
+	ST_JUMP_BACKWARD,
+	ST_SLIDE_FORWARD,
+	ST_SLIDE_BACKWARD
+};
+
+enum santa_inputs
+{
+	IN_LEFT_DOWN,
+	IN_LEFT_UP,
+	IN_RIGHT_DOWN,
+	IN_RIGHT_UP,
+	IN_LEFT_AND_RIGHT,
+	IN_JUMP,
+	IN_SLIDE_UP,
+	IN_CROUCH_DOWN,
+	IN_JUMP_AND_SLIDE,
+	IN_JUMP_FINISH,
+};
+
 struct Frame {
 	SDL_Rect rect;
 	float duration;
@@ -30,8 +60,9 @@ public:
 	void LoadAnimations(pugi::xml_node&node);
 	void j1Player::LoadPlayerPosition();
 	void Draw_player();
-	p2Point<float> Updateposition();
+	void Updateposition();
 	bool CleanUp();
+	p2Point<float> speed;
 
 private:
 	pugi::xml_document player_doc;

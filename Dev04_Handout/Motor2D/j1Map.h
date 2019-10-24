@@ -114,6 +114,7 @@ private:
 	pugi::xml_document	map_file;
 	p2SString			folder;
 	bool				map_loaded;
+	float gravity;
 	friend class j1Player;
 };
 

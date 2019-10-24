@@ -78,7 +78,14 @@ bool j1Scene::Update(float dt)
 		App->player.velocity.y -= 10;
 		break;
 	}*/
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+		App->player->speed.x = 10;
+	}
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+		App->player->speed.x = -10;
+	}
 
+	App->player->Updateposition();
 	//App->render->Blit(img, 0, 0);
 	App->map->Draw();
 	App->player->Draw_player();
