@@ -2,6 +2,7 @@
 #include "p2Log.h"
 #include "j1App.h"
 #include "j1Input.h"
+#include "j1Player.h"
 #include "j1Window.h"
 #include "SDL/include/SDL.h"
 
@@ -78,6 +79,11 @@ bool j1Input::PreUpdate()
 			mouse_buttons[i] = KEY_IDLE;
 	}
 
+	static bool left = false;
+	static bool right = false;
+	static bool down = false;
+	static bool up = false;
+
 	while(SDL_PollEvent(&event) != 0)
 	{
 		switch(event.type)
@@ -124,9 +130,61 @@ bool j1Input::PreUpdate()
 				mouse_y = event.motion.y / scale;
 				//LOG("Mouse motion x %d y %d", mouse_motion_x, mouse_motion_y);
 			break;
+			case SDL_KEYUP:
+				if (event.key.repeat == 0) {
+					switch (event.key.keysym.sym)
+					{
+					case SDLK_SPACE:
+						App->player->key_inputs.Push(IN_SLIDE_UP); down = false; break;
+					case SDLK_UP:
+						up = false; break;
+					case SDLK_LEFT:
+						App->player->key_inputs.Push(IN_LEFT_UP);
+						left = false;
+						break;
+					case SDLK_RIGHT:
+						App->player->key_inputs.Push(IN_RIGHT_UP);
+						right = false;
+						break;
+					}
+				}
+			break;
+			case SDL_KEYDOWN:
+				if (event.key.repeat == 0) {
+					switch (event.key.keysym.sym)
+					{
+					case SDLK_UP:
+						up = true;
+						break;
+					case SDLK_SPACE:
+						down = true; break;
+					case SDLK_LEFT:
+						left = true; break;
+					case SDLK_RIGHT:
+						right = true; break;
+					}
+				}
+			break;
 		}
 	}
+	if (left && right)
+		App->player->key_inputs.Push(IN_LEFT_AND_RIGHT);
+	{
+		if (left)
+			App->player->key_inputs.Push(IN_LEFT_DOWN);
+		if (right)
+			App->player->key_inputs.Push(IN_RIGHT_DOWN);
+	}
 
+	if (up && down)
+		App->player->key_inputs.Push(IN_JUMP_AND_SLIDE);
+	else
+	{
+		if (down)
+			App->player->key_inputs.Push(IN_SLIDE_DOWN);
+		if (up)
+			App->player->key_inputs.Push(IN_JUMP);
+	}
 	return true;
 }
 

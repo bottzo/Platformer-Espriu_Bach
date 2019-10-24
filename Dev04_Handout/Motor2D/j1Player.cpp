@@ -53,6 +53,100 @@ void j1Player::Draw_player() {
 	App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->data->GetCurrentFrame());
 }
 
+santa_states j1Player::current_santa_state(p2Qeue<santa_inputs>& inputs)
+{
+	static santa_states state = ST_IDLE;
+	santa_inputs last_input;
+
+	while (inputs.Pop(last_input))
+	{
+		switch (state)
+		{
+		case ST_IDLE:
+		{
+			switch (last_input)
+			{
+			case IN_RIGHT_DOWN: state = ST_WALK_FORWARD; break;
+			case IN_LEFT_DOWN: state = ST_WALK_BACKWARD; break;
+			case IN_JUMP: state = ST_JUMP_NEUTRAL; /*jump_timer = SDL_GetTicks();*/  break;
+			//case IN_SLIDE_DOWN: state = ST_SLIDE_(cap a on?); break;
+			}
+		}
+		break;
+
+		case ST_WALK_FORWARD:
+		{
+			switch (last_input)
+			{
+			case IN_RIGHT_UP: state = ST_IDLE; break;
+			case IN_LEFT_AND_RIGHT: state = ST_IDLE; break;
+			case IN_JUMP: state = ST_JUMP_FORWARD; /*jump_timer = SDL_GetTicks();*/  break;
+			case IN_SLIDE_DOWN: state = ST_SLIDE_FORWARD; break;
+			}
+		}
+		break;
+
+		case ST_WALK_BACKWARD:
+		{
+			switch (last_input)
+			{
+			case IN_LEFT_UP: state = ST_IDLE; break;
+			case IN_LEFT_AND_RIGHT: state = ST_IDLE; break;
+			case IN_JUMP: state = ST_JUMP_BACKWARD; /*jump_timer = SDL_GetTicks();*/  break;
+			case IN_SLIDE_DOWN: state = ST_SLIDE_BACKWARD; break;
+			}
+		}
+		break;
+
+		case ST_JUMP_NEUTRAL:
+		{
+			switch (last_input)
+			{
+			case IN_JUMP_FINISH: state = ST_IDLE; break;
+			}
+		}
+		break;
+
+		case ST_JUMP_FORWARD:
+		{
+			switch (last_input)
+			{
+			case IN_JUMP_FINISH: state = ST_IDLE; break;
+			}
+		}
+		break;
+
+		case ST_JUMP_BACKWARD:
+		{
+			switch (last_input)
+			{
+			case IN_JUMP_FINISH: state = ST_IDLE; break;
+			}
+		}
+		break;
+
+		case ST_SLIDE_FORWARD:
+		{
+			switch (last_input)
+			{
+			case IN_SLIDE_FINISH: state = ST_IDLE; break;
+			}
+		}
+		break;
+		case ST_SLIDE_BACKWARD:
+		{
+			switch (last_input)
+			{
+			case IN_SLIDE_FINISH: state = ST_IDLE; break;
+			}
+		}
+		break;
+		}
+	}
+
+	return state;
+}
+
 bool j1Player::Load(const char* file_name) {
 
 	bool ret = true;

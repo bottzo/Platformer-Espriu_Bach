@@ -2,6 +2,7 @@
 #define __j1PLAYER_H__
 #include "j1Module.h"
 #include "p2List.h"
+#include "p2Qeue.h"
 #include "SDL/include/SDL_rect.h"
 #include "SDL/include/SDL_render.h"
 #include "j1Map.h"
@@ -31,9 +32,10 @@ enum santa_inputs
 	IN_LEFT_AND_RIGHT,
 	IN_JUMP,
 	IN_SLIDE_UP,
-	IN_CROUCH_DOWN,
+	IN_SLIDE_DOWN,
 	IN_JUMP_AND_SLIDE,
 	IN_JUMP_FINISH,
+	IN_SLIDE_FINISH
 };
 
 struct Frame {
@@ -63,6 +65,8 @@ public:
 	void Updateposition();
 	bool CleanUp();
 	p2Point<float> speed;
+	p2Qeue<santa_inputs> key_inputs;
+	santa_states j1Player::current_santa_state(p2Qeue<santa_inputs>& inputs);
 
 private:
 	pugi::xml_document player_doc;
