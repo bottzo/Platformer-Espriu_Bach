@@ -50,10 +50,39 @@ void j1Player::LoadAnimations(pugi::xml_node&node) {
 	}
 }
 
+void j1Player::Updateposition(santa_states state) {
+	//speed.y +=App->map->data.gravity;
+	switch (state) {
+	case ST_IDLE_RIGHT:
+		speed.x = 0;
+		break;
+	case ST_IDLE_LEFT:
+		speed.x = 0;
+		break;
+	case ST_WALK_FORWARD:
+		speed.x += 2;
+		if (speed.x >= 25) {
+			speed.x = 25;
+		}
+		break;
+	case ST_WALK_BACKWARD:
+		speed.x -= 2;
+		if (speed.x <= -25) {
+			speed.x = -25;
+		}
+		break;
+	}
+	position.x += speed.x;
+	position.y += speed.y;
+}
+
 void j1Player::Draw_player(santa_states state) {
 	switch (state) {
-	case ST_IDLE:
+	case ST_IDLE_RIGHT:
 		App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->data->GetCurrentFrame());
+		break;
+	case ST_IDLE_LEFT:
+		App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->data->GetCurrentFrame(),SDL_FLIP_HORIZONTAL, sprite_tilesets.start->data);
 		break;
 	case ST_WALK_FORWARD:
 		App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->next->data->GetCurrentFrame());
@@ -66,14 +95,14 @@ void j1Player::Draw_player(santa_states state) {
 
 santa_states j1Player::current_santa_state(p2Qeue<santa_inputs>& inputs)
 {
-	static santa_states state = ST_IDLE;
+	static santa_states state = ST_IDLE_RIGHT;
 	santa_inputs last_input;
 
 	while (inputs.Pop(last_input))
 	{
 		switch (state)
 		{
-		case ST_IDLE:
+		case ST_IDLE_RIGHT:
 		{
 			switch (last_input)
 			{
@@ -85,12 +114,24 @@ santa_states j1Player::current_santa_state(p2Qeue<santa_inputs>& inputs)
 		}
 		break;
 
+		case ST_IDLE_LEFT:
+		{
+			switch (last_input)
+			{
+			case IN_RIGHT_DOWN: state = ST_WALK_FORWARD; break;
+			case IN_LEFT_DOWN: state = ST_WALK_BACKWARD; break;
+			case IN_JUMP: state = ST_JUMP_NEUTRAL; /*jump_timer = SDL_GetTicks();*/  break;
+				//case IN_SLIDE_DOWN: state = ST_SLIDE_(cap a on?); break;
+			}
+		}
+		break;
+
 		case ST_WALK_FORWARD:
 		{
 			switch (last_input)
 			{
-			case IN_RIGHT_UP: state = ST_IDLE; break;
-			case IN_LEFT_AND_RIGHT: state = ST_IDLE; break;
+			case IN_RIGHT_UP: state = ST_IDLE_RIGHT; break;
+			case IN_LEFT_AND_RIGHT: state = ST_IDLE_RIGHT; break;
 			case IN_JUMP: state = ST_JUMP_FORWARD; /*jump_timer = SDL_GetTicks();*/  break;
 			case IN_SLIDE_DOWN: state = ST_SLIDE_FORWARD; break;
 			}
@@ -101,8 +142,8 @@ santa_states j1Player::current_santa_state(p2Qeue<santa_inputs>& inputs)
 		{
 			switch (last_input)
 			{
-			case IN_LEFT_UP: state = ST_IDLE; break;
-			case IN_LEFT_AND_RIGHT: state = ST_IDLE; break;
+			case IN_LEFT_UP: state = ST_IDLE_LEFT; break;
+			case IN_LEFT_AND_RIGHT: state = ST_IDLE_LEFT; break;
 			case IN_JUMP: state = ST_JUMP_BACKWARD; /*jump_timer = SDL_GetTicks();*/  break;
 			case IN_SLIDE_DOWN: state = ST_SLIDE_BACKWARD; break;
 			}
@@ -113,7 +154,7 @@ santa_states j1Player::current_santa_state(p2Qeue<santa_inputs>& inputs)
 		{
 			switch (last_input)
 			{
-			case IN_JUMP_FINISH: state = ST_IDLE; break;
+			//case IN_JUMP_FINISH: state = ST_IDLE; break;
 			}
 		}
 		break;
@@ -122,7 +163,7 @@ santa_states j1Player::current_santa_state(p2Qeue<santa_inputs>& inputs)
 		{
 			switch (last_input)
 			{
-			case IN_JUMP_FINISH: state = ST_IDLE; break;
+			case IN_JUMP_FINISH: state = ST_IDLE_RIGHT; break;
 			}
 		}
 		break;
@@ -131,7 +172,7 @@ santa_states j1Player::current_santa_state(p2Qeue<santa_inputs>& inputs)
 		{
 			switch (last_input)
 			{
-			case IN_JUMP_FINISH: state = ST_IDLE; break;
+			case IN_JUMP_FINISH: state = ST_IDLE_LEFT; break;
 			}
 		}
 		break;
@@ -140,7 +181,7 @@ santa_states j1Player::current_santa_state(p2Qeue<santa_inputs>& inputs)
 		{
 			switch (last_input)
 			{
-			case IN_SLIDE_FINISH: state = ST_IDLE; break;
+			case IN_SLIDE_FINISH: state = ST_IDLE_RIGHT; break;
 			}
 		}
 		break;
@@ -148,13 +189,12 @@ santa_states j1Player::current_santa_state(p2Qeue<santa_inputs>& inputs)
 		{
 			switch (last_input)
 			{
-			case IN_SLIDE_FINISH: state = ST_IDLE; break;
+			case IN_SLIDE_FINISH: state = ST_IDLE_LEFT; break;
 			}
 		}
 		break;
 		}
 	}
-
 	return state;
 }
 
@@ -205,14 +245,6 @@ bool j1Player::Load(const char* file_name) {
 		}
 		return ret;
 	}
-}
-
-void j1Player::Updateposition() {
-	//speed.y+=gravity;
-	position.x += speed.x;
-	position.y += speed.y;
-	speed.x = 0;
-	speed.y = 0;
 }
 
 void j1Player::LoadPlayerPosition() {

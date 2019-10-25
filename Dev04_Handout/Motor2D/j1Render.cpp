@@ -130,7 +130,7 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 
 	if (flip == SDL_FLIP_HORIZONTAL) {
 		if (tileset != NULL) {
-			x -= (tileset->tile_width - x -1)/2;
+			x -= (tileset->tile_width)/4;
 		}
 		else
 			LOG("Need to include a tileste to be able to flip the texture properly");

@@ -11,7 +11,8 @@ enum santa_states
 {
 	ST_UNKNOWN,
 
-	ST_IDLE,
+	ST_IDLE_RIGHT,
+	ST_IDLE_LEFT,
 	ST_WALK_FORWARD,
 	ST_WALK_BACKWARD,
 	ST_RUN_FORWRD,
@@ -62,7 +63,7 @@ public:
 	void LoadAnimations(pugi::xml_node&node);
 	void j1Player::LoadPlayerPosition();
 	void Draw_player(santa_states state);
-	void Updateposition();
+	void Updateposition(santa_states state);
 	bool CleanUp();
 	p2Point<float> speed;
 	p2Qeue<santa_inputs> key_inputs;//recordar que em falta borrarla de la memoria

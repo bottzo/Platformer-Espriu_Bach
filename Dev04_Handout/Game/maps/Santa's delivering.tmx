@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="319" height="60" tilewidth="32" tileheight="32" nextobjectid="76">
+ <properties>
+  <property name="Gravity" type="float" value="3"/>
+ </properties>
  <tileset firstgid="1" name="tileset 1" tilewidth="32" tileheight="32" tilecount="25" columns="5">
   <image source="tileset.png" trans="ff00ff" width="160" height="160"/>
  </tileset>

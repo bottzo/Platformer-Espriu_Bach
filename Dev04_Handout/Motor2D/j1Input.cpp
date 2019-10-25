@@ -177,6 +177,7 @@ bool j1Input::PreUpdate()
 
 	if (left && right)
 		App->player->key_inputs.Push(IN_LEFT_AND_RIGHT);
+	else
 	{
 		if (left)
 			App->player->key_inputs.Push(IN_LEFT_DOWN);

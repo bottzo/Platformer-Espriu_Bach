@@ -162,7 +162,6 @@ bool j1Map::Load(const char* file_name)
 	{
 		ret = LoadMap();
 	}
-
 	// Load all tilesets info ----------------------------------------------
 	pugi::xml_node tileset;
 	for(tileset = map_file.child("map").child("tileset"); tileset && ret; tileset = tileset.next_sibling("tileset"))
@@ -270,6 +269,7 @@ bool j1Map::LoadMap()
 	}
 	else
 	{
+		data.gravity = map.child("properties").child("property").attribute("value").as_float();
 		data.width = map.attribute("width").as_int();
 		data.height = map.attribute("height").as_int();
 		data.tile_width = map.attribute("tilewidth").as_int();
