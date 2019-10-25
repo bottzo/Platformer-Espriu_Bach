@@ -50,8 +50,18 @@ void j1Player::LoadAnimations(pugi::xml_node&node) {
 	}
 }
 
-void j1Player::Draw_player() {
-	App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->data->GetCurrentFrame());
+void j1Player::Draw_player(santa_states state) {
+	switch (state) {
+	case ST_IDLE:
+		App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->data->GetCurrentFrame());
+		break;
+	case ST_WALK_FORWARD:
+		App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->next->data->GetCurrentFrame());
+		break;
+	case ST_WALK_BACKWARD:
+		App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->next->data->GetCurrentFrame(),SDL_FLIP_HORIZONTAL,sprite_tilesets.start->data);
+	}
+	
 }
 
 santa_states j1Player::current_santa_state(p2Qeue<santa_inputs>& inputs)

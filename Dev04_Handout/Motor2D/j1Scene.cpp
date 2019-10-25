@@ -65,32 +65,12 @@ bool j1Scene::Update(float dt)
 	if(App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		App->render->camera.x += 30;
 
-	/*switch (App->input->GetKey) {
-	case SDL_SCANCODE_A:
-		App->player.velocity.Y -= 10;
-		break;
-	case SDL_SCANCODE_D:
-		App->player.velocity.X += 10;
-		break;
-	case SDL_SCANCODE_W:
-		App->player.velocity.y += 10;
-		break;
-	case SDL_SCANCODE_S:
-		App->player.velocity.y -= 10;
-		break;
-	}*/
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-		App->player->speed.x = 10;
-	}
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
-		App->player->speed.x = -10;
-	}
 
 	//App->player->Updateposition();
 	LOG("%d", App->player->current_santa_state(App->player->key_inputs));
 	//App->render->Blit(img, 0, 0);
 	App->map->Draw();
-	App->player->Draw_player();
+	App->player->Draw_player(App->player->current_santa_state(App->player->key_inputs));
 
 	p2SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d",
 					App->map->data.width, App->map->data.height,

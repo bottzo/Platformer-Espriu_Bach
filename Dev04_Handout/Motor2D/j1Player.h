@@ -61,7 +61,7 @@ public:
 	bool Load(const char* file_name);
 	void LoadAnimations(pugi::xml_node&node);
 	void j1Player::LoadPlayerPosition();
-	void Draw_player();
+	void Draw_player(santa_states state);
 	void Updateposition();
 	bool CleanUp();
 	p2Point<float> speed;
