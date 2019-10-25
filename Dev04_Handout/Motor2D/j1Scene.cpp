@@ -34,6 +34,7 @@ bool j1Scene::Start()
 {
 	App->map->Load(map_name.GetString());
 	App->player->Load(player_sprite.GetString());
+	
 	return true;
 }
 

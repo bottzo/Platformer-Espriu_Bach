@@ -168,3 +168,4 @@ bool Collider::CheckCollision(const SDL_Rect& r) const
 		rect.y + rect.h > r.y);
 	// between argument "r" and property "rect"
 }
+

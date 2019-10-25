@@ -4,6 +4,7 @@
 #include "j1Textures.h"
 #include "j1Render.h"
 #include "j1Map.h"
+#include "j1Collisions.h"
 j1Player::j1Player():j1Module(),player_loaded(false) {
 	name.create("player");
 }
@@ -224,6 +225,8 @@ void j1Player::LoadPlayerPosition() {
 		}
 		it = it->next;
 	}
+	//App->player->playercollider = App->collisions->AddCollider({ 0, 220, 40, 80 }, COLLIDER_PLAYER1, App->player);
+	
 }
 
 bool j1Player::CleanUp() {
