@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="319" height="60" tilewidth="32" tileheight="32" nextobjectid="76">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="319" height="60" tilewidth="32" tileheight="32" nextobjectid="81">
  <properties>
   <property name="Gravity" type="float" value="3"/>
  </properties>
@@ -191449,7 +191449,7 @@
    <tile gid="0"/>
   </data>
  </layer>
- <objectgroup name="Capa de Objetos 1">
+ <objectgroup name="COLLAIDER_WALL">
   <object id="1" name="Terrain" x="1" y="1761" width="382" height="157"/>
   <object id="6" name="Terrain" x="511" y="1725" width="225" height="161"/>
   <object id="7" name="Terrain" x="833" y="1696" width="161" height="25"/>
@@ -191487,7 +191487,11 @@
   <object id="63" name="Terrain" x="8927" y="1312" width="227" height="22"/>
   <object id="64" name="Terrain" x="9247" y="1215.5" width="128.5" height="129"/>
   <object id="65" name="Terrain" x="9412" y="1410" width="1180" height="676"/>
+ </objectgroup>
+ <objectgroup name="COLLAIDER_PLAYER">
   <object id="66" name="Start" x="97.6667" y="1612.85" width="220" height="149"/>
+ </objectgroup>
+ <objectgroup name="COLLIDER_DEATH">
   <object id="67" name="Death" x="381.818" y="1884.85" width="645.455" height="69.697"/>
   <object id="69" name="Death" x="2493.94" y="1890.91" width="769.697" height="72.7273"/>
   <object id="72" name="Death" x="3645.45" y="1884.85" width="1178.79" height="60.6061"/>

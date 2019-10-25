@@ -208,7 +208,6 @@ bool j1Map::Load(const char* file_name)
 			rectangle.y = node.attribute("y").as_int();
 			rectangle.w = node.attribute("width").as_int();
 			rectangle.h = node.attribute("height").as_int();
-			App->collisions->AddCollider(rectangle, COLLIDER_WALL, App->map);
 			objectgroup[i].rect = rectangle;
 		}
 		group->objects = objectgroup;
@@ -220,6 +219,7 @@ bool j1Map::Load(const char* file_name)
 		LOG("%d: %s", i, data.objectgroup.start->data->objects[i].name.GetString());
 		LOG("%d: %d", i, data.objectgroup.start->data->objects[i].id);
 	}*/
+
 
 	if(ret == true)
 	{
@@ -248,11 +248,35 @@ bool j1Map::Load(const char* file_name)
 			item_layer = item_layer->next;
 		}
 	}
+	add_map_colliders();
 	map_loaded = ret;
 
 	return ret;
 }
 
+bool j1Map::add_map_colliders() {
+	bool ret = true;
+	p2SString wall;
+	wall.create("COLLAIDER_WALL");
+	p2SString death;
+	death.create("COLLIDER_DEATH");
+	p2List_item<objectgroup*>*it = data.objectgroup.start;
+	while (it != NULL) {
+		if (it->data->name==wall) {
+			for (int i = 0; i < it->data->num_objects; ++i) {
+				App->collisions->AddCollider(it->data->objects[i].rect, COLLIDER_WALL, App->map);
+			}
+		}
+		if (it->data->name == death) {
+			for (int i = 0; i < it->data->num_objects; ++i) {
+				App->collisions->AddCollider(it->data->objects[i].rect, COLLIDER_DEATH, App->map);
+			}
+		}
+		it = it->next;
+	}
+	LOG("Map colliders added");
+	return ret;
+}
 // Load map general properties
 bool j1Map::LoadMap()
 {
