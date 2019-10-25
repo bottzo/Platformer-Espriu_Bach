@@ -5,6 +5,7 @@
 #include "j1Textures.h"
 #include "j1Map.h"
 #include "j1Player.h"
+#include "j1Collisions.h"
 //#include <math.h>
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
@@ -32,7 +33,6 @@ void j1Map::Draw()
 	if(map_loaded == false)
 		return;
 
-	// TODO 5: Prepare the loop to iterate all the tiles in a layer
 	p2List_item<map_layer*>*it = data.layer.start;
 	while (it != NULL) {
 		for (int x = 0; x < it->data->width; ++x) {
@@ -208,6 +208,7 @@ bool j1Map::Load(const char* file_name)
 			rectangle.y = node.attribute("y").as_int();
 			rectangle.w = node.attribute("width").as_int();
 			rectangle.h = node.attribute("height").as_int();
+			App->collisions->AddCollider(rectangle, COLLIDER_WALL, App->map);
 			objectgroup[i].rect = rectangle;
 		}
 		group->objects = objectgroup;
@@ -237,9 +238,6 @@ bool j1Map::Load(const char* file_name)
 			item = item->next;
 		}
 
-		// TODO 4: Add info here about your loaded layers
-		// Adapt this code with your own variables
-
 		p2List_item<map_layer*>* item_layer = data.layer.start;
 		while(item_layer != NULL)
 		{
@@ -250,7 +248,6 @@ bool j1Map::Load(const char* file_name)
 			item_layer = item_layer->next;
 		}
 	}
-
 	map_loaded = ret;
 
 	return ret;

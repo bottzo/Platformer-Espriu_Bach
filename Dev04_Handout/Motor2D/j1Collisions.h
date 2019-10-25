@@ -2,7 +2,7 @@
 #ifndef __j1Collisions_H__
 #define __j1Collisions_H__
 
-#define MAX_COLLIDERS 50
+#define MAX_COLLIDERS 100
 
 #include "j1Module.h"
 
@@ -47,7 +47,7 @@ public:
 	~j1Collisions();
 
 	bool PreUpdate() override;
-	bool Update();
+	bool Update(float dt);
 	bool CleanUp() override;
 
 	Collider* AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Module* callback = nullptr);

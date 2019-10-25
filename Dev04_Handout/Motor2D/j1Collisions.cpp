@@ -21,15 +21,6 @@ j1Collisions::j1Collisions()
 	matrix[COLLIDER_DEATH][COLLIDER_WALL] = false;
 	matrix[COLLIDER_DEATH][COLLIDER_PLAYER1] = true;
 	matrix[COLLIDER_DEATH][COLLIDER_DEATH] = false;
-
-	
-
-	
-
-	
-
-	
-
 }
 
 // Destructor
@@ -84,7 +75,7 @@ bool j1Collisions::PreUpdate()
 }
 
 // Called before render is available
-bool j1Collisions::Update()
+bool j1Collisions::Update(float dt)
 {
 
 	DebugDraw();
@@ -94,11 +85,13 @@ bool j1Collisions::Update()
 
 void j1Collisions::DebugDraw()
 {
-	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN);
-		debug = !debug;
+	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) {
+		debug =! debug;
+	}
 
-	if (debug == false)
+	if (debug == false) {
 		return;
+	}
 		
 
 	Uint8 alpha = 140;
