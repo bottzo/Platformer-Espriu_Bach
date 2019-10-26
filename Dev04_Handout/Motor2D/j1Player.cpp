@@ -93,6 +93,10 @@ void j1Player::Draw_player(santa_states state) {
 	
 }
 
+void j1Player::change_player_collider(santa_states state) {
+
+}
+
 santa_states j1Player::current_santa_state(p2Qeue<santa_inputs>& inputs)
 {
 	static santa_states state = ST_IDLE_RIGHT;
@@ -241,35 +245,38 @@ bool j1Player::Load(const char* file_name) {
 			}
 			player_node = player_node.child("tile");
 			LoadAnimations(player_node);
-			LoadPlayerPosition();
+			Load_player_info();
 		}
 		return ret;
 	}
 }
 
-void j1Player::LoadPlayerPosition() {
-	//Loading player starting position
+void j1Player::Load_player_info() {
+	p2SString group_name; group_name.create("COLLAIDER_PLAYER");
 	p2SString start; start.create("Start");
-	bool escape = false;
+	p2SString player; player.create("player_collider");
+	p2SString slide; slide.create("slide_collider");
 	p2List_item<objectgroup*>*it = App->map->data.objectgroup.start;
 	while (it != NULL) {
-		objectgroup*ptr = it->data;
-		for (int i = 0; i < ptr->num_objects; ++i) {
-			if (ptr->objects[i].name == start) {
-				position.x = ptr->objects[i].rect.x;
-				position.y = ptr->objects[i].rect.y;
-				escape = true;
-				break;
+		if (it->data->name == group_name) {
+			for (int i = 0; i < it->data->num_objects; ++i) {
+				if (it->data->objects[i].name == start) {
+					position.x = it->data->objects[i].rect.x;
+					position.y = it->data->objects[i].rect.y;
+				}
+				else if (it->data->objects[i].name == player) {
+					player_collider=App->collisions->AddCollider(it->data->objects[i].rect, COLLIDER_PLAYER1, App->player);
+				}
+				else if (it->data->objects[i].name == slide) {
+					slide_collider=App->collisions->AddCollider(it->data->objects[i].rect, COLLIDER_PLAYER1, App->player);
+				}
 			}
-		}
-		if (escape) {
 			break;
 		}
 		it = it->next;
 	}
-	//App->player->playercollider = App->collisions->AddCollider({ 0, 220, 40, 80 }, COLLIDER_PLAYER1, App->player);
-	
 }
+
 
 bool j1Player::CleanUp() {
 	key_inputs.Clear();
