@@ -39,7 +39,7 @@ struct Collider
 		rect.y = y;
 	}
 
-	bool CheckCollision(const SDL_Rect& r,Collider*c) const;
+	bool CheckCollision(const SDL_Rect& r) const;
 };
 
 class j1Collisions : public j1Module
@@ -56,6 +56,7 @@ public:
 	Collider* AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Module* callback = nullptr);
 	void update_active_colliders();
 	void DebugDraw();
+	int closest_xaxis_collider();
 
 private:
 

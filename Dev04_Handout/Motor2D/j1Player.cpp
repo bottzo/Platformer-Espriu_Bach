@@ -51,7 +51,8 @@ void j1Player::LoadAnimations(pugi::xml_node&node) {
 }
 
 void j1Player::Updateposition(santa_states state) {
-	//speed.y +=App->map->data.gravity;
+	//speed.y =App->map->data.gravity;
+	p2Point<float>distance;
 	switch (state) {
 	case ST_IDLE_RIGHT:
 		speed.x = 0;
@@ -64,15 +65,25 @@ void j1Player::Updateposition(santa_states state) {
 		if (speed.x >= 25) {
 			speed.x = 25;
 		}
+		origin_distance_player.x = player_collider->rect.x + player_collider->rect.w;
+		looking_right = true;
 		break;
 	case ST_WALK_BACKWARD:
 		speed.x -= 2;
 		if (speed.x <= -25) {
 			speed.x = -25;
 		}
+		origin_distance_player.x = player_collider->rect.x;
+		looking_right = false;
 		break;
 	}
-	position.x += speed.x;
+	distance.x=App->collisions->closest_xaxis_collider();
+	if (speed.x > distance.x) {
+		position.x += distance.x;
+	}
+	else {
+		position.x += speed.x;
+	}
 	position.y += speed.y;
 	player_collider->SetPos(position.x-(collider_player_offset_x), position.y-(collider_player_offset_y));
 	slide_collider->SetPos(position.x - (collider_player_offset_x), position.y - (collider_player_offset_y-(player_collider->rect.h-slide_collider->rect.h)));
@@ -95,6 +106,9 @@ void j1Player::Draw_player(santa_states state) {
 
 	
 }void j1Player::OnCollision(Collider*player, Collider*wall) {
+
+	position.x -= speed.x;
+	position.y -= speed.y;
 	/*position.x -= speed.x;
 	position.y -= speed.y;
 	p2Point<float> distance;
@@ -105,7 +119,7 @@ void j1Player::Draw_player(santa_states state) {
 	}
 	else if (distance.x > speed.x) {
 		position.x += speed.x;
-	}
+	}/*
 	if (distance.y < speed.y) {
 		position.y += distance.y;
 	}

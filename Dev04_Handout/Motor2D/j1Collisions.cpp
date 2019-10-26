@@ -68,18 +68,54 @@ bool j1Collisions::PreUpdate()
 
 			c2 = colliders[k];
 
-			if (c1->CheckCollision(c2->rect,c1) == true)
+			if (c1->CheckCollision(c2->rect) == true)
 			{
-				if (matrix[c1->type][c2->type] && c1->callback)
+				if (matrix[c1->type][c2->type] && c1->callback&&c1->active)
 					c1->callback->OnCollision(c1, c2);
 
-				if (matrix[c2->type][c1->type] && c2->callback)
+				if (matrix[c2->type][c1->type] && c2->callback&&c2->active)
 					c2->callback->OnCollision(c2, c1);
 			}
 		}
 	}
 
 	return UPDATE_CONTINUE;
+}
+
+int j1Collisions::closest_xaxis_collider() {
+	int current;
+	int closest;
+	if (App->player->looking_right) {
+		closest = App->map->data.width;
+		for (int i = 0; colliders[i]!=nullptr; ++i) {
+			if (colliders[i]->type == COLLIDER_WALL) {
+				if (colliders[i]->active) {
+					if (colliders[i]->rect.x > App->player->origin_distance_player.x) {
+						current = colliders[i]->rect.x - App->player->origin_distance_player.x;
+						if (current < closest) {
+							closest = current;
+						}
+					}
+				}
+			}
+		}
+	}
+	else {
+		closest = 0;
+		for (int i = 0; colliders[i] != nullptr; ++i) {
+			if (colliders[i]->type == COLLIDER_WALL) {
+				if (colliders[i]->active) {
+					if ((colliders[i]->rect.x+ colliders[i]->rect.w) < App->player->origin_distance_player.x) {
+						current = App->player->origin_distance_player.x - (colliders[i]->rect.x+ colliders[i]->rect.w);
+						if (current < closest) {
+							closest = current;
+						}
+					}
+				}
+			}
+		}
+	}
+	return closest;
 }
 
 void j1Collisions::update_active_colliders() {
@@ -180,11 +216,11 @@ Collider* j1Collisions::AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Module*
 
 // -----------------------------------------------------
 
-bool Collider::CheckCollision(const SDL_Rect& r,Collider*c) const
+bool Collider::CheckCollision(const SDL_Rect& r) const
 {
 	return (rect.x < r.x + r.w &&
 		rect.x + rect.w > r.x &&
 		rect.y < r.y + r.h &&
-		rect.y + rect.h > r.y&&c->active);
+		rect.y + rect.h > r.y);
 }
 

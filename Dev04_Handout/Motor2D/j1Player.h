@@ -72,6 +72,8 @@ public:
 	Collider*slide_collider;
 	void OnCollision(Collider*player, Collider*wall);
 	void change_player_collider(santa_states state);
+	p2Point<float> origin_distance_player;
+	bool looking_right = true;;
 	//bool positioncamera();
 private:
 	pugi::xml_document player_doc;
