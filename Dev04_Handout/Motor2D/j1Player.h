@@ -58,7 +58,7 @@ public:
 	j1Player();
 	~j1Player();
 	bool Awake(pugi::xml_node&config);
-
+	//bool PostUpdate();
 	bool Load(const char* file_name);
 	void LoadAnimations(pugi::xml_node&node);
 	void Draw_player(santa_states state);
@@ -69,7 +69,7 @@ public:
 	santa_states j1Player::current_santa_state(p2Qeue<santa_inputs>& inputs);
 	void Load_player_info();
 	void change_player_collider(santa_states state);
-
+	//bool positioncamera();
 private:
 	pugi::xml_document player_doc;
 	p2SString folder;

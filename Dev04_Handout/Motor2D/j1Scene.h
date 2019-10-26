@@ -29,6 +29,7 @@ public:
 	// Called before all Updates
 	bool PostUpdate();
 
+	bool PositionCamera();
 	// Called before quitting
 	bool CleanUp();
 
