@@ -260,6 +260,8 @@ bool j1Map::add_map_colliders() {
 	wall.create("COLLAIDER_WALL");
 	p2SString death;
 	death.create("COLLIDER_DEATH");
+	p2SString background;
+	background.create("COLLIDER_BACKGROUND");
 	p2List_item<objectgroup*>*it = data.objectgroup.start;
 	while (it != NULL) {
 		if (it->data->name==wall) {
@@ -270,6 +272,11 @@ bool j1Map::add_map_colliders() {
 		if (it->data->name == death) {
 			for (int i = 0; i < it->data->num_objects; ++i) {
 				App->collisions->AddCollider(it->data->objects[i].rect, COLLIDER_DEATH, App->map);
+			}
+		}
+		if (it->data->name == background) {
+			for (int i = 0; i < it->data->num_objects; ++i) {
+				App->collisions->AddCollider(it->data->objects[i].rect, COLLIDER_BACKGROUND, App->map);
 			}
 		}
 		it = it->next;
