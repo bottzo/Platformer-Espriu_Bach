@@ -38,7 +38,7 @@ struct Collider
 		rect.y = y;
 	}
 
-	bool CheckCollision(const SDL_Rect& r) const;
+	bool CheckCollision(const SDL_Rect& r,Collider*c) const;
 };
 
 class j1Collisions : public j1Module
@@ -53,6 +53,7 @@ public:
 	bool CleanUp() override;
 
 	Collider* AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Module* callback = nullptr);
+	void update_active_colliders();
 	void DebugDraw();
 
 private:

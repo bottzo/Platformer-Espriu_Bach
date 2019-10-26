@@ -93,10 +93,25 @@ void j1Player::Draw_player(santa_states state) {
 		App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->next->data->GetCurrentFrame(),SDL_FLIP_HORIZONTAL,sprite_tilesets.start->data);
 	}
 	
-}
-
-void j1Player::change_player_collider(santa_states state) {
-
+}void j1Player::OnCollision(Collider*player, Collider*wall) {
+	/*position.x -= speed.x;
+	position.y -= speed.y;
+	p2Point<float> distance;
+	distance.x = (player->rect.x + player->rect.w) - (wall->rect.x + wall->rect.w);
+	distance.y = (player->rect.y + player->rect.h) - (wall->rect.y + wall->rect.h);
+	if (distance.x < speed.x) {
+		position.x += distance.x;
+	}
+	else if (distance.x > speed.x) {
+		position.x += speed.x;
+	}
+	if (distance.y < speed.y) {
+		position.y += distance.y;
+	}
+	else if (distance.y > speed.y) {
+		position.y += speed.y;
+	}*/
+	LOG("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 }
 
 santa_states j1Player::current_santa_state(p2Qeue<santa_inputs>& inputs)
@@ -271,6 +286,7 @@ void j1Player::Load_player_info() {
 				}
 				else if (it->data->objects[i].name == slide) {
 					slide_collider=App->collisions->AddCollider(it->data->objects[i].rect, COLLIDER_PLAYER1, App->player);
+					slide_collider->active = false;
 				}
 			}
 			break;

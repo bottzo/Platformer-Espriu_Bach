@@ -39,6 +39,7 @@ bool j1Collisions::PreUpdate()
 		}
 	}
 
+	update_active_colliders();
 	// Calculate collisions
 	Collider* c1;
 	Collider* c2;
@@ -60,7 +61,7 @@ bool j1Collisions::PreUpdate()
 
 			c2 = colliders[k];
 
-			if (c1->CheckCollision(c2->rect) == true)
+			if (c1->CheckCollision(c2->rect,c1) == true)
 			{
 				if (matrix[c1->type][c2->type] && c1->callback)
 					c1->callback->OnCollision(c1, c2);
@@ -72,6 +73,22 @@ bool j1Collisions::PreUpdate()
 	}
 
 	return UPDATE_CONTINUE;
+}
+
+void j1Collisions::update_active_colliders() {
+	for (int i = 0; i < MAX_COLLIDERS; ++i) {
+		while (colliders[i] != nullptr) {
+			if (colliders[i]->type == COLLIDER_WALL) {
+				if ((App->player->player_collider->rect.y + App->player->player_collider->rect.h) < colliders[i]->rect.y) {
+					colliders[i]->active = true;
+				}
+				else {
+					colliders[i]->active = false;
+				}
+			}
+			++i;
+		}
+	}
 }
 
 // Called before render is available
@@ -152,11 +169,11 @@ Collider* j1Collisions::AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Module*
 
 // -----------------------------------------------------
 
-bool Collider::CheckCollision(const SDL_Rect& r) const
+bool Collider::CheckCollision(const SDL_Rect& r,Collider*c) const
 {
 	return (rect.x < r.x + r.w &&
 		rect.x + rect.w > r.x &&
 		rect.y < r.y + r.h &&
-		rect.y + rect.h > r.y&&active);
+		rect.y + rect.h > r.y&&c->active);
 }
 
