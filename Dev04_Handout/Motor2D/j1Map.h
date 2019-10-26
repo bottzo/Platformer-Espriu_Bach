@@ -5,6 +5,32 @@
 #include "p2List.h"
 #include "p2Point.h"
 #include "j1Module.h"
+struct Properties
+{
+	struct Property
+	{
+		p2SString name;
+		int value;
+	};
+
+	~Properties()
+	{
+		p2List_item<Property*>* item;
+		item = list.start;
+
+		while (item != NULL)
+		{
+			RELEASE(item->data);
+			item = item->next;
+		}
+
+		list.clear();
+	}
+
+	int Get(const char* name, int default_value = 0) const;
+
+	p2List<Property*>	list;
+};
 
 // TODO 1: Create a struct for the map layer
 // ----------------------------------------------------
@@ -13,7 +39,9 @@ struct map_layer {
 	uint width;
 	uint height;
 	uint* tiled_gid;
+	Properties	Properties;
 	inline uint Get(int x, int y)const;
+	float parSpeed;
 };
 	// TODO 6: Short function to get the value of x,y
 
@@ -106,6 +134,7 @@ private:
 	bool LoadLayer(pugi::xml_node& tileset_node, map_layer* layer);
 	bool add_map_colliders();
 	TileSet* GetTilesetFromTileId(int id) const;
+	bool parallax_movement();
 
 public:
 
@@ -118,6 +147,8 @@ private:
 	bool				map_loaded;
 	float gravity;
 	friend class j1Player;
+	p2Point<float> position_parallax;
+	p2Point<float> speed_parallax;
 };
 
 #endif // __j1MAP_H__
