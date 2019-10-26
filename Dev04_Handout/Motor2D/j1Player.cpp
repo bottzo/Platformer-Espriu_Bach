@@ -92,6 +92,7 @@ void j1Player::Draw_player(santa_states state) {
 	case ST_WALK_BACKWARD:
 		App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->next->data->GetCurrentFrame(),SDL_FLIP_HORIZONTAL,sprite_tilesets.start->data);
 	}
+
 	
 }void j1Player::OnCollision(Collider*player, Collider*wall) {
 	/*position.x -= speed.x;
@@ -296,6 +297,17 @@ void j1Player::Load_player_info() {
 	collider_player_offset_x = position.x - player_collider->rect.x;
 	collider_player_offset_y = position.y - player_collider->rect.y;
 }
+//bool j1Player::positioncamera()
+//{
+//	App->render->camera.x = position.x - App->render->camera.w / 3;
+//	if (App->render->camera.x < 0)App->render->camera.x = 0;
+//	return true;
+//}
+//bool j1Player::PostUpdate() {
+//	positioncamera();
+//	return true;
+//}
+
 
 
 bool j1Player::CleanUp() {
