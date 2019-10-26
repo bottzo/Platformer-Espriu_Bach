@@ -61,7 +61,6 @@ public:
 
 	bool Load(const char* file_name);
 	void LoadAnimations(pugi::xml_node&node);
-	void j1Player::LoadPlayerPosition();
 	void Draw_player(santa_states state);
 	void Updateposition(santa_states state);
 	bool CleanUp();
@@ -80,6 +79,8 @@ private:
 	p2Point<float> position;
 	Collider*player_collider;
 	Collider*slide_collider;
+	int collider_player_offset_y;
+	int collider_player_offset_x;
 	friend class j1Map;
 };
 #endif // __j1RENDER_H__

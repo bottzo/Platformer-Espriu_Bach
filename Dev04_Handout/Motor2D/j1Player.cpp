@@ -74,6 +74,8 @@ void j1Player::Updateposition(santa_states state) {
 	}
 	position.x += speed.x;
 	position.y += speed.y;
+	player_collider->SetPos(position.x-(collider_player_offset_x), position.y-(collider_player_offset_y));
+	slide_collider->SetPos(position.x - (collider_player_offset_x), position.y - (collider_player_offset_y-(player_collider->rect.h-slide_collider->rect.h)));
 }
 
 void j1Player::Draw_player(santa_states state) {
@@ -275,6 +277,8 @@ void j1Player::Load_player_info() {
 		}
 		it = it->next;
 	}
+	collider_player_offset_x = position.x - player_collider->rect.x;
+	collider_player_offset_y = position.y - player_collider->rect.y;
 }
 
 
