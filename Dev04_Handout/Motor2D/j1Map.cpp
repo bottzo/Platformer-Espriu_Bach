@@ -41,6 +41,7 @@ void j1Map::Draw()
 					TileSet* tileset = GetTilesetFromTileId(it->data->Get(x, y));
 					SDL_Rect rect = tileset->TilesetRect(it->data->Get(x, y)+1-tileset->firstgid);
 					App->render->Blit(tileset->texture, translate_x(x), translate_y(y), &rect);
+					//App->render->Blit(tileset->texture, translate_x(x), translate_y(y), &data.tilesets[x]->TilesetRect(data.layer[y]->data[data.layer[y]->Get(x, y)]), SDL_FLIP_NONE, -data.layer[y]->parallaxspeed);
 				}
 			}
 		}
@@ -425,6 +426,7 @@ bool j1Map::LoadLayer(pugi::xml_node& layer_node, map_layer* layer) {
 	layer->width = layer_node.attribute("width").as_uint();
 	layer->height = layer_node.attribute("height").as_uint();
 	layer->tiled_gid = new uint[layer->width * layer->height]();
+	layer->parallaxspeed = layer_node.child("properties").child("property").attribute("value").as_float(0.0f);
 	int i = 0;
 	pugi::xml_node lay = layer_node.child("data").child("tile");
 	for (lay; lay; lay = lay.next_sibling("tile"),++i) {

@@ -14,6 +14,7 @@ struct map_layer {
 	uint height;
 	uint* tiled_gid;
 	inline uint Get(int x, int y)const;
+	float parallaxspeed;
 };
 	// TODO 6: Short function to get the value of x,y
 
