@@ -68,7 +68,8 @@ public:
 	p2Point<float> speed;
 	p2Qeue<santa_inputs> key_inputs;//recordar que em falta borrarla de la memoria
 	santa_states j1Player::current_santa_state(p2Qeue<santa_inputs>& inputs);
-	//Collider* playercollider = nullptr;
+	void Load_player_info();
+	void change_player_collider(santa_states state);
 
 private:
 	pugi::xml_document player_doc;
@@ -77,6 +78,8 @@ private:
 	p2List<TileSet*>sprite_tilesets;
 	p2List<PlayerAnimation*>Animations;
 	p2Point<float> position;
+	Collider*player_collider;
+	Collider*slide_collider;
 	friend class j1Map;
 };
 #endif // __j1RENDER_H__
