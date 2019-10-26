@@ -6,7 +6,6 @@
 #include "j1Map.h"
 #include "j1Player.h"
 #include "j1Collisions.h"
-#include "j1Input.h"
 //#include <math.h>
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
@@ -33,7 +32,7 @@ void j1Map::Draw()
 {
 	if(map_loaded == false)
 		return;
-	SDL_Rect camera = App->render->camera;
+
 	p2List_item<map_layer*>*it = data.layer.start;
 	while (it != NULL) {
 		for (int x = 0; x < it->data->width; ++x) {
@@ -419,35 +418,10 @@ bool j1Map::LoadLayer(pugi::xml_node& layer_node, map_layer* layer) {
 	layer->width = layer_node.attribute("width").as_uint();
 	layer->height = layer_node.attribute("height").as_uint();
 	layer->tiled_gid = new uint[layer->width * layer->height]();
-	layer->parSpeed = layer_node.child("properties").child("property").attribute("value").as_float(0.0f);
 	int i = 0;
 	pugi::xml_node lay = layer_node.child("data").child("tile");
 	for (lay; lay; lay = lay.next_sibling("tile"),++i) {
 		layer->tiled_gid[i] = lay.attribute("gid").as_int();
-	}
-	return ret;
-}
-bool j1Map::parallax_movement() {
-	bool ret = true;
-	p2SString parallax;
-	parallax.create("PARALLAX");
-	p2List_item<objectgroup*>*it = data.objectgroup.start;
-	while (it != nullptr) {
-		if (it->data->name == parallax) {
-			if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-				position_parallax.x -= 30;
-			}
-				
-			if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
-				position_parallax.x += 30;
-			}
-			
-
-		
-		
-			
-			
-		}
 	}
 	return ret;
 }
