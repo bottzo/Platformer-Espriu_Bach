@@ -145,7 +145,7 @@ bool j1Collisions::Update(float dt)
 
 void j1Collisions::DebugDraw()
 {
-	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) {
+	if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN) {
 		debug =! debug;
 	}
 
@@ -159,24 +159,25 @@ void j1Collisions::DebugDraw()
 	{
 		if (colliders[i] == nullptr)
 			continue;
-
-		switch (colliders[i]->type)
-		{
-		case COLLIDER_NONE: // white
-			App->render->DrawQuad(colliders[i]->rect, 255, 255, 255, alpha);
-			break;
-		case COLLIDER_WALL: // blue
-			App->render->DrawQuad(colliders[i]->rect, 0, 0, 255, alpha);
-			break;
-		case COLLIDER_PLAYER1: // green
-			App->render->DrawQuad(colliders[i]->rect, 0, 255, 0, alpha);
-			break;
-		case COLLIDER_DEATH: //red
-			App->render->DrawQuad(colliders[i]->rect, 255, 0, 0, alpha);
-			break;
-		case COLLIDER_BACKGROUND:
-			App->render->DrawQuad(colliders[i]->rect, 255, 255, 0, alpha);
-			break;
+		if (colliders[i]->active) {
+			switch (colliders[i]->type)
+			{
+			case COLLIDER_NONE: // white
+				App->render->DrawQuad(colliders[i]->rect, 255, 255, 255, alpha);
+				break;
+			case COLLIDER_WALL: // blue
+				App->render->DrawQuad(colliders[i]->rect, 0, 0, 255, alpha);
+				break;
+			case COLLIDER_PLAYER1: // green
+				App->render->DrawQuad(colliders[i]->rect, 0, 255, 0, alpha);
+				break;
+			case COLLIDER_DEATH: //red
+				App->render->DrawQuad(colliders[i]->rect, 255, 0, 0, alpha);
+				break;
+			case COLLIDER_BACKGROUND:
+				App->render->DrawQuad(colliders[i]->rect, 255, 255, 0, alpha);
+				break;
+			}
 		}
 	}
 }
