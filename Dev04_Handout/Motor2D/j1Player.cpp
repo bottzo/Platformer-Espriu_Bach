@@ -79,7 +79,7 @@ void j1Player::Updateposition(santa_states state) {
 		break;
 	case ST_SLIDE_BACKWARD:
 		speed.x = -30;
-		origin_distance_player.x = slide_collider->rect.x + slide_collider->rect.w;
+		origin_distance_player.x = slide_collider->rect.x;
 		looking_right = false;
 		break;
 	}

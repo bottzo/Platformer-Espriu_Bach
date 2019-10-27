@@ -127,11 +127,12 @@ bool j1Collisions::on_the_way_x(int index) {
 	bool not_on_the_way;
 	if (App->player->player_collider->active) {
 		not_on_the_way = ((App->player->player_collider->rect.y + App->player->player_collider->rect.h) < colliders[index]->rect.y)
-		|| ((App->player->player_collider->rect.y) > (colliders[index]->rect.y));
+		|| ((App->player->player_collider->rect.y) > (colliders[index]->rect.y+ colliders[index]->rect.h));
 	}
 	else if (App->player->slide_collider->active) {
 		not_on_the_way = ((App->player->slide_collider->rect.y + App->player->slide_collider->rect.h) < colliders[index]->rect.y)
-			|| ((App->player->slide_collider->rect.y) > (colliders[index]->rect.y));
+			|| ((App->player->slide_collider->rect.y) > (colliders[index]->rect.y + colliders[index]->rect.h));
+
 	}
 	return !not_on_the_way;
 }

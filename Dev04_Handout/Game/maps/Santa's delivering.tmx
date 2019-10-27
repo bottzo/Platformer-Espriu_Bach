@@ -191517,7 +191517,7 @@
  </objectgroup>
  <objectgroup name="COLLAIDER_PLAYER">
   <object id="66" name="Start" x="98" y="1613" width="220" height="149"/>
-  <object id="81" name="player_collider" x="154" y="1621" width="70" height="127"/>
+  <object id="81" name="player_collider" x="160" y="1632" width="70" height="127"/>
   <object id="82" name="slide_collider" x="128" y="1440" width="112" height="99"/>
  </objectgroup>
  <objectgroup name="COLLIDER_DEATH">
