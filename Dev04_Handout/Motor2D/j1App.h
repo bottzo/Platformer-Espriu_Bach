@@ -16,6 +16,7 @@ class j1Map;
 class j1Player;
 class j1Module;
 class j1Collisions;
+class j1MapChange;
 
 class j1App
 {
@@ -88,6 +89,8 @@ public:
 	j1Map*				map;
 	j1Player*           player;
 	j1Collisions*       collisions;
+	j1MapChange*        scenechange;
+
 
 private:
 

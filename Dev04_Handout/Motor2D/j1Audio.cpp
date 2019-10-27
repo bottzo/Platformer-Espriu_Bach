@@ -23,8 +23,9 @@ bool j1Audio::Awake(pugi::xml_node& config)
 	LOG("Loading Audio Mixer");
 	bool ret = true;
 	SDL_Init(0);
-
-	audio.create(config.child("audio").attribute("name").as_string());
+    
+	music_folder = config.child("music").child_value("folder");
+	music_name.create(config.child("music_name").attribute("name").as_string());
 
 	return ret;
 
@@ -87,7 +88,7 @@ bool j1Audio::CleanUp()
 bool j1Audio::PlayMusic(const char* path, float fade_time)
 {
 	bool ret = true;
-	path = "audio/music/music_sadpiano.ogg";
+	
 	
 
 	if(!active)
@@ -107,8 +108,9 @@ bool j1Audio::PlayMusic(const char* path, float fade_time)
 		// this call blocks until fade out is done
 		Mix_FreeMusic(music);
 	}
-
-	music = Mix_LoadMUS(path);
+	
+	music = Mix_LoadMUS(music_name.GetString());
+	
 
 	if(music == NULL)
 	{
@@ -142,7 +144,7 @@ bool j1Audio::PlayMusic(const char* path, float fade_time)
 // Load WAV
 unsigned int j1Audio::LoadFx(const char* path)
 {
-	path = "audio/fx/jump_08";
+	
 	unsigned int ret = 0;
 
 	if(!active)

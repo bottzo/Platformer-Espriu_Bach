@@ -36,12 +36,13 @@ public:
 
 	//The surface contained by the window
 	SDL_Surface* screen_surface;
+	p2SString	title;
+	int		width;
+	int		height;
+	int		scale;
 
 private:
-	p2SString	title;
-	uint		width;
-	uint		height;
-	uint		scale;
+	
 	friend class j1Player;
 };
 

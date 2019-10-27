@@ -95,6 +95,9 @@ public:
 	// Load new map
 	bool Load(const char* path);
 
+	//Changes the maps
+	bool ChangeMaps(p2SString* new_map);
+
 	// TODO 8: Create a method that translates x,y coordinates from map positions to world positions
 	int translate_x(int x);
 	int translate_y(int y);

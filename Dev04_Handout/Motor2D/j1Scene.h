@@ -36,6 +36,11 @@ public:
 private:
 	p2SString map_name;
 	p2SString player_sprite;
+	
+public:
+	int actualmap;
+	float fade_time;
+	p2List<p2SString*> map_names;
 };
 
 #endif // __j1SCENE_H__
