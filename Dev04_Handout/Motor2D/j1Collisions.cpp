@@ -124,8 +124,15 @@ int j1Collisions::closest_yaxis_collider() {
 }
 
 bool j1Collisions::on_the_way_x(int index) {
-	bool not_on_the_way = ((App->player->player_collider->rect.y + App->player->player_collider->rect.h) < colliders[index]->rect.y)
+	bool not_on_the_way;
+	if (App->player->player_collider->active) {
+		not_on_the_way = ((App->player->player_collider->rect.y + App->player->player_collider->rect.h) < colliders[index]->rect.y)
 		|| ((App->player->player_collider->rect.y) > (colliders[index]->rect.y));
+	}
+	else if (App->player->slide_collider->active) {
+		not_on_the_way = ((App->player->slide_collider->rect.y + App->player->slide_collider->rect.h) < colliders[index]->rect.y)
+			|| ((App->player->slide_collider->rect.y) > (colliders[index]->rect.y));
+	}
 	return !not_on_the_way;
 }
 
