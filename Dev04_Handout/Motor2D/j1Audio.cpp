@@ -96,21 +96,21 @@ bool j1Audio::PlayMusic(const char* path, float fade_time)
 
 	if (music != NULL)
 	{
-		if (fade_time > 0.0f)
+		/*if (fade_time > 0.0f)
 		{
 			Mix_FadeOutMusic(int(fade_time * 1000.0f));
 		}
 		else
 		{
 			Mix_HaltMusic();
-		}
+		}*/
 
 		// this call blocks until fade out is done
 		Mix_FreeMusic(music);
 	}
 	
-	path = music_folder.GetString();
-	music = Mix_LoadMUS(path);
+	p2SString tmp(music_folder.GetString(), path);
+	music = Mix_LoadMUS(tmp.GetString());
 
 
 	if (music == NULL)
