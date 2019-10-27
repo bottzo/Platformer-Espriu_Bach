@@ -42,6 +42,7 @@ private:
 	uint		width;
 	uint		height;
 	uint		scale;
+	friend class j1Player;
 };
 
 #endif // __j1WINDOW_H__

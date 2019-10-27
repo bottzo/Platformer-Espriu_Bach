@@ -5,6 +5,7 @@
 #include "j1Render.h"
 #include "j1Map.h"
 #include "j1Collisions.h"
+#include "j1Window.h"
 j1Player::j1Player():j1Module(),player_loaded(false) {
 	name.create("player");
 }
@@ -339,8 +340,13 @@ void j1Player::Load_player_info() {
 }
 bool j1Player::positioncamera()
 {
-	App->render->camera.x = position.x - App->render->camera.w / 3;
-	if (App->render->camera.x < 0)App->render->camera.x = 0;
+	App->render->camera.x = -position.x +((App->win->width / 2)-(sprite_tilesets.start->data->tile_width/2));
+	if (App->render->camera.x > 0) {
+		App->render->camera.x = 0;
+	}
+	//App->render->camera.y = position.y - App->win->height / 2;
+	//if (App->win->width / 2 < 0)App->render->camera.x = 0;
+	//if (App->render->camera.y > App->render->initial_camera_y)App->render->camera.y = App->render->initial_camera_y;
 	return true;
 }
 bool j1Player::PostUpdate() {
