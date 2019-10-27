@@ -22,8 +22,6 @@ enum santa_states
 	ST_JUMP_BACKWARD,
 	ST_SLIDE_FORWARD,
 	ST_SLIDE_BACKWARD,
-	ST_PATH_BLOCK_RIGHT,
-	ST_PATH_BLOCK_LEFT
 };
 
 enum santa_inputs
@@ -39,7 +37,6 @@ enum santa_inputs
 	IN_JUMP_AND_SLIDE,
 	IN_JUMP_FINISH,
 	IN_SLIDE_FINISH,
-	IN_CHANGE_DIRECTION
 };
 
 struct Frame {

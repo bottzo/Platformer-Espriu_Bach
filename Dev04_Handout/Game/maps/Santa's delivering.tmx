@@ -191515,8 +191515,8 @@
   <object id="65" name="Terrain" x="9412" y="1410" width="1180" height="676"/>
  </objectgroup>
  <objectgroup name="COLLAIDER_PLAYER">
-  <object id="66" name="Start" x="98" y="1613" width="220" height="149"/>
-  <object id="81" name="player_collider" x="154" y="1621" width="70" height="127"/>
+  <object id="66" name="Start" x="316.182" y="1388.76" width="220" height="149"/>
+  <object id="81" name="player_collider" x="372.182" y="1396.76" width="70" height="127"/>
   <object id="82" name="slide_collider" x="128" y="1440" width="112" height="99"/>
  </objectgroup>
  <objectgroup name="COLLIDER_DEATH">
