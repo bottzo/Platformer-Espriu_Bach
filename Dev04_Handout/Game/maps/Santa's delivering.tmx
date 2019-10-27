@@ -10,6 +10,9 @@
   <image source="parallax tileset.png" trans="ff00ff" width="1920" height="1080"/>
  </tileset>
  <layer name="parallax cel" width="319" height="60">
+  <properties>
+   <property name="parallax" type="float" value="1"/>
+  </properties>
   <data>
    <tile gid="26"/>
    <tile gid="26"/>
@@ -19154,6 +19157,9 @@
   </data>
  </layer>
  <layer name="parallax cloud bg" width="319" height="60">
+  <properties>
+   <property name="parallax" type="float" value="1"/>
+  </properties>
   <data>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -38298,6 +38304,9 @@
   </data>
  </layer>
  <layer name="parallax mountains" width="319" height="60">
+  <properties>
+   <property name="parallax" type="float" value="1"/>
+  </properties>
   <data>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -57442,6 +57451,9 @@
   </data>
  </layer>
  <layer name="parallax clouds 1" width="319" height="60">
+  <properties>
+   <property name="parallax" type="float" value="1"/>
+  </properties>
   <data>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -76586,6 +76598,9 @@
   </data>
  </layer>
  <layer name="parallax clouds 2" width="319" height="60">
+  <properties>
+   <property name="parallax" type="float" value="1"/>
+  </properties>
   <data>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -95730,6 +95745,9 @@
   </data>
  </layer>
  <layer name="parallax clouds 3" width="319" height="60">
+  <properties>
+   <property name="parallax" type="float" value="1"/>
+  </properties>
   <data>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -114874,6 +114892,9 @@
   </data>
  </layer>
  <layer name="mar" width="319" height="60">
+  <properties>
+   <property name="parallax" type="float" value="1"/>
+  </properties>
   <data>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -134018,6 +134039,9 @@
   </data>
  </layer>
  <layer name="background 1" width="319" height="60">
+  <properties>
+   <property name="parallax" type="float" value="1"/>
+  </properties>
   <data>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -153162,6 +153186,9 @@
   </data>
  </layer>
  <layer name="terrain 1" width="319" height="60">
+  <properties>
+   <property name="parallax" type="float" value="1"/>
+  </properties>
   <data>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -172306,6 +172333,9 @@
   </data>
  </layer>
  <layer name="terrain 2" width="319" height="60">
+  <properties>
+   <property name="parallax" type="float" value="1"/>
+  </properties>
   <data>
    <tile gid="0"/>
    <tile gid="0"/>

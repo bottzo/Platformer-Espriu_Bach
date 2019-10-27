@@ -40,8 +40,7 @@ void j1Map::Draw()
 				if (it->data->Get(x, y) != 0) {
 					TileSet* tileset = GetTilesetFromTileId(it->data->Get(x, y));
 					SDL_Rect rect = tileset->TilesetRect(it->data->Get(x, y)+1-tileset->firstgid);
-					App->render->Blit(tileset->texture, translate_x(x), translate_y(y), &rect);
-					//App->render->Blit(tileset->texture, translate_x(x), translate_y(y), &data.tilesets[x]->TilesetRect(data.layer[y]->data[data.layer[y]->Get(x, y)]), SDL_FLIP_NONE, -data.layer[y]->parallaxspeed);
+					App->render->Blit(tileset->texture, translate_x(x), translate_y(y), &rect, SDL_FLIP_NONE,tileset,it->data->parallaxspeed);
 				}
 			}
 		}
@@ -416,17 +415,13 @@ bool j1Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set,j1Module
 	return ret;
 }
 
-// TODO 3: Create the definition for a function that loads a single layer
-//bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
-//{
-//}
 bool j1Map::LoadLayer(pugi::xml_node& layer_node, map_layer* layer) {
 	bool ret = true;
 	layer->name.create(layer_node.attribute("name").as_string());
 	layer->width = layer_node.attribute("width").as_uint();
 	layer->height = layer_node.attribute("height").as_uint();
 	layer->tiled_gid = new uint[layer->width * layer->height]();
-	layer->parallaxspeed = layer_node.child("properties").child("property").attribute("value").as_float(0.0f);
+	layer->parallaxspeed = layer_node.child("properties").child("property").attribute("value").as_float();
 	int i = 0;
 	pugi::xml_node lay = layer_node.child("data").child("tile");
 	for (lay; lay; lay = lay.next_sibling("tile"),++i) {
