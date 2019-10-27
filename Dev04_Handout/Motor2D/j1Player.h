@@ -51,6 +51,7 @@ struct PlayerAnimation {
 	SDL_Texture* texture;
 	Frame* frames;
 	SDL_Rect& GetCurrentFrame();
+	SDL_Rect& DoOneLoop();
 };
 
 class j1Player :public j1Module {

@@ -31,6 +31,13 @@ SDL_Rect&PlayerAnimation::GetCurrentFrame() {
 	return frames[(int)current_frame].rect;
 }
 
+SDL_Rect&PlayerAnimation::DoOneLoop() {
+	current_frame += frames->duration;
+	if (current_frame >= total_frames)
+		current_frame = total_frames-1;
+	return frames[(int)current_frame].rect;
+}
+
 void j1Player::LoadAnimations(pugi::xml_node&node) {
 	LOG("Loading player animations");
 	for (node; node; node = node.next_sibling("tile")) {
@@ -52,7 +59,12 @@ void j1Player::LoadAnimations(pugi::xml_node&node) {
 }
 
 void j1Player::Updateposition(santa_states state) {
-	//speed.y =App->map->data.gravity;
+	/*if (speed.y < 5) {
+		speed.y += App->map->data.gravity;
+	}
+	else {
+		speed.y = 5;
+	}*/
 	switch (state) {
 	case ST_IDLE_RIGHT:
 		speed.x = 0;
@@ -128,6 +140,20 @@ void j1Player::Draw_player(santa_states state) {
 	case ST_SLIDE_BACKWARD:
 		App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->next->next->next->next->data->GetCurrentFrame(), SDL_FLIP_HORIZONTAL, sprite_tilesets.start->data);
 		break;
+	case ST_JUMP_NEUTRAL:
+		if (looking_right) {
+			App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->next->next->next->data->DoOneLoop());
+		}
+		else {
+			App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->next->next->next->data->DoOneLoop(), SDL_FLIP_HORIZONTAL, sprite_tilesets.start->data);
+		}
+		break;
+	case ST_JUMP_FORWARD:
+		App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->next->next->next->data->DoOneLoop());
+		break;
+	case ST_JUMP_BACKWARD:
+		App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->next->next->next->data->DoOneLoop(), SDL_FLIP_HORIZONTAL, sprite_tilesets.start->data);
+		break;
 	}
 
 	
@@ -196,7 +222,7 @@ santa_states j1Player::current_santa_state(p2Qeue<santa_inputs>& inputs)
 		{
 			switch (last_input)
 			{
-			IN_JUMP_FINISH: 
+			case IN_JUMP_FINISH: 
 				if (looking_right)
 					state = ST_IDLE_RIGHT;
 				else
