@@ -53,7 +53,7 @@ bool j1Scene::Update(float dt)
 	if(App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
 		App->SaveGame();
 
-	if(App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+	/*if(App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 		App->render->camera.y -= 30;
 
 	if(App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
@@ -63,7 +63,7 @@ bool j1Scene::Update(float dt)
 		App->render->camera.x -= 30;
 
 	if(App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-		App->render->camera.x += 30;
+		App->render->camera.x += 30;*/
 
 	App->player->Updateposition(App->player->current_santa_state(App->player->key_inputs));
 	App->map->Draw();

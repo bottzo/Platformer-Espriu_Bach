@@ -11,7 +11,7 @@
  </tileset>
  <layer name="parallax cel" width="319" height="60">
   <properties>
-   <property name="parallax" type="float" value="1"/>
+   <property name="parallax" type="float" value="0"/>
   </properties>
   <data>
    <tile gid="26"/>
@@ -19156,9 +19156,9 @@
    <tile gid="26"/>
   </data>
  </layer>
- <layer name="parallax cloud bg" width="319" height="60">
+ <layer name="parallax cloud bg" width="319" height="60" offsetx="3.33333" offsety="-2.667">
   <properties>
-   <property name="parallax" type="float" value="1"/>
+   <property name="parallax" type="float" value="0.8"/>
   </properties>
   <data>
    <tile gid="0"/>
@@ -38303,9 +38303,9 @@
    <tile gid="0"/>
   </data>
  </layer>
- <layer name="parallax mountains" width="319" height="60">
+ <layer name="parallax mountains" width="319" height="60" offsetx="-1.3333" offsety="-36">
   <properties>
-   <property name="parallax" type="float" value="1"/>
+   <property name="parallax" type="float" value="0.7"/>
   </properties>
   <data>
    <tile gid="0"/>
@@ -57450,9 +57450,9 @@
    <tile gid="0"/>
   </data>
  </layer>
- <layer name="parallax clouds 1" width="319" height="60">
+ <layer name="parallax clouds 1" width="319" height="60" offsetx="2" offsety="-14.6667">
   <properties>
-   <property name="parallax" type="float" value="1"/>
+   <property name="parallax" type="float" value="0.6"/>
   </properties>
   <data>
    <tile gid="0"/>
@@ -76597,9 +76597,9 @@
    <tile gid="0"/>
   </data>
  </layer>
- <layer name="parallax clouds 2" width="319" height="60">
+ <layer name="parallax clouds 2" width="319" height="60" offsetx="-0.666667" offsety="-4.66667">
   <properties>
-   <property name="parallax" type="float" value="1"/>
+   <property name="parallax" type="float" value="0.5"/>
   </properties>
   <data>
    <tile gid="0"/>
@@ -95746,7 +95746,7 @@
  </layer>
  <layer name="parallax clouds 3" width="319" height="60">
   <properties>
-   <property name="parallax" type="float" value="1"/>
+   <property name="parallax" type="float" value="0.4"/>
   </properties>
   <data>
    <tile gid="0"/>
