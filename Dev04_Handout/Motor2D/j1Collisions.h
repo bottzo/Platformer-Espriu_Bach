@@ -57,6 +57,7 @@ public:
 	void update_active_colliders();
 	void DebugDraw();
 	int closest_xaxis_collider();
+	int closest_yaxis_collider();
 
 private:
 

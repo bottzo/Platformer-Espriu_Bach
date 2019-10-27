@@ -118,6 +118,11 @@ int j1Collisions::closest_xaxis_collider() {
 	return closest;
 }
 
+int j1Collisions::closest_yaxis_collider() {
+	int x=0;
+	return x;
+}
+
 void j1Collisions::update_active_colliders() {
 	for (int i = 0; i < MAX_COLLIDERS; ++i) {
 		while (colliders[i] != nullptr) {

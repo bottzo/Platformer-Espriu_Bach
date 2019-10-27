@@ -61,25 +61,26 @@ void j1Player::Updateposition(santa_states state) {
 		speed.x = 0;
 		break;
 	case ST_WALK_FORWARD:
-		speed.x += 2;
-		if (speed.x >= 25) {
-			speed.x = 25;
-		}
+		speed.x = 20;
 		origin_distance_player.x = player_collider->rect.x + player_collider->rect.w;
 		looking_right = true;
 		break;
 	case ST_WALK_BACKWARD:
-		speed.x -= 2;
-		if (speed.x <= -25) {
-			speed.x = -25;
-		}
+		speed.x =-20;
 		origin_distance_player.x = player_collider->rect.x;
 		looking_right = false;
+		break;
+	case ST_PATH_BLOCK_RIGHT:
+		speed.x = 0;
+		break;
+	case ST_PATH_BLOCK_LEFT:
+		speed.x = 0;
 		break;
 	}
 	distance.x=App->collisions->closest_xaxis_collider();
 	if (speed.x > distance.x) {
-		position.x += distance.x;
+		position.x += distance.x; 
+		key_inputs.Push(IN_CHANGE_DIRECTION);
 	}
 	else {
 		position.x += speed.x;
@@ -102,13 +103,20 @@ void j1Player::Draw_player(santa_states state) {
 		break;
 	case ST_WALK_BACKWARD:
 		App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->next->data->GetCurrentFrame(),SDL_FLIP_HORIZONTAL,sprite_tilesets.start->data);
+		break;
+	case ST_PATH_BLOCK_RIGHT:
+		App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->next->data->GetCurrentFrame());
+		break;
+	case ST_PATH_BLOCK_LEFT:
+		App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->next->data->GetCurrentFrame());
+		break;
 	}
 
 	
 }void j1Player::OnCollision(Collider*player, Collider*wall) {
 
-	position.x -= speed.x;
-	position.y -= speed.y;
+	//position.x -= speed.x;
+	//position.y -= speed.y;
 	/*position.x -= speed.x;
 	position.y -= speed.y;
 	p2Point<float> distance;
@@ -170,6 +178,7 @@ santa_states j1Player::current_santa_state(p2Qeue<santa_inputs>& inputs)
 			case IN_LEFT_AND_RIGHT: state = ST_IDLE_RIGHT; break;
 			case IN_JUMP: state = ST_JUMP_FORWARD; /*jump_timer = SDL_GetTicks();*/  break;
 			case IN_SLIDE_DOWN: state = ST_SLIDE_FORWARD; break;
+			case IN_CHANGE_DIRECTION: state= ST_PATH_BLOCK_RIGHT; break;
 			}
 		}
 		break;
@@ -182,6 +191,7 @@ santa_states j1Player::current_santa_state(p2Qeue<santa_inputs>& inputs)
 			case IN_LEFT_AND_RIGHT: state = ST_IDLE_LEFT; break;
 			case IN_JUMP: state = ST_JUMP_BACKWARD; /*jump_timer = SDL_GetTicks();*/  break;
 			case IN_SLIDE_DOWN: state = ST_SLIDE_BACKWARD; break;
+			case IN_CHANGE_DIRECTION: state = ST_PATH_BLOCK_LEFT; break;
 			}
 		}
 		break;
@@ -226,6 +236,22 @@ santa_states j1Player::current_santa_state(p2Qeue<santa_inputs>& inputs)
 			switch (last_input)
 			{
 			case IN_SLIDE_FINISH: state = ST_IDLE_LEFT; break;
+			}
+		}
+		break;
+		case ST_PATH_BLOCK_RIGHT:
+		{
+			switch (last_input) 
+			{
+			case IN_LEFT_DOWN: state = ST_WALK_BACKWARD; break;
+			}
+		}
+		break;
+		case ST_PATH_BLOCK_LEFT:
+		{
+			switch (last_input)
+			{
+			case IN_RIGHT_DOWN: state = ST_WALK_FORWARD; break;
 			}
 		}
 		break;
