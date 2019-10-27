@@ -75,6 +75,7 @@ public:
 	bool looking_right = true;;
 	bool positioncamera();
 	float slide_timer;
+	p2Point<float>distance;
 private:
 	pugi::xml_document player_doc;
 	p2SString folder;
@@ -85,7 +86,6 @@ private:
 	int collider_player_offset_y;
 	int collider_player_offset_x;
 	int collider_slide_offset_x;
-	p2Point<float>distance;
 	friend class j1Map;
 };
 #endif // __j1RENDER_H__
