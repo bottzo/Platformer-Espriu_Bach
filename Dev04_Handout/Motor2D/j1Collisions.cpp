@@ -86,7 +86,7 @@ int j1Collisions::closest_xaxis_collider() {
 	int current;
 	int closest;
 	if (App->player->looking_right) {
-		closest = App->map->data.width;
+		closest = App->map->data.width*App->map->data.tile_width;
 		for (int i = 0; colliders[i]!=nullptr; ++i) {
 			if (colliders[i]->type == COLLIDER_WALL) {
 				if (colliders[i]->active) {
@@ -101,7 +101,7 @@ int j1Collisions::closest_xaxis_collider() {
 		}
 	}
 	else {
-		closest = 0;
+		closest = App->map->data.width*App->map->data.tile_width;
 		for (int i = 0; colliders[i] != nullptr; ++i) {
 			if (colliders[i]->type == COLLIDER_WALL) {
 				if (colliders[i]->active) {

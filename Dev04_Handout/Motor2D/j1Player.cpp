@@ -57,9 +57,11 @@ void j1Player::Updateposition(santa_states state) {
 	switch (state) {
 	case ST_IDLE_RIGHT:
 		speed.x = 0;
+		looking_right = true;
 		break;
 	case ST_IDLE_LEFT:
 		speed.x = 0;
+		looking_right = false;
 		break;
 	case ST_WALK_FORWARD:
 		speed.x = 20;
@@ -75,11 +77,21 @@ void j1Player::Updateposition(santa_states state) {
 	distance.x=App->collisions->closest_xaxis_collider();
 	LOG("D: %f", distance.x);
 	LOG("S: %f", speed.x);
-	if (speed.x >= distance.x) {
-		position.x += distance.x-1; 
+	if (looking_right) {
+		if (speed.x >= distance.x) {
+			position.x += distance.x - 1;
+		}
+		else {
+			position.x += speed.x;
+		}
 	}
 	else {
-		position.x += speed.x;
+		if (speed.x <= -distance.x) {
+			position.x += -distance.x + 1;
+		}
+		else {
+			position.x += speed.x;
+		}
 	}
 	position.y += speed.y;
 	player_collider->SetPos(position.x-(collider_player_offset_x), position.y-(collider_player_offset_y));
