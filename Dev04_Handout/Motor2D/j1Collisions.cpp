@@ -90,7 +90,7 @@ int j1Collisions::closest_xaxis_collider() {
 		for (int i = 0; colliders[i]!=nullptr; ++i) {
 			if (colliders[i]->type == COLLIDER_WALL) {
 				if (colliders[i]->active) {
-					if (colliders[i]->rect.x > App->player->origin_distance_player.x) {
+					if (colliders[i]->rect.x > App->player->origin_distance_player.x&&on_the_way_x(i)) {
 						current = colliders[i]->rect.x - App->player->origin_distance_player.x;
 						if (current < closest) {
 							closest = current;
@@ -105,7 +105,7 @@ int j1Collisions::closest_xaxis_collider() {
 		for (int i = 0; colliders[i] != nullptr; ++i) {
 			if (colliders[i]->type == COLLIDER_WALL) {
 				if (colliders[i]->active) {
-					if ((colliders[i]->rect.x+ colliders[i]->rect.w) < App->player->origin_distance_player.x) {
+					if ((colliders[i]->rect.x+ colliders[i]->rect.w) < App->player->origin_distance_player.x&&on_the_way_x(i)) {
 						current = App->player->origin_distance_player.x - (colliders[i]->rect.x+ colliders[i]->rect.w);
 						if (current < closest) {
 							closest = current;
@@ -121,6 +121,12 @@ int j1Collisions::closest_xaxis_collider() {
 int j1Collisions::closest_yaxis_collider() {
 	int x=0;
 	return x;
+}
+
+bool j1Collisions::on_the_way_x(int index) {
+	bool not_on_the_way = ((App->player->player_collider->rect.y + App->player->player_collider->rect.h) < colliders[index]->rect.y)
+		|| ((App->player->player_collider->rect.y) > (colliders[index]->rect.y));
+	return !not_on_the_way;
 }
 
 void j1Collisions::update_active_colliders() {

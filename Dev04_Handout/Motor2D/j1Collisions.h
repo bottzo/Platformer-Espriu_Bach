@@ -58,6 +58,7 @@ public:
 	void DebugDraw();
 	int closest_xaxis_collider();
 	int closest_yaxis_collider();
+	bool on_the_way_x(int index);
 
 private:
 

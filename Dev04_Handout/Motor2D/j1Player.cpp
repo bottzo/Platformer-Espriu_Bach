@@ -77,6 +77,7 @@ void j1Player::Updateposition(santa_states state) {
 	distance.x=App->collisions->closest_xaxis_collider();
 	LOG("D: %f", distance.x);
 	LOG("S: %f", speed.x);
+	LOG("p: %f", position.x);
 	if (looking_right) {
 		if (speed.x >= distance.x) {
 			position.x += distance.x - 1;
