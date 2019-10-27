@@ -59,6 +59,7 @@ public:
 	int closest_xaxis_collider();
 	int closest_yaxis_collider();
 	bool on_the_way_x(int index);
+	bool on_the_way_y(int index);
 
 private:
 

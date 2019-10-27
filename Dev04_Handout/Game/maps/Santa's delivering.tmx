@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="319" height="60" tilewidth="32" tileheight="32" nextobjectid="87">
  <properties>
-  <property name="Gravity" type="float" value="0.5"/>
+  <property name="Gravity" type="float" value="3"/>
  </properties>
  <tileset firstgid="1" name="tileset 1" tilewidth="32" tileheight="32" tilecount="25" columns="5">
   <image source="tileset.png" trans="ff00ff" width="160" height="160"/>
@@ -191514,8 +191514,8 @@
   <object id="85" name="Terrain" x="-1" y="287" width="63" height="1472"/>
  </objectgroup>
  <objectgroup name="COLLAIDER_PLAYER">
-  <object id="66" name="Start" x="98" y="1613" width="220" height="149"/>
-  <object id="81" name="player_collider" x="154" y="1621" width="70" height="127"/>
+  <object id="66" name="Start" x="99" y="1279" width="220" height="149"/>
+  <object id="81" name="player_collider" x="155" y="1287" width="70" height="127"/>
   <object id="82" name="slide_collider" x="128" y="1440" width="112" height="99"/>
  </objectgroup>
  <objectgroup name="COLLIDER_DEATH">

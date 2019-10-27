@@ -119,8 +119,39 @@ int j1Collisions::closest_xaxis_collider() {
 }
 
 int j1Collisions::closest_yaxis_collider() {
-	int x=0;
-	return x;
+	int closest;
+	int current;
+	if (App->player->going_up) {
+		closest = App->map->data.height*App->map->data.tile_height;
+		for (int i = 0; colliders[i] != nullptr; ++i) {
+			if (colliders[i]->type == COLLIDER_WALL) {
+				if (colliders[i]->active) {
+					if (((colliders[i]->rect.y + colliders[i]->rect.y) < App->player->player_collider->rect.y) && on_the_way_y(i)) {
+						current = (App->player->player_collider->rect.y+ App->player->player_collider->rect.h) - (colliders[i]->rect.y + colliders[i]->rect.h);
+						if (current < closest) {
+							closest = current;
+						}
+					}
+				}
+			}
+		}
+	}
+	else {
+		closest = App->map->data.height*App->map->data.tile_height;
+		for (int i = 0; colliders[i] != nullptr; ++i) {
+			if (colliders[i]->type == COLLIDER_WALL) {
+				if (colliders[i]->active) {
+					if (((colliders[i]->rect.y) < (App->player->player_collider->rect.y+ App->player->player_collider->rect.h)) && on_the_way_y(i)) {
+						current =(colliders[i]->rect.y) - (App->player->player_collider->rect.y + App->player->player_collider->rect.h);
+						if (current < closest) {
+							closest = current;
+						}
+					}
+				}
+			}
+		}
+	}
+	return closest;
 }
 
 bool j1Collisions::on_the_way_x(int index) {
@@ -135,6 +166,10 @@ bool j1Collisions::on_the_way_x(int index) {
 
 	}
 	return !not_on_the_way;
+}
+
+bool j1Collisions::on_the_way_y(int index) {
+	return !((App->player->player_collider->rect.x + App->player->player_collider->rect.w) < colliders[index]->rect.x || (colliders[index]->rect.x + colliders[index]->rect.w) < App->player->player_collider->rect.x);
 }
 
 void j1Collisions::update_active_colliders() {
