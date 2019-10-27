@@ -4,9 +4,11 @@
 #include "j1Input.h"
 #include "j1Player.h"
 #include "j1Window.h"
+#include "j1Collisions.h"
 #include "SDL/include/SDL.h"
 
 #define MAX_KEYS 300
+#define SLIDE_TIME 350
 
 j1Input::j1Input() : j1Module()
 {
@@ -194,6 +196,17 @@ bool j1Input::PreUpdate()
 		if (up)
 			App->player->key_inputs.Push(IN_JUMP);
 	}
+
+	if (App->player->slide_timer > 0)
+	{
+		if (SDL_GetTicks() - App->player->slide_timer > SLIDE_TIME)
+		{
+			App->player->key_inputs.Push(IN_SLIDE_FINISH);
+			App->player->player_collider->active = true; App->player->slide_collider->active = false;
+			App->player->slide_timer = 0;
+		}
+	}
+
 	return true;
 }
 

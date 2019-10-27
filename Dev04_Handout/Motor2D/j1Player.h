@@ -45,7 +45,7 @@ struct Frame {
 };
 
 struct PlayerAnimation {
-	const char* name;
+	p2SString name;
 	uint total_frames;
 	float current_frame;
 	SDL_Texture* texture;
@@ -74,6 +74,7 @@ public:
 	p2Point<float> origin_distance_player;
 	bool looking_right = true;;
 	bool positioncamera();
+	float slide_timer;
 private:
 	pugi::xml_document player_doc;
 	p2SString folder;
@@ -83,6 +84,8 @@ private:
 	p2Point<float> position;
 	int collider_player_offset_y;
 	int collider_player_offset_x;
+	int collider_slide_offset_x;
+	p2Point<float>distance;
 	friend class j1Map;
 };
 #endif // __j1RENDER_H__

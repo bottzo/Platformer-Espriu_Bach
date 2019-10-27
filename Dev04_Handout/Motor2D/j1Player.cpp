@@ -35,9 +35,9 @@ void j1Player::LoadAnimations(pugi::xml_node&node) {
 	LOG("Loading player animations");
 	for (node; node; node = node.next_sibling("tile")) {
 		PlayerAnimation*animation = new PlayerAnimation();
-		animation->name = node.child("properties").child("property").attribute("value").as_string();
+		animation->name.create(node.child("properties").child("property").attribute("value").as_string());
 		animation->total_frames = node.child("properties").child("property").next_sibling("property").attribute("value").as_uint();
-		LOG("Loading %s animation with %d frames", animation->name,animation->total_frames);
+		LOG("Loading %s animation with %d frames", animation->name.GetString(),animation->total_frames);
 		animation->texture = sprite_tilesets.start->data->texture;
 		pugi::xml_node frame_node = node.child("animation").child("frame");
 		animation->frames = new Frame[animation->total_frames];
@@ -47,13 +47,12 @@ void j1Player::LoadAnimations(pugi::xml_node&node) {
 			animation->frames[i].rect = sprite_tilesets.start->data->TilesetRect(tileset_id+1);//pk el +1??? pk la funcio tilesetrect conta el primer tile com si fos un 1 i no el zero
 		}
 		Animations.add(animation);
-		LOG("Succesfully loaded %s animation", animation->name);
+		LOG("Succesfully loaded %s animation", animation->name.GetString());
 	}
 }
 
 void j1Player::Updateposition(santa_states state) {
 	//speed.y =App->map->data.gravity;
-	p2Point<float>distance;
 	switch (state) {
 	case ST_IDLE_RIGHT:
 		speed.x = 0;
@@ -71,6 +70,16 @@ void j1Player::Updateposition(santa_states state) {
 	case ST_WALK_BACKWARD:
 		speed.x =-20;
 		origin_distance_player.x = player_collider->rect.x;
+		looking_right = false;
+		break;
+	case ST_SLIDE_FORWARD:
+		speed.x = 30;
+		origin_distance_player.x = slide_collider->rect.x + slide_collider->rect.w;
+		looking_right = true;
+		break;
+	case ST_SLIDE_BACKWARD:
+		speed.x = -30;
+		origin_distance_player.x = slide_collider->rect.x + slide_collider->rect.w;
 		looking_right = false;
 		break;
 	}
@@ -96,7 +105,7 @@ void j1Player::Updateposition(santa_states state) {
 	}
 	position.y += speed.y;
 	player_collider->SetPos(position.x-(collider_player_offset_x), position.y-(collider_player_offset_y));
-	slide_collider->SetPos(position.x - (collider_player_offset_x), position.y - (collider_player_offset_y-(player_collider->rect.h-slide_collider->rect.h)));
+	slide_collider->SetPos(position.x - (collider_slide_offset_x), player_collider->rect.y+ player_collider->rect.h-slide_collider->rect.h);
 }
 
 void j1Player::Draw_player(santa_states state) {
@@ -113,30 +122,17 @@ void j1Player::Draw_player(santa_states state) {
 	case ST_WALK_BACKWARD:
 		App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->next->data->GetCurrentFrame(),SDL_FLIP_HORIZONTAL,sprite_tilesets.start->data);
 		break;
+	case ST_SLIDE_FORWARD:
+		App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->next->next->next->next->data->GetCurrentFrame());
+		break;
+	case ST_SLIDE_BACKWARD:
+		App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->next->next->next->next->data->GetCurrentFrame(), SDL_FLIP_HORIZONTAL, sprite_tilesets.start->data);
+		break;
 	}
 
 	
 }void j1Player::OnCollision(Collider*player, Collider*wall) {
 
-	//position.x -= speed.x;
-	//position.y -= speed.y;
-	/*position.x -= speed.x;
-	position.y -= speed.y;
-	p2Point<float> distance;
-	distance.x = (player->rect.x + player->rect.w) - (wall->rect.x + wall->rect.w);
-	distance.y = (player->rect.y + player->rect.h) - (wall->rect.y + wall->rect.h);
-	if (distance.x < speed.x) {
-		position.x += distance.x;
-	}
-	else if (distance.x > speed.x) {
-		position.x += speed.x;
-	}/*
-	if (distance.y < speed.y) {
-		position.y += distance.y;
-	}
-	else if (distance.y > speed.y) {
-		position.y += speed.y;
-	}*/
 }
 
 santa_states j1Player::current_santa_state(p2Qeue<santa_inputs>& inputs)
@@ -155,7 +151,7 @@ santa_states j1Player::current_santa_state(p2Qeue<santa_inputs>& inputs)
 			case IN_RIGHT_DOWN: state = ST_WALK_FORWARD; break;
 			case IN_LEFT_DOWN: state = ST_WALK_BACKWARD; break;
 			case IN_JUMP: state = ST_JUMP_NEUTRAL; /*jump_timer = SDL_GetTicks();*/  break;
-			//case IN_SLIDE_DOWN: state = ST_SLIDE_(cap a on?); break;
+			case IN_SLIDE_DOWN: state = ST_SLIDE_FORWARD; slide_timer = SDL_GetTicks(); player_collider->active = false; slide_collider->active = true; break;
 			}
 		}
 		break;
@@ -167,7 +163,7 @@ santa_states j1Player::current_santa_state(p2Qeue<santa_inputs>& inputs)
 			case IN_RIGHT_DOWN: state = ST_WALK_FORWARD; break;
 			case IN_LEFT_DOWN: state = ST_WALK_BACKWARD; break;
 			case IN_JUMP: state = ST_JUMP_NEUTRAL; /*jump_timer = SDL_GetTicks();*/  break;
-				//case IN_SLIDE_DOWN: state = ST_SLIDE_(cap a on?); break;
+			case IN_SLIDE_DOWN: state = ST_SLIDE_BACKWARD; slide_timer = SDL_GetTicks(); player_collider->active = false; slide_collider->active = true; break;
 			}
 		}
 		break;
@@ -179,7 +175,7 @@ santa_states j1Player::current_santa_state(p2Qeue<santa_inputs>& inputs)
 			case IN_RIGHT_UP: state = ST_IDLE_RIGHT; break;
 			case IN_LEFT_AND_RIGHT: state = ST_IDLE_RIGHT; break;
 			case IN_JUMP: state = ST_JUMP_FORWARD; /*jump_timer = SDL_GetTicks();*/  break;
-			case IN_SLIDE_DOWN: state = ST_SLIDE_FORWARD; break;
+			case IN_SLIDE_DOWN: state = ST_SLIDE_FORWARD; slide_timer = SDL_GetTicks(); player_collider->active = false; slide_collider->active = true; break;
 			}
 		}
 		break;
@@ -191,7 +187,7 @@ santa_states j1Player::current_santa_state(p2Qeue<santa_inputs>& inputs)
 			case IN_LEFT_UP: state = ST_IDLE_LEFT; break;
 			case IN_LEFT_AND_RIGHT: state = ST_IDLE_LEFT; break;
 			case IN_JUMP: state = ST_JUMP_BACKWARD; /*jump_timer = SDL_GetTicks();*/  break;
-			case IN_SLIDE_DOWN: state = ST_SLIDE_BACKWARD; break;
+			case IN_SLIDE_DOWN: state = ST_SLIDE_BACKWARD; slide_timer = SDL_GetTicks(); player_collider->active = false; slide_collider->active = true; break;
 			}
 		}
 		break;
@@ -200,7 +196,12 @@ santa_states j1Player::current_santa_state(p2Qeue<santa_inputs>& inputs)
 		{
 			switch (last_input)
 			{
-			//case IN_JUMP_FINISH: state = ST_IDLE; break;
+			IN_JUMP_FINISH: 
+				if (looking_right)
+					state = ST_IDLE_RIGHT;
+				else
+					state = ST_IDLE_LEFT;
+					; break;
 			}
 		}
 		break;
@@ -297,7 +298,7 @@ void j1Player::Load_player_info() {
 	p2SString group_name; group_name.create("COLLAIDER_PLAYER");
 	p2SString start; start.create("Start");
 	p2SString player; player.create("player_collider");
-	p2SString slide; slide.create("slide_collider");
+	p2SString slide_collider_name; slide_collider_name.create("slide_collider");
 	p2List_item<objectgroup*>*it = App->map->data.objectgroup.start;
 	while (it != NULL) {
 		if (it->data->name == group_name) {
@@ -309,7 +310,7 @@ void j1Player::Load_player_info() {
 				else if (it->data->objects[i].name == player) {
 					player_collider=App->collisions->AddCollider(it->data->objects[i].rect, COLLIDER_PLAYER1, App->player);
 				}
-				else if (it->data->objects[i].name == slide) {
+				else if (it->data->objects[i].name == slide_collider_name) {
 					slide_collider=App->collisions->AddCollider(it->data->objects[i].rect, COLLIDER_PLAYER1, App->player);
 					slide_collider->active = false;
 				}
@@ -320,6 +321,7 @@ void j1Player::Load_player_info() {
 	}
 	collider_player_offset_x = position.x - player_collider->rect.x;
 	collider_player_offset_y = position.y - player_collider->rect.y;
+	collider_slide_offset_x= position.x - slide_collider->rect.x;
 }
 bool j1Player::positioncamera()
 {
