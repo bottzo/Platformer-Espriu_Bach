@@ -429,3 +429,13 @@ bool j1Map::LoadLayer(pugi::xml_node& layer_node, map_layer* layer) {
 	}
 	return ret;
 }
+
+//bool j1Map::ChangeMaps(p2SString* new_map)
+//{
+//	CleanUp();
+//	App->scene;
+//	LoadMap();
+//	
+//
+//	return true;
+//}
