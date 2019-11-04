@@ -30,17 +30,28 @@ bool j1Map::Awake(pugi::xml_node& config)
 
 void j1Map::Draw()
 {
-	if(map_loaded == false)
+	if (map_loaded == false)
 		return;
 
-	p2List_item<map_layer*>*it = data.layer.start;
-	while (it != NULL) {
-		for (int x = 0; x < it->data->width; ++x) {
-			for (int y = 0; y < it->data->height; ++y) {
-				if (it->data->Get(x, y) != 0) {
-					TileSet* tileset = GetTilesetFromTileId(it->data->Get(x, y));
-					SDL_Rect rect = tileset->TilesetRect(it->data->Get(x, y)+1-tileset->firstgid);
-					App->render->Blit(tileset->texture, translate_x(x), translate_y(y), &rect, SDL_FLIP_NONE,tileset,it->data->parallaxspeed);
+	map_layer* layer = data.layer.start->data;
+	TileSet* tileset = data.tilesets.start->data;
+	p2List_item<map_layer*>* it = data.layer.start;
+
+	while (it != nullptr) {
+		for (int y = 0; y < data.height; ++y)
+		{
+			for (int x = 0; x < data.width; ++x)
+			{
+				int tile_id = it->data->Get(x, y);
+				if (tile_id > 0)
+				{
+					TileSet* tileset = GetTilesetFromTileId(tile_id);
+					if (tileset != nullptr)
+					{
+						SDL_Rect rect = tileset->TilesetRect(tile_id);
+						iPoint pos = MapToWorld(x, y);
+						App->render->Blit(tileset->texture, pos.x, pos.y, &rect, SDL_FLIP_NONE, tileset, it->data->parallaxspeed);
+					}
 				}
 			}
 		}
@@ -65,37 +76,59 @@ TileSet* j1Map::GetTilesetFromTileId(int id) const
 	return item->data;
 }
 
-int j1Map::translate_x(int x) {
-	x = x * (data.tile_width);
-	return x;
+iPoint j1Map::MapToWorld(int x, int y) const {
+	iPoint ret(0, 0);
+	switch (data.type) {
+	case MAPTYPE_ORTHOGONAL:
+		ret.x = x * data.tile_width;
+		ret.y = y * data.tile_height;
+		break;
+	case MAPTYPE_ISOMETRIC:
+		ret.x = (x - y) * (data.tile_width *0.5f);
+		ret.y = (x + y) * (data.tile_height *0.5f);
+		break;
+	default:
+		LOG("Unknown map");
+		ret.x = x;
+		ret.y = y;
+		break;
+	}
+	return ret;
 }
 
-int j1Map::translate_y(int y) {
-	y = y * (data.tile_height);
-	return y;
+iPoint j1Map::WorldToMap(int x,int y) const {
+	iPoint ret(0, 0);
+	float half_width = data.tile_width * 0.5f;
+	float half_height = data.tile_height * 0.5f;
+	switch (data.type) {
+	case MAPTYPE_ORTHOGONAL:
+		ret.x = x / data.tile_width;
+		ret.y = y / data.tile_height;
+		break;
+	case MAPTYPE_ISOMETRIC:
+		ret.x = int((x / half_width + y / half_height) / 2);
+		ret.y = int((y / half_height - (x / half_width)) / 2);
+		break;
+	default:
+		LOG("Unknown map");
+		ret.x = x;
+		ret.y = y;
+		break;
+	}
+	return ret;
 }
 
 inline uint map_layer::Get(int x, int y) const{
-	uint index = ((y+1)*width-(width-(x+1)))-1;
-		return tiled_gid[index];
+		return tiled_gid[y*width +x];
 }
 
 SDL_Rect TileSet::TilesetRect(uint tiled_gid) {
+	int relative_id = tiled_gid - firstgid;
 	SDL_Rect rect;
 	rect.w = tile_width;
 	rect.h = tile_height;
-	int column=0;
-	int row = 0;
-	if (tiled_gid%num_tiles_width == 0) {
-		row = (tiled_gid / num_tiles_width) - 1;
-		column = num_tiles_width;
-	}
-	else {
-		row = tiled_gid / num_tiles_width;
-		column = tiled_gid % num_tiles_width;
-	}
-	rect.x = (column - 1) * tile_width + margin + (spacing*(column - 1));
-	rect.y = row * tile_height + margin + (spacing*row);
+	rect.x = margin + ((rect.w + spacing) * (relative_id % num_tiles_width));
+	rect.y = margin + ((rect.h + spacing) * (relative_id / num_tiles_width));
 	return rect;
 }
 
