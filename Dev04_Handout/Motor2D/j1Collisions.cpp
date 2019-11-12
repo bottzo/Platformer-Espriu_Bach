@@ -228,7 +228,7 @@ void j1Collisions::DebugDraw()
 			case COLLIDER_DEATH: //red
 				App->render->DrawQuad(colliders[i]->rect, 255, 0, 0, alpha);
 				break;
-			case COLLIDER_BACKGROUND:
+			case COLLIDER_BACKGROUND://yellow
 				App->render->DrawQuad(colliders[i]->rect, 255, 255, 0, alpha);
 				break;
 			}
