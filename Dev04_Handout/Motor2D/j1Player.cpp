@@ -60,13 +60,10 @@ void j1Player::LoadAnimations(pugi::xml_node&node) {
 
 void j1Player::Updateposition(santa_states state) {
 	/*if(distance.y<speed.y)*/
-	if (speed.y < 30) {
-		speed.y += App->map->data.gravity;
-	}
-	else {
+	speed.y += App->map->data.gravity;
+	if (speed.y > 30) {
 		speed.y = 30;
 	}
-	speed.y += App->map->data.gravity;
 	switch (state) {
 	case ST_IDLE_RIGHT:
 		speed.x = 0;
@@ -130,14 +127,11 @@ void j1Player::Updateposition(santa_states state) {
 			position.x += speed.x;
 		}
 	}
-	player_collider->SetPos(position.x - (collider_player_offset_x), position.y - (collider_player_offset_y));
+
 	distance.y = App->collisions->closest_yaxis_collider();
-	if (distance.y < 0) {
-		distance.y += distance.y * 2;
-	}
 	LOG("D: %f", distance.y);
 	LOG("S: %f", speed.y);
-	if (going_up) {
+	if (speed.y<0) {
 		if (speed.y <= -distance.y) {
 			position.y += distance.y;
 			speed.y = 0;
@@ -147,16 +141,18 @@ void j1Player::Updateposition(santa_states state) {
 			position.y += speed.y;
 		}
 	}
-	else {
+	else if (speed.y > 0) {
 		if (speed.y >= distance.y) {
 			position.y += distance.y;
 			key_inputs.Push(IN_JUMP_FINISH);
+			speed.y = 0;
 			start_jump = true;
 		}
 		else {
 			position.y += speed.y;
 		}
 	}
+	player_collider->SetPos(position.x - (collider_player_offset_x), position.y - (collider_player_offset_y));
 	slide_collider->SetPos(position.x - (collider_slide_offset_x), player_collider->rect.y+ player_collider->rect.h-slide_collider->rect.h);
 }
 
