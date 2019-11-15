@@ -73,7 +73,6 @@ public:
 	void OnCollision(Collider*player, Collider*wall);
 	p2Point<float> origin_distance_player;
 	bool looking_right = true;
-	bool going_up = false;
 	bool positioncamera();
 	float slide_timer;
 	bool start_jump = true;

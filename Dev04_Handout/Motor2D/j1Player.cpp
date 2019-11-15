@@ -97,15 +97,15 @@ void j1Player::Updateposition(santa_states state) {
 		if (start_jump) {
 			speed.y = -35;
 			start_jump = false;
+			looking_right = true;
 		}
-		looking_right = true;
 		break;
 	case ST_JUMP_BACKWARD:
 		if (start_jump) {
 			speed.y = -35;
 			start_jump = false;
+			looking_right = false;
 		}
-		looking_right = false;
 		break;
 	}
 	//if (speed.y < 0) { going_up = true; }
@@ -129,8 +129,6 @@ void j1Player::Updateposition(santa_states state) {
 	}
 
 	distance.y = App->collisions->closest_yaxis_collider();
-	LOG("D: %f", distance.y);
-	LOG("S: %f", speed.y);
 	if (speed.y<0) {
 		if (speed.y <= -distance.y) {
 			position.y -= distance.y;
@@ -145,6 +143,7 @@ void j1Player::Updateposition(santa_states state) {
 		if (speed.y >= distance.y) {
 			position.y += distance.y;
 			key_inputs.Push(IN_JUMP_FINISH);
+			Animations.start->next->next->next->data->current_frame = 0;
 			speed.y = 0;
 			start_jump = true;
 		}
