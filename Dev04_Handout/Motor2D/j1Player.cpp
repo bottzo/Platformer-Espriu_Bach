@@ -133,7 +133,7 @@ void j1Player::Updateposition(santa_states state) {
 	LOG("S: %f", speed.y);
 	if (speed.y<0) {
 		if (speed.y <= -distance.y) {
-			position.y += distance.y;
+			position.y -= distance.y;
 			speed.y = 0;
 			key_inputs.Push(IN_JUMP_FINISH);
 		}
