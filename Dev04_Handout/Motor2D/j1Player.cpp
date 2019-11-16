@@ -59,12 +59,11 @@ void j1Player::LoadAnimations(pugi::xml_node&node) {
 }
 
 void j1Player::Updateposition(santa_states state) {
-	/*if (speed.y < 5) {
-		speed.y += App->map->data.gravity;
+	/*if(distance.y<speed.y)*/
+	speed.y += App->map->data.gravity;
+	if (speed.y > 30) {
+		speed.y = 30;
 	}
-	else {
-		speed.y = 5;
-	}*/
 	switch (state) {
 	case ST_IDLE_RIGHT:
 		speed.x = 0;
@@ -94,11 +93,24 @@ void j1Player::Updateposition(santa_states state) {
 		origin_distance_player.x = slide_collider->rect.x;
 		looking_right = false;
 		break;
+	case ST_JUMP_FORWARD:
+		if (start_jump) {
+			speed.y = -35;
+			start_jump = false;
+			looking_right = true;
+		}
+		break;
+	case ST_JUMP_BACKWARD:
+		if (start_jump) {
+			speed.y = -35;
+			start_jump = false;
+			looking_right = false;
+		}
+		break;
 	}
+	//if (speed.y < 0) { going_up = true; }
+	//else if (speed.y >= 0) { going_up = false; }
 	distance.x=App->collisions->closest_xaxis_collider();
-	LOG("D: %f", distance.x);
-	LOG("S: %f", speed.x);
-	LOG("p: %f", position.x);
 	if (looking_right) {
 		if (speed.x >= distance.x) {
 			position.x += distance.x - 1;
@@ -115,8 +127,31 @@ void j1Player::Updateposition(santa_states state) {
 			position.x += speed.x;
 		}
 	}
-	position.y += speed.y;
-	player_collider->SetPos(position.x-(collider_player_offset_x), position.y-(collider_player_offset_y));
+
+	distance.y = App->collisions->closest_yaxis_collider();
+	if (speed.y<0) {
+		if (speed.y <= -distance.y) {
+			position.y -= distance.y;
+			speed.y = 0;
+			key_inputs.Push(IN_JUMP_FINISH);
+		}
+		else {
+			position.y += speed.y;
+		}
+	}
+	else if (speed.y > 0) {
+		if (speed.y >= distance.y) {
+			position.y += distance.y;
+			key_inputs.Push(IN_JUMP_FINISH);
+			Animations.start->next->next->next->data->current_frame = 0;
+			speed.y = 0;
+			start_jump = true;
+		}
+		else {
+			position.y += speed.y;
+		}
+	}
+	player_collider->SetPos(position.x - (collider_player_offset_x), position.y - (collider_player_offset_y));
 	slide_collider->SetPos(position.x - (collider_slide_offset_x), player_collider->rect.y+ player_collider->rect.h-slide_collider->rect.h);
 }
 
@@ -139,14 +174,6 @@ void j1Player::Draw_player(santa_states state) {
 		break;
 	case ST_SLIDE_BACKWARD:
 		App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->next->next->next->next->data->GetCurrentFrame(), SDL_FLIP_HORIZONTAL, sprite_tilesets.start->data);
-		break;
-	case ST_JUMP_NEUTRAL:
-		if (looking_right) {
-			App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->next->next->next->data->DoOneLoop());
-		}
-		else {
-			App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->next->next->next->data->DoOneLoop(), SDL_FLIP_HORIZONTAL, sprite_tilesets.start->data);
-		}
 		break;
 	case ST_JUMP_FORWARD:
 		App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->next->next->next->data->DoOneLoop());
@@ -176,7 +203,7 @@ santa_states j1Player::current_santa_state(p2Qeue<santa_inputs>& inputs)
 			{
 			case IN_RIGHT_DOWN: state = ST_WALK_FORWARD; break;
 			case IN_LEFT_DOWN: state = ST_WALK_BACKWARD; break;
-			case IN_JUMP: state = ST_JUMP_NEUTRAL; /*jump_timer = SDL_GetTicks();*/  break;
+			case IN_JUMP: state = ST_JUMP_FORWARD; /*jump_timer = SDL_GetTicks();*/  break;
 			case IN_SLIDE_DOWN: state = ST_SLIDE_FORWARD; slide_timer = SDL_GetTicks(); player_collider->active = false; slide_collider->active = true; break;
 			}
 		}
@@ -188,7 +215,7 @@ santa_states j1Player::current_santa_state(p2Qeue<santa_inputs>& inputs)
 			{
 			case IN_RIGHT_DOWN: state = ST_WALK_FORWARD; break;
 			case IN_LEFT_DOWN: state = ST_WALK_BACKWARD; break;
-			case IN_JUMP: state = ST_JUMP_NEUTRAL; /*jump_timer = SDL_GetTicks();*/  break;
+			case IN_JUMP: state = ST_JUMP_BACKWARD; /*jump_timer = SDL_GetTicks();*/  break;
 			case IN_SLIDE_DOWN: state = ST_SLIDE_BACKWARD; slide_timer = SDL_GetTicks(); player_collider->active = false; slide_collider->active = true; break;
 			}
 		}
@@ -214,20 +241,6 @@ santa_states j1Player::current_santa_state(p2Qeue<santa_inputs>& inputs)
 			case IN_LEFT_AND_RIGHT: state = ST_IDLE_LEFT; break;
 			case IN_JUMP: state = ST_JUMP_BACKWARD; /*jump_timer = SDL_GetTicks();*/  break;
 			case IN_SLIDE_DOWN: state = ST_SLIDE_BACKWARD; slide_timer = SDL_GetTicks(); player_collider->active = false; slide_collider->active = true; break;
-			}
-		}
-		break;
-
-		case ST_JUMP_NEUTRAL:
-		{
-			switch (last_input)
-			{
-			case IN_JUMP_FINISH: 
-				if (looking_right)
-					state = ST_IDLE_RIGHT;
-				else
-					state = ST_IDLE_LEFT;
-					; break;
 			}
 		}
 		break;

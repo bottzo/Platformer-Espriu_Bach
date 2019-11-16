@@ -17,7 +17,6 @@ enum santa_states
 	ST_WALK_BACKWARD,
 	ST_RUN_FORWRD,
 	ST_RUN_BACKWARD,
-	ST_JUMP_NEUTRAL,
 	ST_JUMP_FORWARD,
 	ST_JUMP_BACKWARD,
 	ST_SLIDE_FORWARD,
@@ -73,9 +72,10 @@ public:
 	Collider*slide_collider;
 	void OnCollision(Collider*player, Collider*wall);
 	p2Point<float> origin_distance_player;
-	bool looking_right = true;;
+	bool looking_right = true;
 	bool positioncamera();
 	float slide_timer;
+	bool start_jump = true;
 	p2Point<float>distance;
 private:
 	pugi::xml_document player_doc;
