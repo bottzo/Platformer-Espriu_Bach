@@ -207,8 +207,11 @@ void j1Player::Draw_player(santa_states state) {
 	}
 
 	
-}void j1Player::OnCollision(Collider*player, Collider*wall) {
-
+}void j1Player::OnCollision(Collider*player, Collider*death) {
+	if (death->type == COLLIDER_DEATH) {
+		position.x = start_collider->rect.x;
+		position.y = start_collider->rect.y;
+	}
 }
 
 santa_states j1Player::current_santa_state(p2Qeue<santa_inputs>& inputs)
@@ -366,8 +369,13 @@ void j1Player::Load_player_info() {
 		if (it->data->name == group_name) {
 			for (int i = 0; i < it->data->num_objects; ++i) {
 				if (it->data->objects[i].name == start) {
-					position.x = it->data->objects[i].rect.x;
-					position.y = it->data->objects[i].rect.y;
+					start_collider = App->collisions->AddCollider(it->data->objects[i].rect, START_COLLIDER, App->player);
+					start_collider->rect.x = it->data->objects[i].rect.x;
+					start_collider->rect.y = it->data->objects[i].rect.y;
+					start_collider->rect.w = it->data->objects[i].rect.w;
+					start_collider->rect.h = it->data->objects[i].rect.h;
+					position.x = start_collider->rect.x;
+					position.y = start_collider->rect.y;
 				}
 				else if (it->data->objects[i].name == player) {
 					player_collider=App->collisions->AddCollider(it->data->objects[i].rect, COLLIDER_PLAYER1, App->player);

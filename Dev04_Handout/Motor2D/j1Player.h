@@ -70,6 +70,7 @@ public:
 	void Load_player_info();
 	Collider*player_collider;
 	Collider*slide_collider;
+	Collider*start_collider;
 	void OnCollision(Collider*player, Collider*wall);
 	bool looking_right = true;
 	bool positioncamera();
