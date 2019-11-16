@@ -9,6 +9,7 @@
   <renderer>
     <vsync value="true"/>
     <camera x="0" y="-1085"/>
+    <santa_flip_offset value="-40"/>
   </renderer>
 
   <window>
@@ -37,6 +38,8 @@
   </map>
   <player>
     <folder>textures/</folder>
+    <texture_offset x="56" y="8"/>
+    <slide_offset x="36" y="43"/>
   </player>
   <scene>
     <map_name name="Santa's delivering.tmx"/>

@@ -3,6 +3,8 @@
 #include "j1App.h"
 #include "j1Window.h"
 #include "j1Render.h"
+#include "j1Player.h"
+#include "j1Collisions.h"
 
 #define VSYNC true
 
@@ -48,7 +50,7 @@ bool j1Render::Awake(pugi::xml_node& config)
 		camera.y = config.child("camera").attribute("y").as_int();
 		initial_camera_y = camera.y;
 	}
-
+	santa_flip_offset = config.child("santa_flip_offset").attribute("value").as_int();
 	return ret;
 }
 
@@ -124,17 +126,13 @@ void j1Render::ResetViewPort()
 }
 
 // Blit to screen (if fliping the texture include the tileset)
-bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, SDL_RendererFlip flip, TileSet* tileset, float speed, double angle, int pivot_x, int pivot_y) const
+bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, SDL_RendererFlip flip, float speed, double angle, int pivot_x, int pivot_y) const
 {
 	bool ret = true;
 	uint scale = App->win->GetScale();
 
 	if (flip == SDL_FLIP_HORIZONTAL) {
-		if (tileset != NULL) {
-			x -= (tileset->tile_width)/4;
-		}
-		else
-			LOG("Need to include a tileste to be able to flip the texture properly");
+			x += santa_flip_offset;
 	}
 
 	SDL_Rect rect;

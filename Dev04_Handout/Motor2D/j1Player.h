@@ -76,6 +76,8 @@ public:
 	float slide_timer;
 	bool start_jump = true;
 	p2Point<float>distance;
+	iPoint player_texture_offset;
+	iPoint slide_texture_offset;
 private:
 	pugi::xml_document player_doc;
 	p2SString folder;
@@ -84,8 +86,6 @@ private:
 	p2List<PlayerAnimation*>Animations;
 	p2Point<float> position;
 	int collider_player_offset_y;
-	int collider_player_offset_x;
-	int collider_slide_offset_x;
 	friend class j1Map;
 };
 #endif // __j1RENDER_H__

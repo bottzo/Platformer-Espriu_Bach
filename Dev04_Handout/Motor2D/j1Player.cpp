@@ -20,7 +20,10 @@ bool j1Player::Awake(pugi::xml_node&config) {
 		bool ret = true;
 
 		folder.create(config.child("folder").child_value());
-
+		player_texture_offset.x =config.child("texture_offset").attribute("x").as_int();
+		player_texture_offset.y =config.child("texture_offset").attribute("y").as_int();
+		slide_texture_offset.x = config.child("slide_offset").attribute("x").as_int();
+		slide_texture_offset.y = config.child("slide_offset").attribute("x").as_int();
 		return ret;
 }
 
@@ -170,8 +173,9 @@ void j1Player::Updateposition(santa_states state) {
 			position.y += speed.y;
 		}
 	}
-	player_collider->SetPos(position.x - (collider_player_offset_x), position.y - (collider_player_offset_y));
-	slide_collider->SetPos(position.x - (collider_slide_offset_x), player_collider->rect.y+ player_collider->rect.h-slide_collider->rect.h);
+	player_collider->SetPos(position.x+ player_texture_offset.x, position.y +player_texture_offset.y);
+	slide_collider->SetPos(position.x + slide_texture_offset.x, position.y+ slide_texture_offset.y);
+
 }
 
 void j1Player::Draw_player(santa_states state) {
@@ -180,25 +184,25 @@ void j1Player::Draw_player(santa_states state) {
 		App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->data->GetCurrentFrame());
 		break;
 	case ST_IDLE_LEFT:
-		App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->data->GetCurrentFrame(),SDL_FLIP_HORIZONTAL, sprite_tilesets.start->data);
+		App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->data->GetCurrentFrame(),SDL_FLIP_HORIZONTAL);
 		break;
 	case ST_WALK_FORWARD:
 		App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->next->data->GetCurrentFrame());
 		break;
 	case ST_WALK_BACKWARD:
-		App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->next->data->GetCurrentFrame(),SDL_FLIP_HORIZONTAL,sprite_tilesets.start->data);
+		App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->next->data->GetCurrentFrame(),SDL_FLIP_HORIZONTAL);
 		break;
 	case ST_SLIDE_FORWARD:
 		App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->next->next->next->next->data->GetCurrentFrame());
 		break;
 	case ST_SLIDE_BACKWARD:
-		App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->next->next->next->next->data->GetCurrentFrame(), SDL_FLIP_HORIZONTAL, sprite_tilesets.start->data);
+		App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->next->next->next->next->data->GetCurrentFrame(), SDL_FLIP_HORIZONTAL);
 		break;
 	case ST_JUMP_FORWARD:
 		App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->next->next->next->data->DoOneLoop());
 		break;
 	case ST_JUMP_BACKWARD:
-		App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->next->next->next->data->DoOneLoop(), SDL_FLIP_HORIZONTAL, sprite_tilesets.start->data);
+		App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->next->next->next->data->DoOneLoop(), SDL_FLIP_HORIZONTAL);
 		break;
 	}
 
@@ -377,9 +381,6 @@ void j1Player::Load_player_info() {
 		}
 		it = it->next;
 	}
-	collider_player_offset_x = position.x - player_collider->rect.x;
-	collider_player_offset_y = position.y - player_collider->rect.y;
-	collider_slide_offset_x= position.x - slide_collider->rect.x;
 }
 bool j1Player::positioncamera()
 {
