@@ -66,31 +66,48 @@ void j1Player::Updateposition(santa_states state) {
 	}
 	switch (state) {
 	case ST_IDLE_RIGHT:
-		speed.x = 0;
+
+		if (speed.x > 0) {
+			speed.x-=2;
+		}
+		else {
+			speed.x = 0;
+		}
 		looking_right = true;
 		break;
 	case ST_IDLE_LEFT:
-		speed.x = 0;
+		if (speed.x < 0) {
+			speed.x+=2;
+		}
+		else {
+			speed.x = 0;
+		}
 		looking_right = false;
 		break;
 	case ST_WALK_FORWARD:
-		speed.x = 20;
-		origin_distance_player.x = player_collider->rect.x + player_collider->rect.w;
+		if (speed.x < 20) {
+			speed.x+=4;
+		}
+		else {
+			speed.x = 20;
+		}
 		looking_right = true;
 		break;
 	case ST_WALK_BACKWARD:
-		speed.x =-20;
-		origin_distance_player.x = player_collider->rect.x;
+		if (speed.x > -20) {
+			speed.x-=4;
+		}
+		else {
+			speed.x = -20;
+		}
 		looking_right = false;
 		break;
 	case ST_SLIDE_FORWARD:
 		speed.x = 30;
-		origin_distance_player.x = slide_collider->rect.x + slide_collider->rect.w;
 		looking_right = true;
 		break;
 	case ST_SLIDE_BACKWARD:
 		speed.x = -30;
-		origin_distance_player.x = slide_collider->rect.x;
 		looking_right = false;
 		break;
 	case ST_JUMP_FORWARD:
@@ -110,10 +127,11 @@ void j1Player::Updateposition(santa_states state) {
 	}
 	//if (speed.y < 0) { going_up = true; }
 	//else if (speed.y >= 0) { going_up = false; }
-	distance.x=App->collisions->closest_xaxis_collider();
+	distance.x=App->collisions->closest_xaxis_collider(state,looking_right);
 	if (looking_right) {
 		if (speed.x >= distance.x) {
-			position.x += distance.x - 1;
+			position.x += distance.x;
+			speed.x = 0;
 		}
 		else {
 			position.x += speed.x;
@@ -121,14 +139,15 @@ void j1Player::Updateposition(santa_states state) {
 	}
 	else {
 		if (speed.x <= -distance.x) {
-			position.x += -distance.x + 1;
+			position.x += -distance.x;
+			speed.x = 0;
 		}
 		else {
 			position.x += speed.x;
 		}
 	}
 
-	distance.y = App->collisions->closest_yaxis_collider();
+	distance.y = App->collisions->closest_yaxis_collider(state);
 	if (speed.y<0) {
 		if (speed.y <= -distance.y) {
 			position.y -= distance.y;

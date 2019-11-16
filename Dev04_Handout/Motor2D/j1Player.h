@@ -71,7 +71,6 @@ public:
 	Collider*player_collider;
 	Collider*slide_collider;
 	void OnCollision(Collider*player, Collider*wall);
-	p2Point<float> origin_distance_player;
 	bool looking_right = true;
 	bool positioncamera();
 	float slide_timer;

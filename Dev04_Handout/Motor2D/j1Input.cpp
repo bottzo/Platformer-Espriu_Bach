@@ -191,9 +191,9 @@ bool j1Input::PreUpdate()
 		App->player->key_inputs.Push(IN_JUMP_AND_SLIDE);
 	else
 	{
-		if (down&&App->player->distance.x > App->player->slide_collider->rect.w / 2)
+		if (down && App->player->distance.x > App->player->slide_collider->rect.w / 2)
 			App->player->key_inputs.Push(IN_SLIDE_DOWN);
-		if (up)
+		if (up && (App->player->distance.y == 0))
 			App->player->key_inputs.Push(IN_JUMP);
 	}
 

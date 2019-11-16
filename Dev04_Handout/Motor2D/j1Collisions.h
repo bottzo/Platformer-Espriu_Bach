@@ -56,8 +56,9 @@ public:
 	Collider* AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Module* callback = nullptr);
 	void update_active_colliders();
 	void DebugDraw();
-	int closest_xaxis_collider();
-	int closest_yaxis_collider();
+	p2Point<float> origin_distance_player;
+	int closest_xaxis_collider(santa_states state, bool orientation);
+	int closest_yaxis_collider(santa_states state);
 	bool on_the_way_x(int index);
 	bool on_the_way_y(int index);
 
