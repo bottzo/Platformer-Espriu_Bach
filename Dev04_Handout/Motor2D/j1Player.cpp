@@ -369,22 +369,14 @@ bool j1Player::Load(const char* file_name) {
 void j1Player::Load_player_info() {
 	p2SString group_name; group_name.create("COLLAIDER_PLAYER");
 	p2SString start; start.create("Start");
+	p2SString end; start.create("End");
 	p2SString player; player.create("player_collider");
 	p2SString slide_collider_name; slide_collider_name.create("slide_collider");
 	p2List_item<objectgroup*>*it = App->map->data.objectgroup.start;
 	while (it != NULL) {
 		if (it->data->name == group_name) {
 			for (int i = 0; i < it->data->num_objects; ++i) {
-				if (it->data->objects[i].name == start) {
-					start_collider = App->collisions->AddCollider(it->data->objects[i].rect, START_COLLIDER, App->player);
-					start_collider->rect.x = it->data->objects[i].rect.x;
-					start_collider->rect.y = it->data->objects[i].rect.y;
-					start_collider->rect.w = it->data->objects[i].rect.w;
-					start_collider->rect.h = it->data->objects[i].rect.h;
-					position.x = start_collider->rect.x;
-					position.y = start_collider->rect.y;
-				}
-				else if (it->data->objects[i].name == player) {
+				if (it->data->objects[i].name == player) {
 					player_collider=App->collisions->AddCollider(it->data->objects[i].rect, COLLIDER_PLAYER1, App->player);
 				}
 				else if (it->data->objects[i].name == slide_collider_name) {
@@ -396,7 +388,10 @@ void j1Player::Load_player_info() {
 		}
 		it = it->next;
 	}
+	position.x = start_collider->rect.x;
+	position.y = start_collider->rect.y;
 }
+
 bool j1Player::positioncamera()
 {
 	App->render->camera.x = -position.x +((App->win->width / 2)-(sprite_tilesets.start->data->tile_width/2));

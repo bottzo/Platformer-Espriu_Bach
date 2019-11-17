@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="319" height="60" tilewidth="32" tileheight="32" nextobjectid="88">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="319" height="60" tilewidth="32" tileheight="32" nextobjectid="95">
  <properties>
   <property name="Gravity" type="float" value="5"/>
  </properties>
@@ -165310,8 +165310,8 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="6"/>
-   <tile gid="7"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="7"/>
    <tile gid="8"/>
    <tile gid="0"/>
@@ -165629,8 +165629,8 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="6"/>
-   <tile gid="7"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="7"/>
    <tile gid="8"/>
    <tile gid="0"/>
@@ -165948,8 +165948,8 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="6"/>
-   <tile gid="7"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="7"/>
    <tile gid="8"/>
    <tile gid="0"/>
@@ -166267,8 +166267,8 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="6"/>
-   <tile gid="7"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="7"/>
    <tile gid="8"/>
    <tile gid="0"/>
@@ -191510,12 +191510,12 @@
   <object id="62" name="Terrain" x="8672.5" y="1374" width="160" height="24"/>
   <object id="63" name="Terrain" x="8927" y="1312" width="225" height="22"/>
   <object id="64" name="Terrain" x="9248" y="1183.5" width="128.5" height="129"/>
-  <object id="65" name="Terrain" x="9412" y="1410" width="1180" height="676"/>
+  <object id="65" name="Terrain" x="9408" y="1409" width="801" height="514"/>
   <object id="85" name="Terrain" x="-1" y="287" width="63" height="1472"/>
-  <object id="87" name="Terrain" x="10146" y="536" width="122" height="872.667"/>
+  <object id="87" name="Terrain" x="10146" y="544" width="64" height="640.667"/>
+  <object id="88" name="Terrain" x="10144" y="1311" width="65" height="98"/>
  </objectgroup>
  <objectgroup name="COLLAIDER_PLAYER">
-  <object id="66" name="Start" x="99" y="1279" width="220" height="149"/>
   <object id="81" name="player_collider" x="155" y="1287" width="70" height="127"/>
   <object id="82" name="slide_collider" x="135" y="1322" width="112" height="99"/>
  </objectgroup>
@@ -191528,5 +191528,11 @@
  </objectgroup>
  <objectgroup name="COLLIDER_BACKGROUND">
   <object id="83" name="background" x="640" y="1664.67" width="61.3333" height="62.6667"/>
+ </objectgroup>
+ <objectgroup name="COLLIDER_START">
+  <object id="90" name="Start" x="99" y="1279" width="220" height="149"/>
+ </objectgroup>
+ <objectgroup name="COLLIDER_END">
+  <object id="94" name="End" x="10145.5" y="1186.5" width="63" height="123"/>
  </objectgroup>
 </map>

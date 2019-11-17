@@ -265,6 +265,12 @@ void j1Collisions::DebugDraw()
 			case COLLIDER_BACKGROUND://yellow
 				App->render->DrawQuad(colliders[i]->rect, 255, 255, 0, alpha);
 				break;
+			case END_COLLIDER://
+				App->render->DrawQuad(colliders[i]->rect, 0, 255, 255, alpha);
+				break;
+			case START_COLLIDER://purple
+				App->render->DrawQuad(colliders[i]->rect, 255, 0, 255, alpha);
+				break;
 			}
 		}
 	}
