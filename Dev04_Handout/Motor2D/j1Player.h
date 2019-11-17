@@ -17,8 +17,7 @@ enum santa_states
 	ST_WALK_BACKWARD,
 	ST_RUN_FORWRD,
 	ST_RUN_BACKWARD,
-	ST_JUMP_FORWARD,
-	ST_JUMP_BACKWARD,
+	ST_JUMP,
 	ST_SLIDE_FORWARD,
 	ST_SLIDE_BACKWARD,
 };
@@ -75,6 +74,7 @@ public:
 	bool looking_right = true;
 	bool positioncamera();
 	float slide_timer;
+	bool move_in_air;
 	bool start_jump = true;
 	p2Point<float>distance;
 	iPoint player_texture_offset;
