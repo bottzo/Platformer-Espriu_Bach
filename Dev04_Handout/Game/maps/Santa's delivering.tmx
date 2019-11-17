@@ -163503,8 +163503,8 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="1"/>
-   <tile gid="2"/>
    <tile gid="2"/>
    <tile gid="2"/>
    <tile gid="2"/>
@@ -163822,8 +163822,8 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="6"/>
-   <tile gid="7"/>
    <tile gid="7"/>
    <tile gid="7"/>
    <tile gid="7"/>
@@ -164038,6 +164038,7 @@
    <tile gid="7"/>
    <tile gid="7"/>
    <tile gid="8"/>
+   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -164145,7 +164146,6 @@
    <tile gid="12"/>
    <tile gid="12"/>
    <tile gid="12"/>
-   <tile gid="12"/>
    <tile gid="13"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -164811,8 +164811,8 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="7"/>
    <tile gid="1"/>
-   <tile gid="2"/>
    <tile gid="2"/>
    <tile gid="2"/>
    <tile gid="2"/>
@@ -165130,8 +165130,8 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="6"/>
    <tile gid="7"/>
+   <tile gid="6"/>
    <tile gid="7"/>
    <tile gid="7"/>
    <tile gid="7"/>
@@ -165449,8 +165449,8 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="6"/>
    <tile gid="7"/>
+   <tile gid="6"/>
    <tile gid="7"/>
    <tile gid="7"/>
    <tile gid="7"/>
@@ -165768,8 +165768,8 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="6"/>
    <tile gid="7"/>
+   <tile gid="6"/>
    <tile gid="7"/>
    <tile gid="7"/>
    <tile gid="7"/>
@@ -166087,8 +166087,8 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="6"/>
    <tile gid="7"/>
+   <tile gid="6"/>
    <tile gid="7"/>
    <tile gid="7"/>
    <tile gid="7"/>
@@ -166406,8 +166406,8 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="6"/>
    <tile gid="7"/>
+   <tile gid="6"/>
    <tile gid="7"/>
    <tile gid="7"/>
    <tile gid="7"/>
@@ -166725,8 +166725,8 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="6"/>
    <tile gid="7"/>
+   <tile gid="6"/>
    <tile gid="7"/>
    <tile gid="7"/>
    <tile gid="7"/>
@@ -166939,7 +166939,6 @@
    <tile gid="22"/>
    <tile gid="22"/>
    <tile gid="22"/>
-   <tile gid="22"/>
    <tile gid="23"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -166952,6 +166951,7 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="6"/>
    <tile gid="7"/>
    <tile gid="7"/>
@@ -167044,8 +167044,8 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="6"/>
    <tile gid="7"/>
+   <tile gid="6"/>
    <tile gid="7"/>
    <tile gid="7"/>
    <tile gid="7"/>
@@ -167363,8 +167363,8 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="6"/>
    <tile gid="7"/>
+   <tile gid="6"/>
    <tile gid="7"/>
    <tile gid="7"/>
    <tile gid="7"/>
@@ -167682,8 +167682,8 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="6"/>
    <tile gid="7"/>
+   <tile gid="6"/>
    <tile gid="7"/>
    <tile gid="7"/>
    <tile gid="7"/>
@@ -167901,8 +167901,8 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="21"/>
-   <tile gid="22"/>
    <tile gid="22"/>
    <tile gid="22"/>
    <tile gid="22"/>
@@ -168001,8 +168001,8 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="7"/>
    <tile gid="11"/>
-   <tile gid="12"/>
    <tile gid="12"/>
    <tile gid="12"/>
    <tile gid="12"/>
@@ -169357,8 +169357,8 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
    <tile gid="21"/>
+   <tile gid="22"/>
    <tile gid="22"/>
    <tile gid="22"/>
    <tile gid="22"/>
@@ -169984,8 +169984,8 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
    <tile gid="21"/>
+   <tile gid="22"/>
    <tile gid="22"/>
    <tile gid="22"/>
    <tile gid="22"/>
@@ -170117,8 +170117,8 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="11"/>
-   <tile gid="13"/>
+   <tile gid="6"/>
+   <tile gid="8"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -191485,34 +191485,34 @@
   <object id="9" name="Terrain" x="960" y="1794" width="445" height="124"/>
   <object id="10" name="Terrain" x="1440" y="1342" width="322" height="580"/>
   <object id="11" name="Terrain" x="930" y="1569" width="129" height="28"/>
-  <object id="12" name="Terrain" x="1185" y="1469" width="191" height="24"/>
-  <object id="13" name="Terrain" x="897" y="1375" width="189" height="24"/>
+  <object id="12" name="Terrain" x="1215" y="1469" width="160" height="24"/>
+  <object id="13" name="Terrain" x="897" y="1375" width="157" height="24"/>
   <object id="16" name="Terrain" x="1184" y="1278" width="130" height="24"/>
   <object id="18" name="Terrain" x="1951" y="1534" width="320" height="293"/>
-  <object id="19" name="Terrain" x="2081" y="1343" width="94" height="100"/>
+  <object id="19" name="Terrain" x="2081" y="1343" width="94" height="86"/>
   <object id="21" name="Terrain" x="1214" y="1663" width="290" height="255"/>
   <object id="24" name="Terrain " x="2720" y="1279" width="448" height="24"/>
   <object id="27" name="Terrain" x="2564" y="1345" width="59" height="29"/>
   <object id="31" name="Terrain" x="2369" y="1438" width="63" height="27"/>
-  <object id="32" name="Terrain" x="3361" y="1024" width="191" height="96"/>
+  <object id="32" name="Terrain" x="3393" y="1024" width="159" height="91"/>
   <object id="35" name="Terrain" x="3808" y="1309" width="127" height="64"/>
   <object id="37" name="Terrain" x="3264" y="1218" width="384" height="700"/>
   <object id="38" name="Terrain" x="4031.33" y="1438.67" width="192.667" height="64.6667"/>
   <object id="39" name="Terrain" x="4319" y="1600" width="320.5" height="62"/>
-  <object id="40" name="Terrain" x="4384" y="1154" width="195" height="352"/>
-  <object id="41" name="Terrain" x="4830" y="1722" width="1696" height="198"/>
-  <object id="42" name="Terrain" x="6624.67" y="1662.67" width="290.333" height="24.6667"/>
-  <object id="43" name="Terrain" x="6689.33" y="1375.33" width="125.333" height="193"/>
-  <object id="54" name="Terrain" x="7041" y="1251" width="158.667" height="256"/>
-  <object id="56" name="Terrain" x="7391" y="1533" width="194" height="24"/>
-  <object id="57" name="Terrain" x="6978" y="1600" width="316" height="26"/>
-  <object id="59" name="Terrain" x="7708" y="1436" width="840" height="566"/>
+  <object id="40" name="Terrain" x="4416" y="1154" width="163" height="339"/>
+  <object id="41" name="Terrain" x="4830" y="1727" width="1696" height="193"/>
+  <object id="42" name="Terrain" x="6592.67" y="1662.67" width="318.333" height="24.6667"/>
+  <object id="43" name="Terrain" x="6689.33" y="1375.33" width="125.333" height="181.667"/>
+  <object id="54" name="Terrain" x="7041" y="1251" width="158.667" height="242"/>
+  <object id="56" name="Terrain" x="7391" y="1536.33" width="194" height="22.6667"/>
+  <object id="57" name="Terrain" x="6944.67" y="1600" width="349.333" height="22"/>
+  <object id="59" name="Terrain" x="7712.67" y="1439.33" width="830" height="562.667"/>
   <object id="62" name="Terrain" x="8672.5" y="1374" width="160" height="24"/>
-  <object id="63" name="Terrain" x="8927" y="1312" width="227" height="22"/>
+  <object id="63" name="Terrain" x="8927" y="1312" width="225" height="22"/>
   <object id="64" name="Terrain" x="9248" y="1183.5" width="128.5" height="129"/>
   <object id="65" name="Terrain" x="9412" y="1410" width="1180" height="676"/>
   <object id="85" name="Terrain" x="-1" y="287" width="63" height="1472"/>
-  <object id="87" name="Terrain" x="10146" y="536" width="122" height="868"/>
+  <object id="87" name="Terrain" x="10146" y="536" width="122" height="872.667"/>
  </objectgroup>
  <objectgroup name="COLLAIDER_PLAYER">
   <object id="66" name="Start" x="99" y="1279" width="220" height="149"/>
@@ -191521,8 +191521,8 @@
  </objectgroup>
  <objectgroup name="COLLIDER_DEATH">
   <object id="67" name="Death" x="381.818" y="1884.85" width="645.455" height="69.697"/>
-  <object id="69" name="Death" x="2493.94" y="1890.91" width="769.697" height="72.7273"/>
-  <object id="72" name="Death" x="3645.45" y="1884.85" width="1178.79" height="60.6061"/>
+  <object id="69" name="Death" x="1762.94" y="1890.91" width="1500.7" height="72.7273"/>
+  <object id="72" name="Death" x="3645.45" y="1884.85" width="1182.79" height="60.6061"/>
   <object id="73" name="Death" x="6524.24" y="1887.88" width="1187.88" height="60.6061"/>
   <object id="74" name="Death" x="9118.18" y="1887.88" width="287.879" height="54.5455"/>
  </objectgroup>

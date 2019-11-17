@@ -120,10 +120,18 @@ void j1Player::Updateposition(santa_states state) {
 		}
 		if (move_in_air) {
 			if (looking_right) {
-				speed.x = 20;
+				if (speed.x < 20) {
+					speed.x += 4;
+				}
+				else
+					speed.x = 20;
 			}
 			else {
-				speed.x = -20;
+				if (speed.x > -20) {
+					speed.x -= 4;
+				}
+				else
+					speed.x = -20;
 			}
 		}
 		break;
@@ -131,8 +139,7 @@ void j1Player::Updateposition(santa_states state) {
 	//if (speed.y < 0) { going_up = true; }
 	//else if (speed.y >= 0) { going_up = false; }
 	distance.x=App->collisions->closest_xaxis_collider(state,looking_right);
-	LOG("%f", distance.x);
-	LOG("%f", position.x);
+	LOG("%f", speed.x);
 	if (looking_right) {
 		if (speed.x >= distance.x) {
 			position.x += distance.x;
