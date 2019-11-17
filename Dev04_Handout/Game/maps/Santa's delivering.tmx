@@ -191524,7 +191524,7 @@
   <object id="69" name="Death" x="1762.94" y="1890.91" width="1500.7" height="72.7273"/>
   <object id="72" name="Death" x="3645.45" y="1884.85" width="1182.79" height="60.6061"/>
   <object id="73" name="Death" x="6524.24" y="1887.88" width="1187.88" height="60.6061"/>
-  <object id="74" name="Death" x="9118.18" y="1887.88" width="287.879" height="54.5455"/>
+  <object id="74" name="Death" x="8545.18" y="1887.88" width="860.879" height="54.5455"/>
  </objectgroup>
  <objectgroup name="COLLIDER_BACKGROUND">
   <object id="83" name="background" x="640" y="1664.67" width="61.3333" height="62.6667"/>
