@@ -146,8 +146,7 @@ void j1Player::Updateposition(santa_states state) {
 		}
 		break;
 	}
-	//if (speed.y < 0) { going_up = true; }
-	//else if (speed.y >= 0) { going_up = false; }
+
 	distance.x=App->collisions->closest_xaxis_collider(state,looking_right);
 	if (looking_right) {
 		if (speed.x >= distance.x) {
@@ -228,10 +227,13 @@ void j1Player::Draw_player(santa_states state) {
 	}
 
 	
-}void j1Player::OnCollision(Collider*player, Collider*death) {
-	if (death->type == COLLIDER_DEATH) {
+}void j1Player::OnCollision(Collider*c1, Collider*c2) {
+	if (c2->type == COLLIDER_DEATH) {
 		position.x = start_collider->rect.x;
 		position.y = start_collider->rect.y;
+	}
+	if (c2->type == END_COLLIDER) {
+		App->map->ChangeMaps("Santa's mountains.tmx");
 	}
 }
 

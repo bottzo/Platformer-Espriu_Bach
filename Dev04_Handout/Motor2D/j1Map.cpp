@@ -6,6 +6,7 @@
 #include "j1Map.h"
 #include "j1Player.h"
 #include "j1Collisions.h"
+#include "j1Scene.h"
 //#include <math.h>
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
@@ -132,6 +133,18 @@ SDL_Rect TileSet::TilesetRect(uint tiled_gid) {
 	return rect;
 }
 
+void j1Map::ChangeMaps(p2SString new_map) {
+	LOG("Erasing player");
+	App->player->CleanUp();
+	LOG("Erasing map colliders");
+	App->collisions->CleanUp();
+	LOG("Unloading map");
+	CleanUp();
+	LOG("Loading new map");
+	Load(new_map.GetString());
+	App->player->Load(App->scene->player_sprite.GetString());
+}
+
 // Called before quitting
 bool j1Map::CleanUp()
 {
@@ -247,12 +260,6 @@ bool j1Map::Load(const char* file_name)
 		data.objectgroup.add(group);
 		LOG("Succesfully loaded objectsgroup: %s", group->name.GetString());
 	}
-	/*
-	for (int i = 0; i < data.objectgroup.start->data->num_objects; ++i) {
-		LOG("%d: %s", i, data.objectgroup.start->data->objects[i].name.GetString());
-		LOG("%d: %d", i, data.objectgroup.start->data->objects[i].id);
-	}*/
-
 
 	if(ret == true)
 	{

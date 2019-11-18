@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="319" height="60" tilewidth="32" tileheight="32" nextobjectid="49">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="319" height="60" tilewidth="32" tileheight="32" nextobjectid="57">
  <properties>
-  <property name="Gravity" type="float" value="0.5"/>
+  <property name="Gravity" type="float" value="5"/>
  </properties>
  <tileset firstgid="1" name="parallax tilesets" tilewidth="32" tileheight="32" tilecount="1980" columns="60">
   <image source="parallax tileset.png" trans="ff00ff" width="1920" height="1080"/>
@@ -172331,7 +172331,7 @@
    <tile gid="0"/>
   </data>
  </layer>
- <layer name="terrain" width="319" height="60">
+ <layer name="terrain1" width="319" height="60">
   <data>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -191475,6 +191475,9 @@
    <tile gid="1987"/>
   </data>
  </layer>
+ <objectgroup name="COLLIDER_START">
+  <object id="52" name="Start" x="54" y="1212.5" width="220" height="149"/>
+ </objectgroup>
  <objectgroup name="COLLAIDER_WALL">
   <object id="1" name="Terrain" x="-8" y="1408" width="813.333" height="620"/>
   <object id="2" name="Terrain" x="922.667" y="1633.33" width="361.333" height="321.333"/>
@@ -191508,8 +191511,8 @@
   <object id="34" name="Death" x="7106.06" y="1790.91" width="1348.48" height="203.03"/>
  </objectgroup>
  <objectgroup name="COLLIDER_BACKGROUND">
-  <object id="37" name="Background" x="2494.67" y="1406.67" width="160" height="96"/>
-  <object id="38" name="Background" x="2528" y="1309.33" width="126.667" height="94.6667"/>
+  <object id="37" name="background" x="2494.67" y="1406.67" width="160" height="96"/>
+  <object id="38" name="background" x="2528" y="1309.33" width="126.667" height="94.6667"/>
   <object id="39" name="background" x="3713.33" y="1216" width="222.667" height="93.3333"/>
   <object id="40" name="background" x="3838.67" y="1116" width="256" height="192"/>
   <object id="41" name="background" x="3968" y="1025.33" width="190.667" height="281.333"/>
@@ -191517,9 +191520,10 @@
   <object id="43" name="background" x="9694.67" y="1313.33" width="613.333" height="93.3333"/>
  </objectgroup>
  <objectgroup name="COLLAIDER_PLAYER">
-  <object id="44" name="slide" x="64" y="1265" width="225" height="140"/>
-  <object id="45" x="151" y="703" height="1"/>
-  <object id="46" name="player_collider" x="125" y="1280" width="74" height="123"/>
-  <object id="47" name="slide_collider" x="93" y="1089" width="114" height="96"/>
+  <object id="51" name="slide_collider" x="90" y="1255.5" width="112" height="99"/>
+  <object id="53" name="player_collider" x="110" y="1220.5" width="70" height="127"/>
+ </objectgroup>
+ <objectgroup name="COLLIDER_END">
+  <object id="56" name="End" x="10144.4" y="100.803" width="63" height="1201.79"/>
  </objectgroup>
 </map>
