@@ -109,16 +109,8 @@ void j1Player::Updateposition(santa_states state) {
 		speed.x = 30;
 		looking_right = true;
 		if (start_slide) {
-			if (distance.x < (player_texture_offset.x - slide_texture_offset.x)) {
-				if (looking_right) {
-					position.x -= player_texture_offset.x - slide_texture_offset.x;
-					slide_collider->SetPos(position.x + slide_texture_offset.x, position.y + slide_texture_offset.y);
-				}
-				else {
-					position.x += player_texture_offset.x - slide_texture_offset.x;
-					slide_collider->SetPos(position.x + slide_texture_offset.x, position.y + slide_texture_offset.y);
-				}
-			}
+			position.x -= slide_collider->rect.w - (player_collider->rect.w + (player_texture_offset.x - slide_texture_offset.x));
+			slide_collider->SetPos(position.x + slide_texture_offset.x, position.y + slide_texture_offset.y);
 			start_slide = false;
 		}
 		break;
@@ -126,16 +118,8 @@ void j1Player::Updateposition(santa_states state) {
 		speed.x = -30;
 		looking_right = false;
 		if (start_slide) {
-			if (distance.x < (player_texture_offset.x - slide_texture_offset.x)) {
-				if (looking_right) {
-					position.x -= player_texture_offset.x - slide_texture_offset.x;
-					slide_collider->SetPos(position.x + slide_texture_offset.x, position.y + slide_texture_offset.y);
-				}
-				else {
-					position.x += player_texture_offset.x - slide_texture_offset.x;
-					slide_collider->SetPos(position.x + slide_texture_offset.x, position.y + slide_texture_offset.y);
-				}
-			}
+			position.x += player_texture_offset.x - slide_texture_offset.x;
+			slide_collider->SetPos(position.x + slide_texture_offset.x, position.y + slide_texture_offset.y);
 			start_slide = false;
 		}
 		break;
