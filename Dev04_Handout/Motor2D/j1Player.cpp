@@ -108,10 +108,36 @@ void j1Player::Updateposition(santa_states state) {
 	case ST_SLIDE_FORWARD:
 		speed.x = 30;
 		looking_right = true;
+		if (start_slide) {
+			if (distance.x < (player_texture_offset.x - slide_texture_offset.x)) {
+				if (looking_right) {
+					position.x -= player_texture_offset.x - slide_texture_offset.x;
+					slide_collider->SetPos(position.x + slide_texture_offset.x, position.y + slide_texture_offset.y);
+				}
+				else {
+					position.x += player_texture_offset.x - slide_texture_offset.x;
+					slide_collider->SetPos(position.x + slide_texture_offset.x, position.y + slide_texture_offset.y);
+				}
+			}
+			start_slide = false;
+		}
 		break;
 	case ST_SLIDE_BACKWARD:
 		speed.x = -30;
 		looking_right = false;
+		if (start_slide) {
+			if (distance.x < (player_texture_offset.x - slide_texture_offset.x)) {
+				if (looking_right) {
+					position.x -= player_texture_offset.x - slide_texture_offset.x;
+					slide_collider->SetPos(position.x + slide_texture_offset.x, position.y + slide_texture_offset.y);
+				}
+				else {
+					position.x += player_texture_offset.x - slide_texture_offset.x;
+					slide_collider->SetPos(position.x + slide_texture_offset.x, position.y + slide_texture_offset.y);
+				}
+			}
+			start_slide = false;
+		}
 		break;
 	case ST_JUMP:
 		if (start_jump) {
@@ -139,7 +165,6 @@ void j1Player::Updateposition(santa_states state) {
 	//if (speed.y < 0) { going_up = true; }
 	//else if (speed.y >= 0) { going_up = false; }
 	distance.x=App->collisions->closest_xaxis_collider(state,looking_right);
-	LOG("%f", speed.x);
 	if (looking_right) {
 		if (speed.x >= distance.x) {
 			position.x += distance.x;
@@ -242,7 +267,7 @@ santa_states j1Player::current_santa_state(p2Qeue<santa_inputs>& inputs)
 			case IN_RIGHT_DOWN: state = ST_WALK_FORWARD; break;
 			case IN_LEFT_DOWN: state = ST_WALK_BACKWARD; break;
 			case IN_JUMP: state = ST_JUMP; /*jump_timer = SDL_GetTicks();*/  break;
-			case IN_SLIDE_DOWN: state = ST_SLIDE_FORWARD; slide_timer = SDL_GetTicks(); player_collider->active = false; slide_collider->active = true; break;
+			case IN_SLIDE_DOWN: state = ST_SLIDE_FORWARD; slide_timer = SDL_GetTicks(); player_collider->active = false; slide_collider->active = true; start_slide = true; break;
 			}
 		}
 		break;
@@ -254,7 +279,7 @@ santa_states j1Player::current_santa_state(p2Qeue<santa_inputs>& inputs)
 			case IN_RIGHT_DOWN: state = ST_WALK_FORWARD; break;
 			case IN_LEFT_DOWN: state = ST_WALK_BACKWARD; break;
 			case IN_JUMP: state = ST_JUMP; /*jump_timer = SDL_GetTicks();*/  break;
-			case IN_SLIDE_DOWN: state = ST_SLIDE_BACKWARD; slide_timer = SDL_GetTicks(); player_collider->active = false; slide_collider->active = true; break;
+			case IN_SLIDE_DOWN: state = ST_SLIDE_BACKWARD; slide_timer = SDL_GetTicks(); player_collider->active = false; slide_collider->active = true; start_slide = true; break;
 			}
 		}
 		break;
@@ -266,7 +291,7 @@ santa_states j1Player::current_santa_state(p2Qeue<santa_inputs>& inputs)
 			case IN_RIGHT_UP: state = ST_IDLE_RIGHT; break;
 			case IN_LEFT_AND_RIGHT: state = ST_IDLE_RIGHT; break;
 			case IN_JUMP: state = ST_JUMP; /*jump_timer = SDL_GetTicks();*/  break;
-			case IN_SLIDE_DOWN: state = ST_SLIDE_FORWARD; slide_timer = SDL_GetTicks(); player_collider->active = false; slide_collider->active = true; break;
+			case IN_SLIDE_DOWN: state = ST_SLIDE_FORWARD; slide_timer = SDL_GetTicks(); player_collider->active = false; slide_collider->active = true; start_slide = true; break;
 			}
 		}
 		break;
@@ -278,7 +303,7 @@ santa_states j1Player::current_santa_state(p2Qeue<santa_inputs>& inputs)
 			case IN_LEFT_UP: state = ST_IDLE_LEFT; break;
 			case IN_LEFT_AND_RIGHT: state = ST_IDLE_LEFT; break;
 			case IN_JUMP: state = ST_JUMP; /*jump_timer = SDL_GetTicks();*/  break;
-			case IN_SLIDE_DOWN: state = ST_SLIDE_BACKWARD; slide_timer = SDL_GetTicks(); player_collider->active = false; slide_collider->active = true; break;
+			case IN_SLIDE_DOWN: state = ST_SLIDE_BACKWARD; slide_timer = SDL_GetTicks(); player_collider->active = false; slide_collider->active = true; start_slide = true; break;
 			}
 		}
 		break;

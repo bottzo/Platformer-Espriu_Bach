@@ -76,6 +76,7 @@ public:
 	float slide_timer;
 	bool move_in_air;
 	bool start_jump = true;
+	bool start_slide;
 	p2Point<float>distance;
 	iPoint player_texture_offset;
 	iPoint slide_texture_offset;
@@ -86,7 +87,6 @@ private:
 	p2List<TileSet*>sprite_tilesets;
 	p2List<PlayerAnimation*>Animations;
 	p2Point<float> position;
-	int collider_player_offset_y;
 	friend class j1Map;
 };
 #endif // __j1RENDER_H__
