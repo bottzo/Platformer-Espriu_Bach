@@ -125,7 +125,6 @@ bool j1App::Start()
 
 bool j1App::Update()
 {
-	BROFILER_CATEGORY("Update", Profiler::Color::Green);
 	bool ret = true;
 	PrepareUpdate();
 
@@ -134,7 +133,7 @@ bool j1App::Update()
 	BROFILER_CATEGORY("PreUpdate", Profiler::Color::Red);
 	if (ret == true)
 		ret = PreUpdate();
-
+	BROFILER_CATEGORY("Update", Profiler::Color::Green);
 	if(ret == true)
 		ret = DoUpdate();
 	BROFILER_CATEGORY("PostUpdate", Profiler::Color::Blue);
