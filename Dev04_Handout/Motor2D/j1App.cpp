@@ -13,6 +13,7 @@
 #include "j1App.h"
 #include "j1Player.h"
 #include "j1Collisions.h"
+#include "brofiler/Brofiler/Brofiler.h"
 
 
 // Constructor
@@ -121,20 +122,22 @@ bool j1App::Start()
 }
 
 // Called each loop iteration
+
 bool j1App::Update()
 {
+	BROFILER_CATEGORY("Update", Profiler::Color::Green);
 	bool ret = true;
 	PrepareUpdate();
 
 	if(input->GetWindowEvent(WE_QUIT) == true)
 		ret = false;
-
-	if(ret == true)
+	BROFILER_CATEGORY("PreUpdate", Profiler::Color::Red);
+	if (ret == true)
 		ret = PreUpdate();
 
 	if(ret == true)
 		ret = DoUpdate();
-
+	BROFILER_CATEGORY("PostUpdate", Profiler::Color::Blue);
 	if(ret == true)
 		ret = PostUpdate();
 
