@@ -191483,7 +191483,7 @@
   <object id="90" name="Start" x="99" y="1279" width="220" height="149"/>
  </objectgroup>
  <objectgroup name="COLLIDER_END">
-  <object id="94" name="End" x="10145.5" y="1186.5" width="63" height="123"/>
+  <object id="94" name="End" x="10137.5" y="1186.5" width="71" height="123"/>
  </objectgroup>
  <objectgroup name="COLLAIDER_WALL">
   <object id="1" name="Terrain" x="1.33333" y="1760.33" width="382" height="157"/>

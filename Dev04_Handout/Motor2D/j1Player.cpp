@@ -409,7 +409,10 @@ bool j1Player::positioncamera()
 	if (App->render->camera.x > 0) {
 		App->render->camera.x = 0;
 	}
-	//App->render->camera.y = position.y - App->win->height / 2;
+	App->render->camera.y = -(position.y - App->win->height / 2);
+	if (App->render->camera.y <= App->render->initial_camera_y)
+		App->render->camera.y=App->render->initial_camera_y;
+
 	//if (App->win->width / 2 < 0)App->render->camera.x = 0;
 	//if (App->render->camera.y > App->render->initial_camera_y)App->render->camera.y = App->render->initial_camera_y;
 	return true;
