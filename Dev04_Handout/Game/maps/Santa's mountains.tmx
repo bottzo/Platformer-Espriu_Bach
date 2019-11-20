@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="319" height="60" tilewidth="32" tileheight="32" nextobjectid="57">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="319" height="60" tilewidth="32" tileheight="32" nextobjectid="59">
  <properties>
   <property name="Gravity" type="float" value="5"/>
  </properties>
@@ -191510,6 +191510,7 @@
   <object id="25" name="Terrain" x="7966" y="1212" width="195" height="56"/>
   <object id="26" name="Terrain" x="8451.52" y="1503.03" width="1809.09" height="415.152"/>
   <object id="35" name="Terrain" x="2018.67" y="956" width="221.333" height="185.333"/>
+  <object id="58" name="Terrain" x="1" y="605" width="5" height="804"/>
  </objectgroup>
  <objectgroup name="COLLIDER_DEATH">
   <object id="29" name="Death" x="804" y="1822.67" width="118.667" height="108"/>
