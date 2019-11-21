@@ -19158,7 +19158,7 @@
  </layer>
  <layer name="parallax cloud bg" width="319" height="60">
   <properties>
-   <property name="parallax" type="float" value="0.7"/>
+   <property name="parallax" type="float" value="1"/>
   </properties>
   <data>
    <tile gid="0"/>
@@ -38305,7 +38305,7 @@
  </layer>
  <layer name="parallax mountains" width="319" height="60">
   <properties>
-   <property name="parallax" type="float" value="0.7"/>
+   <property name="parallax" type="float" value="1"/>
   </properties>
   <data>
    <tile gid="0"/>
@@ -57452,7 +57452,7 @@
  </layer>
  <layer name="parallax clouds 1" width="319" height="60">
   <properties>
-   <property name="parallax" type="float" value="0.7"/>
+   <property name="parallax" type="float" value="1"/>
   </properties>
   <data>
    <tile gid="0"/>
@@ -76599,7 +76599,7 @@
  </layer>
  <layer name="parallax clouds 2" width="319" height="60">
   <properties>
-   <property name="parallax" type="float" value="0.7"/>
+   <property name="parallax" type="float" value="1"/>
   </properties>
   <data>
    <tile gid="0"/>
@@ -95746,7 +95746,7 @@
  </layer>
  <layer name="parallax clouds 3" width="319" height="60">
   <properties>
-   <property name="parallax" type="float" value="0.7"/>
+   <property name="parallax" type="float" value="1"/>
   </properties>
   <data>
    <tile gid="0"/>
