@@ -6,6 +6,7 @@
 #include "j1Map.h"
 #include "j1Collisions.h"
 #include "j1Window.h"
+#include "brofiler/Brofiler/Brofiler.h"
 j1Player::j1Player():j1Module(),player_loaded(false) {
 	name.create("player");
 }
@@ -62,6 +63,7 @@ void j1Player::LoadAnimations(pugi::xml_node&node) {
 }
 
 void j1Player::Updateposition(santa_states state) {
+	BROFILER_CATEGORY("Updateposition", Profiler::Color::DarkRed);
 	/*if(distance.y<speed.y)*/
 	speed.y += App->map->data.gravity;
 	if (speed.y > 30) {
@@ -198,6 +200,7 @@ void j1Player::Updateposition(santa_states state) {
 }
 
 void j1Player::Draw_player(santa_states state) {
+	BROFILER_CATEGORY("DrawPlayer", Profiler::Color::DarkKhaki);
 	switch (state) {
 	case ST_IDLE_RIGHT:
 		App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->data->GetCurrentFrame());

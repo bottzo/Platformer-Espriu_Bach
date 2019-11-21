@@ -7,6 +7,7 @@
 #include "j1Player.h"
 #include "j1Collisions.h"
 #include "j1Scene.h"
+#include "brofiler/Brofiler/Brofiler.h"
 //#include <math.h>
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
@@ -31,13 +32,16 @@ bool j1Map::Awake(pugi::xml_node& config)
 
 void j1Map::Draw()
 {
+	BROFILER_CATEGORY("Draw_Map", Profiler::Color::MistyRose);
 	if (map_loaded == false)
 		return;
 
 	map_layer* layer = data.layer.start->data;
 	TileSet* tileset = data.tilesets.start->data;
 	p2List_item<map_layer*>* it = data.layer.start;
-
+	iPoint camera_pos = WorldToMap(App->render->camera.x, App->render->camera.y);
+	LOG("y:%d", App->render->camera.y);
+	LOG("x:%d", App->render->camera.x);
 	while (it != nullptr) {
 		for (int y = 0; y < data.height; ++y)
 		{
