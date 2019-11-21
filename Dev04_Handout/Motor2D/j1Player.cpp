@@ -149,28 +149,8 @@ void j1Player::Updateposition(santa_states state) {
 		break;
 	}
 
-	distance.x=App->collisions->closest_xaxis_collider(state,looking_right);
-	if (looking_right) {
-		if (speed.x >= distance.x) {
-			position.x += distance.x;
-			speed.x = 0;
-		}
-		else {
-			position.x += speed.x;
-		}
-	}
-	else {
-		if (speed.x <= -distance.x) {
-			position.x += -distance.x;
-			speed.x = 0;
-		}
-		else {
-			position.x += speed.x;
-		}
-	}
-
 	distance.y = App->collisions->closest_yaxis_collider(state);
-	if (speed.y<0) {
+	if (speed.y < 0) {
 		if (speed.y <= -distance.y) {
 			position.y -= distance.y;
 			speed.y = 0;
@@ -194,9 +174,28 @@ void j1Player::Updateposition(santa_states state) {
 			position.y += speed.y;
 		}
 	}
+
+	distance.x=App->collisions->closest_xaxis_collider(state,looking_right);
+	if (looking_right) {
+		if (speed.x >= distance.x) {
+			position.x += distance.x;
+			speed.x = 0;
+		}
+		else {
+			position.x += speed.x;
+		}
+	}
+	else {
+		if (speed.x <= -distance.x) {
+			position.x += -distance.x;
+			speed.x = 0;
+		}
+		else {
+			position.x += speed.x;
+		}
+	}
 	player_collider->SetPos(position.x+ player_texture_offset.x, position.y +player_texture_offset.y);
 	slide_collider->SetPos(position.x + slide_texture_offset.x, position.y+ slide_texture_offset.y);
-
 }
 
 void j1Player::Draw_player(santa_states state) {
