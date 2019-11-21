@@ -130,13 +130,13 @@ bool j1App::Update()
 
 	if(input->GetWindowEvent(WE_QUIT) == true)
 		ret = false;
-	BROFILER_CATEGORY("PreUpdate", Profiler::Color::Red);
+	
 	if (ret == true)
 		ret = PreUpdate();
-	BROFILER_CATEGORY("Update", Profiler::Color::Green);
+
 	if(ret == true)
 		ret = DoUpdate();
-	BROFILER_CATEGORY("PostUpdate", Profiler::Color::Blue);
+
 	if(ret == true)
 		ret = PostUpdate();
 
@@ -177,6 +177,7 @@ void j1App::FinishUpdate()
 // Call modules before each loop iteration
 bool j1App::PreUpdate()
 {
+	BROFILER_CATEGORY("PreUpdate", Profiler::Color::Red);
 	bool ret = true;
 	p2List_item<j1Module*>* item;
 	item = modules.start;
@@ -199,6 +200,7 @@ bool j1App::PreUpdate()
 // Call modules on each loop iteration
 bool j1App::DoUpdate()
 {
+	BROFILER_CATEGORY("Update", Profiler::Color::Green);
 	bool ret = true;
 	p2List_item<j1Module*>* item;
 	item = modules.start;
@@ -221,6 +223,7 @@ bool j1App::DoUpdate()
 // Call modules after each loop iteration
 bool j1App::PostUpdate()
 {
+	BROFILER_CATEGORY("PostUpdate", Profiler::Color::Blue);
 	bool ret = true;
 	p2List_item<j1Module*>* item;
 	j1Module* pModule = NULL;

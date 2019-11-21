@@ -39,13 +39,12 @@ void j1Map::Draw()
 	map_layer* layer = data.layer.start->data;
 	TileSet* tileset = data.tilesets.start->data;
 	p2List_item<map_layer*>* it = data.layer.start;
-	iPoint camera_pos = WorldToMap(App->render->camera.x, App->render->camera.y);
-	LOG("y:%d", App->render->camera.y);
-	LOG("x:%d", App->render->camera.x);
+	iPoint cam_size(WorldToMap(-App->render->camera.x+App->render->camera.w, -App->render->camera.y + App->render->camera.h));
+	iPoint cam_pos = WorldToMap(-App->render->camera.x, -App->render->camera.y);
 	while (it != nullptr) {
-		for (int y = 0; y < data.height; ++y)
+		for (int y=cam_pos.y; y <= cam_size.y; ++y)
 		{
-			for (int x = 0; x < data.width; ++x)
+			for (int x=cam_pos.x; x <= cam_size.x; ++x)
 			{
 				int tile_id = it->data->Get(x, y);
 				if (tile_id > 0)

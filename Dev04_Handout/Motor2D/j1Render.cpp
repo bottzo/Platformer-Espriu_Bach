@@ -5,6 +5,7 @@
 #include "j1Render.h"
 #include "j1Player.h"
 #include "j1Collisions.h"
+#include "brofiler/Brofiler/Brofiler.h"
 
 #define VSYNC true
 
@@ -77,7 +78,8 @@ bool j1Render::Update(float dt)
 
 bool j1Render::PostUpdate()
 {
-	SDL_SetRenderDrawColor(renderer, background.r, background.g, background.g, background.a);
+	BROFILER_CATEGORY("RendererPostUpdate", Profiler::Color::Bisque);
+	//SDL_SetRenderDrawColor(renderer, background.r, background.g, background.g, background.a);
 	SDL_RenderPresent(renderer);
 	return true;
 }

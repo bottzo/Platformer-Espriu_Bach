@@ -7,7 +7,7 @@
   </app>
 	
   <renderer>
-    <vsync value="true"/>
+    <vsync value="false"/>
     <camera x="0" y="-1085"/>
     <santa_flip_offset value="-40"/>
   </renderer>

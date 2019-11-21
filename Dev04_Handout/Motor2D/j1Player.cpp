@@ -420,6 +420,7 @@ bool j1Player::positioncamera()
 	return true;
 }
 bool j1Player::PostUpdate() {
+	BROFILER_CATEGORY("PlayerPostUpdate", Profiler::Color::Gold);
 	positioncamera();
 return true;
 }

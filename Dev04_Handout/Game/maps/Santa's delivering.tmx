@@ -11,7 +11,7 @@
  </tileset>
  <layer name="parallax cel" width="319" height="60">
   <properties>
-   <property name="parallax" type="float" value="0"/>
+   <property name="parallax" type="float" value="1"/>
   </properties>
   <data>
    <tile gid="26"/>
