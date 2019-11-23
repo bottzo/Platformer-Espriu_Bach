@@ -3,6 +3,7 @@
 
 #include "p2List.h"
 #include "j1Module.h"
+#include "j1Timer.h"
 #include "PugiXml\src\pugixml.hpp"
 
 // Modules
@@ -107,6 +108,9 @@ private:
 	bool				want_to_load;
 	p2SString			load_game;
 	mutable p2SString	save_game;
+
+	j1Timer				frame_time;
+	uint32              framerate_cap;
 };
 
 extern j1App* App; // No student is asking me about that ... odd :-S

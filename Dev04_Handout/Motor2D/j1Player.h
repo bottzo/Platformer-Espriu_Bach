@@ -61,7 +61,7 @@ public:
 	bool Load(const char* file_name);
 	void LoadAnimations(pugi::xml_node&node);
 	void Draw_player(santa_states state);
-	void Updateposition(santa_states state);
+	void Updateposition(santa_states state,float dt);
 	bool CleanUp();
 	p2Point<float> speed;
 	p2Qeue<santa_inputs> key_inputs;//recordar que em falta borrarla de la memoria

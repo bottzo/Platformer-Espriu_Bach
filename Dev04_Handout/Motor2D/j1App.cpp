@@ -88,6 +88,8 @@ bool j1App::Awake()
 		app_config = config.child("app");
 		title.create(app_config.child("title").child_value());
 		organization.create(app_config.child("organization").child_value());
+
+		framerate_cap = app_config.attribute("framerate_cap").as_uint();
 	}
 
 	if(ret == true)
@@ -162,6 +164,8 @@ pugi::xml_node j1App::LoadConfig(pugi::xml_document& config_file) const
 // ---------------------------------------------
 void j1App::PrepareUpdate()
 {
+	dt = frame_time.ReadSec();
+	frame_time.Start();
 }
 
 // ---------------------------------------------
@@ -172,6 +176,11 @@ void j1App::FinishUpdate()
 
 	if(want_to_load == true)
 		LoadGameNow();
+
+	uint32 last_frame_ms = frame_time.Read();
+	if (last_frame_ms < ((1.0f / (float)framerate_cap) * 1000)) {
+		SDL_Delay(((1.0f / (float)framerate_cap) * 1000) - last_frame_ms);
+	}
 }
 
 // Call modules before each loop iteration

@@ -64,7 +64,7 @@ bool j1Scene::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		App->render->camera.x += 20;*/
 
-	App->player->Updateposition(App->player->current_santa_state(App->player->key_inputs));
+	App->player->Updateposition(App->player->current_santa_state(App->player->key_inputs),dt);
 	App->map->Draw();
 	App->player->Draw_player(App->player->current_santa_state(App->player->key_inputs));
 
