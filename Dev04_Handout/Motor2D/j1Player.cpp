@@ -65,15 +65,12 @@ void j1Player::LoadAnimations(pugi::xml_node&node) {
 void j1Player::Updateposition(santa_states state,float dt) {
 	BROFILER_CATEGORY("Updateposition", Profiler::Color::DarkRed);
 	/*if(distance.y<speed.y)*/
-	speed.y += App->map->data.gravity;
-	if (speed.y > 300) {
-		speed.y = 300;
-	}
+	speed.y += App->map->data.gravity*dt;
+	LOG("%f", speed.y);
 	switch (state) {
 	case ST_IDLE_RIGHT:
-
 		if (speed.x > 0) {
-			speed.x-=100;
+			speed.x-=200;
 		}
 		else {
 			speed.x = 0;
@@ -82,7 +79,7 @@ void j1Player::Updateposition(santa_states state,float dt) {
 		break;
 	case ST_IDLE_LEFT:
 		if (speed.x < 0) {
-			speed.x+=10;
+			speed.x+=200;
 		}
 		else {
 			speed.x = 0;
@@ -90,25 +87,25 @@ void j1Player::Updateposition(santa_states state,float dt) {
 		looking_right = false;
 		break;
 	case ST_WALK_FORWARD:
-		if (speed.x < 200) {
-			speed.x+=40;
+		if (speed.x < 400) {
+			speed.x+=80;
 		}
 		else {
-			speed.x = 200;
+			speed.x = 400;
 		}
 		looking_right = true;
 		break;
 	case ST_WALK_BACKWARD:
-		if (speed.x > -200) {
-			speed.x-=40;
+		if (speed.x > -400) {
+			speed.x-=80;
 		}
 		else {
-			speed.x = -200;
+			speed.x = -400;
 		}
 		looking_right = false;
 		break;
 	case ST_SLIDE_FORWARD:
-		speed.x = 300;
+		speed.x = 700;
 		looking_right = true;
 		if (start_slide) {
 			position.x -= slide_collider->rect.w - (player_collider->rect.w + (player_texture_offset.x - slide_texture_offset.x));
@@ -117,7 +114,7 @@ void j1Player::Updateposition(santa_states state,float dt) {
 		}
 		break;
 	case ST_SLIDE_BACKWARD:
-		speed.x = -300;
+		speed.x = -700;
 		looking_right = false;
 		if (start_slide) {
 			position.x += player_texture_offset.x - slide_texture_offset.x;
@@ -127,23 +124,23 @@ void j1Player::Updateposition(santa_states state,float dt) {
 		break;
 	case ST_JUMP:
 		if (start_jump) {
-			speed.y = -350;
+			speed.y = -450;
 			start_jump = false;
 		}
 		if (move_in_air) {
 			if (looking_right) {
-				if (speed.x < 200) {
-					speed.x += 40;
+				if (speed.x < 300) {
+					speed.x += 60;
 				}
 				else
-					speed.x = 200;
+					speed.x = 300;
 			}
 			else {
-				if (speed.x > -200) {
-					speed.x -= 40;
+				if (speed.x > -300) {
+					speed.x -= 60;
 				}
 				else
-					speed.x = -200;
+					speed.x = -300;
 			}
 		}
 		break;
