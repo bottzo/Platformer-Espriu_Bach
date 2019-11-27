@@ -38,7 +38,7 @@ private:
 	
 public:
 	int actualmap;
-	float fade_time;
+	santa_states state;
 	p2SString player_sprite;
 	p2List<p2SString*> map_names;
 };

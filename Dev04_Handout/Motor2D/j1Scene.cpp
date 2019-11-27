@@ -63,10 +63,10 @@ bool j1Scene::Update(float dt)
 		App->render->camera.x -= 20;
 	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		App->render->camera.x += 20;*/
-
-	App->player->Updateposition(App->player->current_santa_state(App->player->key_inputs),dt);
+	state = App->player->current_santa_state(App->player->key_inputs);
+	App->player->Updateposition(state);
 	App->map->Draw();
-	App->player->Draw_player(App->player->current_santa_state(App->player->key_inputs));
+	App->player->Draw_player(state);
 
 	p2SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d",
 					App->map->data.width, App->map->data.height,

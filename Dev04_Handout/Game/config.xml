@@ -1,13 +1,13 @@
 <!-- Config file for the game -->
 
 <config>
-  <app framerate_cap="10">
+  <app framerate_cap="30">
     <title>Game Development Testbed</title>
     <organization>UPC</organization>
   </app>
 	
   <renderer>
-    <vsync value="true"/>
+    <vsync value="false"/>
     <camera x="0" y="-1085"/>
     <santa_flip_offset value="-40"/>
   </renderer>

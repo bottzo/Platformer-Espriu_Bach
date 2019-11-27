@@ -61,7 +61,7 @@ public:
 	bool Load(const char* file_name);
 	void LoadAnimations(pugi::xml_node&node);
 	void Draw_player(santa_states state);
-	void Updateposition(santa_states state,float dt);
+	void Updateposition(santa_states state);
 	bool CleanUp();
 	p2Point<float> speed;
 	p2Qeue<santa_inputs> key_inputs;//recordar que em falta borrarla de la memoria
@@ -89,4 +89,4 @@ private:
 	p2Point<float> position;
 	friend class j1Map;
 };
-#endif // __j1RENDER_H__
+#endif // __j1PLAYER_H__

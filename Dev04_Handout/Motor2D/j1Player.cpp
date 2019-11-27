@@ -62,50 +62,28 @@ void j1Player::LoadAnimations(pugi::xml_node&node) {
 	}
 }
 
-void j1Player::Updateposition(santa_states state,float dt) {
+void j1Player::Updateposition(santa_states state) {
 	BROFILER_CATEGORY("Updateposition", Profiler::Color::DarkRed);
-	/*if(distance.y<speed.y)*/
-	speed.y += App->map->data.gravity*dt;
-	LOG("%f", speed.y);
+	speed.y += App->map->data.gravity;
 	switch (state) {
 	case ST_IDLE_RIGHT:
-		if (speed.x > 0) {
-			speed.x-=200;
-		}
-		else {
 			speed.x = 0;
-		}
 		looking_right = true;
 		break;
 	case ST_IDLE_LEFT:
-		if (speed.x < 0) {
-			speed.x+=200;
-		}
-		else {
-			speed.x = 0;
-		}
+		speed.x = 0;
 		looking_right = false;
 		break;
 	case ST_WALK_FORWARD:
-		if (speed.x < 400) {
-			speed.x+=80;
-		}
-		else {
-			speed.x = 400;
-		}
+		speed.x = 20;
 		looking_right = true;
 		break;
 	case ST_WALK_BACKWARD:
-		if (speed.x > -400) {
-			speed.x-=80;
-		}
-		else {
-			speed.x = -400;
-		}
+		speed.x = -20;
 		looking_right = false;
 		break;
 	case ST_SLIDE_FORWARD:
-		speed.x = 700;
+		speed.x = 30;
 		looking_right = true;
 		if (start_slide) {
 			position.x -= slide_collider->rect.w - (player_collider->rect.w + (player_texture_offset.x - slide_texture_offset.x));
@@ -114,7 +92,7 @@ void j1Player::Updateposition(santa_states state,float dt) {
 		}
 		break;
 	case ST_SLIDE_BACKWARD:
-		speed.x = -700;
+		speed.x = -30;
 		looking_right = false;
 		if (start_slide) {
 			position.x += player_texture_offset.x - slide_texture_offset.x;
@@ -124,71 +102,71 @@ void j1Player::Updateposition(santa_states state,float dt) {
 		break;
 	case ST_JUMP:
 		if (start_jump) {
-			speed.y = -450;
+			speed.y = -35;
 			start_jump = false;
 		}
 		if (move_in_air) {
 			if (looking_right) {
-				if (speed.x < 300) {
-					speed.x += 60;
+				if (speed.x < 20) {
+					speed.x += 4;
 				}
 				else
-					speed.x = 300;
+					speed.x = 20;
 			}
 			else {
-				if (speed.x > -300) {
-					speed.x -= 60;
+				if (speed.x > -20) {
+					speed.x -= 4;
 				}
 				else
-					speed.x = -300;
+					speed.x = -20;
 			}
 		}
 		break;
 	}
 
 	distance.y = App->collisions->closest_yaxis_collider(state);
-	if (speed.y*dt < 0) {
-		if (speed.y*dt <= -distance.y) {
+	if (speed.y < 0) {
+		if (speed.y <= -distance.y) {
 			position.y -= distance.y;
 			speed.y = 0;
-			key_inputs.Push(IN_JUMP_FINISH);
-			move_in_air = false;
 		}
 		else {
-			position.y += speed.y*dt;
+			position.y += speed.y;
 		}
 	}
-	else if (speed.y*dt > 0) {
-		if (speed.y*dt >= distance.y) {
+	else if (speed.y > 0) {
+		if (speed.y >= distance.y) {
 			position.y += distance.y;
-			key_inputs.Push(IN_JUMP_FINISH);
-			move_in_air = false;
-			Animations.start->next->next->next->data->current_frame = 0;
 			speed.y = 0;
-			start_jump = true;
+			if (state == ST_JUMP) {
+				key_inputs.Push(IN_JUMP_FINISH);
+				move_in_air = false;
+				Animations.start->next->next->next->data->current_frame = 0;
+				start_jump = true;
+			}
 		}
 		else {
-			position.y += speed.y*dt;
+			position.y += speed.y;
 		}
 	}
 
 	distance.x=App->collisions->closest_xaxis_collider(state,looking_right);
 	if (looking_right) {
-		if (speed.x*dt >= distance.x) {
+		if (speed.x >= distance.x) {
 			position.x += distance.x;
 			speed.x = 0;
 		}
 		else {
-			position.x += speed.x*dt;
+			position.x += speed.x;
 		}
 	}
 	else {
-		if (speed.x*dt <= -distance.x) {
+		if (speed.x <= -distance.x) {
 			position.x += -distance.x;
 			speed.x = 0;
 		}
 		else {
-			position.x += speed.x*dt;
+			position.x += speed.x;
 		}
 	}
 	player_collider->SetPos(position.x+ player_texture_offset.x, position.y +player_texture_offset.y);
@@ -225,8 +203,8 @@ void j1Player::Draw_player(santa_states state) {
 		break;
 	}
 
-	
-}void j1Player::OnCollision(Collider*c1, Collider*c2) {
+}
+void j1Player::OnCollision(Collider*c1, Collider*c2) {
 	if (c2->type == COLLIDER_DEATH) {
 		position.x = start_collider->rect.x;
 		position.y = start_collider->rect.y;
