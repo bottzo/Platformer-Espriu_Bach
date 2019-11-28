@@ -20,7 +20,7 @@ class j1Module;
 class j1Collisions;
 class j1MapChange;
 class j1PathFinding;
-class Entity;
+class EntityManager;
 
 class j1App
 {
@@ -95,7 +95,7 @@ public:
 	j1Collisions*       collisions;
 	j1MapChange*        scenechange;
 	j1PathFinding*      pathfinding;
-	//Entity*             entities;
+	EntityManager*      entities;
 
 
 private:

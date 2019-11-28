@@ -41,6 +41,11 @@
     <texture_offset x="56" y="8"/>
     <slide_offset x="36" y="43"/>
   </player>
+  <Entities>
+    <folder>textures/</folder>
+    <texture_offset x="56" y="8"/>
+    <slide_offset x="36" y="43"/>
+  </Entities>
   <scene>
     <map_name name="Santa's delivering.tmx"/>
     <player_sprite name="santa_animations.tmx"/>
