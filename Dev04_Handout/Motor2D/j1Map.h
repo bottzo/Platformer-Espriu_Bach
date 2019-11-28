@@ -121,7 +121,7 @@ private:
 	p2SString			folder;
 	bool				map_loaded;
 	float gravity;
-	friend class j1Player;
+	friend class player;
 };
 
 #endif // __j1MAP_H__

@@ -43,7 +43,7 @@ public:
 
 private:
 	
-	friend class j1Player;
+	friend class player;
 };
 
 #endif // __j1WINDOW_H__

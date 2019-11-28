@@ -34,9 +34,6 @@
     <ClCompile Include="j1Map.cpp">
       <Filter>Desenvolupament  ========\Modules</Filter>
     </ClCompile>
-    <ClCompile Include="j1Player.cpp">
-      <Filter>Desenvolupament  ========\Modules</Filter>
-    </ClCompile>
     <ClCompile Include="j1Collisions.cpp">
       <Filter>Desenvolupament  ========\Modules</Filter>
     </ClCompile>
@@ -53,6 +50,9 @@
       <Filter>Desenvolupament  ========\Modules</Filter>
     </ClCompile>
     <ClCompile Include="Enemy.cpp">
+      <Filter>Desenvolupament  ========\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="player.cpp">
       <Filter>Desenvolupament  ========\Modules</Filter>
     </ClCompile>
   </ItemGroup>
@@ -108,9 +108,6 @@
     <ClInclude Include="j1Map.h">
       <Filter>Desenvolupament  ========\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="j1Player.h">
-      <Filter>Desenvolupament  ========\Modules</Filter>
-    </ClInclude>
     <ClInclude Include="j1Collisions.h">
       <Filter>Desenvolupament  ========\Modules</Filter>
     </ClInclude>
@@ -130,6 +127,9 @@
       <Filter>Desenvolupament  ========\Modules</Filter>
     </ClInclude>
     <ClInclude Include="Enemy.h">
+      <Filter>Desenvolupament  ========\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="player.h">
       <Filter>Desenvolupament  ========\Modules</Filter>
     </ClInclude>
   </ItemGroup>

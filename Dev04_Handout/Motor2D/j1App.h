@@ -15,7 +15,6 @@ class j1Textures;
 class j1Audio;
 class j1Scene;
 class j1Map;
-class j1Player;
 class j1Module;
 class j1Collisions;
 class j1MapChange;
@@ -91,7 +90,6 @@ public:
 	j1Audio*			audio;
 	j1Scene*			scene;
 	j1Map*				map;
-	j1Player*           player;
 	j1Collisions*       collisions;
 	j1MapChange*        scenechange;
 	j1PathFinding*      pathfinding;

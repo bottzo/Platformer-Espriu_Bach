@@ -1,4 +1,4 @@
-#include "j1Player.h"
+#include "player.h"
 #include "p2Log.h"
 #include "j1App.h"
 #include "j1Textures.h"
@@ -7,25 +7,14 @@
 #include "j1Collisions.h"
 #include "j1Window.h"
 #include "brofiler/Brofiler/Brofiler.h"
-j1Player::j1Player():j1Module(),player_loaded(false) {
-	name.create("player");
+
+player::player() : Entity(Types::player)
+{
+	//Load(); fer el load en entity
 }
 
-j1Player::~j1Player() {
+player::~player() {
 
-}
-
-bool j1Player::Awake(pugi::xml_node&config) {
-
-		LOG("Loading Player Parser");
-		bool ret = true;
-
-		folder.create(config.child("folder").child_value());
-		player_texture_offset.x =config.child("texture_offset").attribute("x").as_int();
-		player_texture_offset.y =config.child("texture_offset").attribute("y").as_int();
-		slide_texture_offset.x = config.child("slide_offset").attribute("x").as_int();
-		slide_texture_offset.y = config.child("slide_offset").attribute("x").as_int();
-		return ret;
 }
 
 SDL_Rect&PlayerAnimation::GetCurrentFrame() {
@@ -42,7 +31,7 @@ SDL_Rect&PlayerAnimation::DoOneLoop() {
 	return frames[(int)current_frame].rect;
 }
 
-void j1Player::LoadAnimations(pugi::xml_node&node) {
+void player::LoadAnimations(pugi::xml_node&node) {
 	LOG("Loading player animations");
 	for (node; node; node = node.next_sibling("tile")) {
 		PlayerAnimation*animation = new PlayerAnimation();
@@ -62,7 +51,7 @@ void j1Player::LoadAnimations(pugi::xml_node&node) {
 	}
 }
 
-void j1Player::Updateposition(santa_states state) {
+void player::Updateposition(santa_states state) {
 	BROFILER_CATEGORY("Updateposition", Profiler::Color::DarkRed);
 	speed.y += App->map->data.gravity;
 	switch (state) {
@@ -173,7 +162,7 @@ void j1Player::Updateposition(santa_states state) {
 	slide_collider->SetPos(position.x + slide_texture_offset.x, position.y+ slide_texture_offset.y);
 }
 
-void j1Player::Draw_player(santa_states state) {
+void player::Draw_player(santa_states state) {
 	BROFILER_CATEGORY("DrawPlayer", Profiler::Color::DarkKhaki);
 	switch (state) {
 	case ST_IDLE_RIGHT:
@@ -201,10 +190,10 @@ void j1Player::Draw_player(santa_states state) {
 			App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->next->next->next->data->DoOneLoop(), SDL_FLIP_HORIZONTAL);
 		}
 		break;
-	}
 
+	}
 }
-void j1Player::OnCollision(Collider*c1, Collider*c2) {
+void player::OnCollision(Collider*c1, Collider*c2) {
 	if (c2->type == COLLIDER_DEATH) {
 		position.x = start_collider->rect.x;
 		position.y = start_collider->rect.y;
@@ -214,7 +203,7 @@ void j1Player::OnCollision(Collider*c1, Collider*c2) {
 	}
 }
 
-santa_states j1Player::current_santa_state(p2Qeue<santa_inputs>& inputs)
+santa_states player::current_santa_state(p2Qeue<santa_inputs>& inputs)
 {
 	static santa_states state = ST_IDLE_RIGHT;
 	santa_inputs last_input;
@@ -305,7 +294,7 @@ santa_states j1Player::current_santa_state(p2Qeue<santa_inputs>& inputs)
 	return state;
 }
 
-bool j1Player::Load(const char* file_name) {
+bool player::Load_Entity(const char* file_name) {
 
 	bool ret = true;
 	p2SString tmp("%s%s", folder.GetString(), file_name);
@@ -354,7 +343,7 @@ bool j1Player::Load(const char* file_name) {
 	}
 }
 
-void j1Player::Load_player_info() {
+void player::Load_player_info() {
 	p2SString group_name; group_name.create("COLLAIDER_PLAYER");
 	p2SString start; start.create("Start");
 	p2SString end; start.create("End");
@@ -380,7 +369,7 @@ void j1Player::Load_player_info() {
 	position.y = start_collider->rect.y;
 }
 
-bool j1Player::positioncamera()
+bool player::positioncamera()
 {
 	App->render->camera.x = -position.x +((App->win->width / 2)-(sprite_tilesets.start->data->tile_width/2));
 	if (App->render->camera.x > 0) {
@@ -394,7 +383,7 @@ bool j1Player::positioncamera()
 	//if (App->render->camera.y > App->render->initial_camera_y)App->render->camera.y = App->render->initial_camera_y;
 	return true;
 }
-bool j1Player::PostUpdate() {
+bool player::PostUpdate() {
 	BROFILER_CATEGORY("PlayerPostUpdate", Profiler::Color::Gold);
 	positioncamera();
 return true;
@@ -402,7 +391,7 @@ return true;
 
 
 
-bool j1Player::CleanUp() {
+bool player::CleanUp() {
 	key_inputs.Clear();
 	p2List_item<PlayerAnimation*>* item;
 	item = Animations.start;

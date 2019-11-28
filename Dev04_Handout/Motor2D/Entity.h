@@ -16,11 +16,16 @@ public:
 	};
 public:
 	Entity(Types type);
-	//virtual ~Entity();
-protected:
+	virtual ~Entity();
+public:
+	//void OnCollision(Collider*c1, Collider*c2); s'ha de posar al entity manager
+	virtual bool Load_Entity(const char* file_name) {
+		return true;
+	}
 	fPoint position;
 	Entity::Types type;
-	SDL_Texture* sprite;
+	p2SString sprite;
+	pugi::xml_document Entity_doc;
 };
 
 class EntityManager :public j1Module {

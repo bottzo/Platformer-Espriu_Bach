@@ -1,6 +1,6 @@
-#ifndef __j1PLAYER_H__
-#define __j1PLAYER_H__
-#include "j1Module.h"
+#ifndef __player_H__
+#define __player_H__
+#include "Entity.h"
 #include "p2List.h"
 #include "p2Qeue.h"
 #include "SDL/include/SDL_rect.h"
@@ -52,20 +52,19 @@ struct PlayerAnimation {
 	SDL_Rect& DoOneLoop();
 };
 
-class j1Player :public j1Module {
+class player:public Entity {
 public:
-	j1Player();
-	~j1Player();
-	bool Awake(pugi::xml_node&config);
+	player();
+	~player();
 	bool PostUpdate();
-	bool Load(const char* file_name);
-	void LoadAnimations(pugi::xml_node&node);
+	//bool Load_entity(const char* file_name);
+	void LoadAnimations(pugi::xml_node&node);//A entity
 	void Draw_player(santa_states state);
 	void Updateposition(santa_states state);
-	bool CleanUp();
+	bool CleanUp();//a entity
 	p2Point<float> speed;
 	p2Qeue<santa_inputs> key_inputs;//recordar que em falta borrarla de la memoria
-	santa_states j1Player::current_santa_state(p2Qeue<santa_inputs>& inputs);
+	santa_states player::current_santa_state(p2Qeue<santa_inputs>& inputs);
 	void Load_player_info();
 	Collider*player_collider;
 	Collider*slide_collider;
@@ -89,4 +88,4 @@ private:
 	p2Point<float> position;
 	friend class j1Map;
 };
-#endif // __j1PLAYER_H__
+#endif // __player_H__

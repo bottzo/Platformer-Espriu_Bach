@@ -2,7 +2,7 @@
 #include "p2Log.h"
 #include "j1App.h"
 #include "j1Input.h"
-#include "j1Player.h"
+#include "player.h"
 #include "j1Window.h"
 #include "j1Collisions.h"
 #include "SDL/include/SDL.h"

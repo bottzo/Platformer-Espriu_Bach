@@ -1,12 +1,15 @@
 #include "Entity.h"
+#include "player.h"
+
+Entity::Entity(Types type) : type(type){}
 
 Entity* EntityManager::CreateEntity(Entity::Types type) {
 	//static_assert(Entity::Types::unknown == 2, "code needs update");
 	Entity* ret = nullptr;
-	/*switch (type) {
-	case Entity::Types::enemy: ret = new enemy(); break;
+	switch (type) {
+	//case Entity::Types::enemy: ret = new enemy(); break;
 	case Entity::Types::player: ret = new player(); break;
-	}*/
+	}
 	if (ret != nullptr)
 		Entity_list.add(ret);
 	return ret;

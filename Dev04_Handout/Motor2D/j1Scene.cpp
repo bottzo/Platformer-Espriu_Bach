@@ -8,7 +8,7 @@
 #include "j1Window.h"
 #include "j1Map.h"
 #include "j1Scene.h"
-#include "j1Player.h"
+#include "player.h"
 #include "brofiler/Brofiler/Brofiler.h"
 
 j1Scene::j1Scene() : j1Module()
