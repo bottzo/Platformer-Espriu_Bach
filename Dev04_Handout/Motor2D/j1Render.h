@@ -4,8 +4,6 @@
 #include "SDL/include/SDL.h"
 #include "p2Point.h"
 #include "j1Module.h"
-#include "j1Map.h"
-#include "player.h"
 
 class j1Render : public j1Module
 {

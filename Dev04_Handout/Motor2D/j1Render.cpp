@@ -3,6 +3,7 @@
 #include "j1App.h"
 #include "j1Window.h"
 #include "j1Render.h"
+#include "Entity.h"
 #include "player.h"
 #include "j1Collisions.h"
 #include "brofiler/Brofiler/Brofiler.h"

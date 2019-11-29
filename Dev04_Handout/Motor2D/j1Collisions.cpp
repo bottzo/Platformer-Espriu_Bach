@@ -5,6 +5,9 @@
 #include "j1Module.h"
 #include "j1Scene.h"
 #include "p2Log.h"
+#include "Entity.h"
+#include "player.h"
+#include "j1Map.h"
 
 j1Collisions::j1Collisions()
 {

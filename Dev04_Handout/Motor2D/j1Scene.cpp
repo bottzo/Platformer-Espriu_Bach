@@ -48,7 +48,7 @@ bool j1Scene::PreUpdate()
 bool j1Scene::Update(float dt)
 {
 	BROFILER_CATEGORY("UpdateScene", Profiler::Color::HoneyDew);
-	if(App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
+	/*if(App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
 		App->LoadGame();
 
 	if(App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
@@ -61,7 +61,7 @@ bool j1Scene::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
 		App->render->camera.x -= 100*dt;
 	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-		App->render->camera.x += 100*dt;
+		App->render->camera.x += 100*dt;*/
 	
 	/*state = Player->current_santa_state(Player->key_inputs);
 	Player->Updateposition(state);

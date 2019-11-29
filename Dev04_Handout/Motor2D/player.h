@@ -3,9 +3,6 @@
 #include "Entity.h"
 #include "p2List.h"
 #include "p2Qeue.h"
-#include "SDL/include/SDL_rect.h"
-#include "SDL/include/SDL_render.h"
-#include "j1Map.h"
 
 enum santa_states
 {

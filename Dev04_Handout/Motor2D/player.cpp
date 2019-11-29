@@ -129,7 +129,7 @@ void player::Updateposition(santa_states state) {
 
 void player::Draw_player(santa_states state) {
 	BROFILER_CATEGORY("DrawPlayer", Profiler::Color::DarkKhaki);
-	/*switch (state) {
+	switch (state) {
 	case ST_IDLE_RIGHT:
 		App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->data->GetCurrentFrame());
 		break;
@@ -156,7 +156,7 @@ void player::Draw_player(santa_states state) {
 		}
 		break;
 
-	}*/
+	}
 }
 
 santa_states player::current_santa_state(p2Qeue<inputs>& input)

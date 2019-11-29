@@ -4,6 +4,7 @@
 #include "p2List.h"
 #include "p2Point.h"
 #include "p2Qeue.h"
+#include "j1Render.h"
 
 struct TileSet;
 class SDL_Texture;

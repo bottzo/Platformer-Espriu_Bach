@@ -6,6 +6,8 @@
 
 #include "j1Module.h"
 
+enum santa_states;
+
 enum COLLIDER_TYPE
 {
 	COLLIDER_NONE = -1,
