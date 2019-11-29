@@ -3,6 +3,7 @@
 #include "j1Render.h"
 #include "j1Collisions.h"
 #include "j1Module.h"
+#include "j1Scene.h"
 #include "p2Log.h"
 
 j1Collisions::j1Collisions()
@@ -48,8 +49,9 @@ bool j1Collisions::PreUpdate()
 			colliders[i] = nullptr;
 		}
 	}
-
-	update_active_colliders();
+	if (App->scene->Player->player_collider != nullptr) {
+		update_active_colliders();
+	}
 	// Calculate collisions
 	Collider* c1;
 	Collider* c2;
@@ -88,24 +90,24 @@ bool j1Collisions::PreUpdate()
 int j1Collisions::closest_xaxis_collider(santa_states state,bool orientation) {
 	if (state == ST_SLIDE_BACKWARD || state == ST_SLIDE_FORWARD) {
 		if (orientation) {
-			origin_distance_player.x = App->player->slide_collider->rect.x + App->player->slide_collider->rect.w;
+			origin_distance_player.x = App->scene->Player->slide_collider->rect.x + App->scene->Player->slide_collider->rect.w;
 		}
 		else {
-			origin_distance_player.x = App->player->slide_collider->rect.x;
+			origin_distance_player.x = App->scene->Player->slide_collider->rect.x;
 		}
 	}
 	else {
 		if (orientation) {
-			origin_distance_player.x = App->player->player_collider->rect.x + App->player->player_collider->rect.w;
+			origin_distance_player.x = App->scene->Player->player_collider->rect.x + App->scene->Player->player_collider->rect.w;
 		}
 		else {
-			origin_distance_player.x = App->player->player_collider->rect.x;
+			origin_distance_player.x = App->scene->Player->player_collider->rect.x;
 		}
 	}
 
 	int current;
 	int closest;
-	if (App->player->looking_right) {
+	if (App->scene->Player->looking_right) {
 		closest = App->map->data.width*App->map->data.tile_width;
 		for (int i = 0; colliders[i]!=nullptr; ++i) {
 			if (colliders[i]->type == COLLIDER_WALL || colliders[i]->type == COLLIDER_BACKGROUND) {
@@ -140,22 +142,22 @@ int j1Collisions::closest_xaxis_collider(santa_states state,bool orientation) {
 
 int j1Collisions::closest_yaxis_collider(santa_states state) {
 	if (state == ST_SLIDE_BACKWARD || state == ST_SLIDE_FORWARD) {
-		if (App->player->speed.y < 0)
-			origin_distance_player.y = App->player->slide_collider->rect.y;
+		if (App->scene->Player->speed.y < 0)
+			origin_distance_player.y = App->scene->Player->slide_collider->rect.y;
 
 		else
-			origin_distance_player.y = App->player->slide_collider->rect.y + App->player->slide_collider->rect.h;
+			origin_distance_player.y = App->scene->Player->slide_collider->rect.y + App->scene->Player->slide_collider->rect.h;
 	}
 	else {
-		if(App->player->speed.y < 0)
-			origin_distance_player.y = App->player->player_collider->rect.y;
+		if(App->scene->Player->speed.y < 0)
+			origin_distance_player.y = App->scene->Player->player_collider->rect.y;
 		else
-			origin_distance_player.y = App->player->player_collider->rect.y + App->player->player_collider->rect.h;
+			origin_distance_player.y = App->scene->Player->player_collider->rect.y + App->scene->Player->player_collider->rect.h;
 	}
 	
 	int closest;
 	int current;
-	if (App->player->speed.y<0) {
+	if (App->scene->Player->speed.y<0) {
 		closest = App->map->data.height*App->map->data.tile_height;
 		for (int i = 0; colliders[i] != nullptr; ++i) {
 			if (colliders[i]->type == COLLIDER_WALL || colliders[i]->type == COLLIDER_BACKGROUND) {
@@ -190,30 +192,30 @@ int j1Collisions::closest_yaxis_collider(santa_states state) {
 
 bool j1Collisions::on_the_way_x(int index) {
 	bool not_on_the_way;
-	if (App->player->player_collider->active) {
-		not_on_the_way = ((App->player->player_collider->rect.y + App->player->player_collider->rect.h) < colliders[index]->rect.y)
-		|| ((App->player->player_collider->rect.y) > (colliders[index]->rect.y+ colliders[index]->rect.h));
+	if (App->scene->Player->player_collider->active) {
+		not_on_the_way = ((App->scene->Player->player_collider->rect.y + App->scene->Player->player_collider->rect.h) < colliders[index]->rect.y)
+		|| ((App->scene->Player->player_collider->rect.y) > (colliders[index]->rect.y+ colliders[index]->rect.h));
 	}
-	else if (App->player->slide_collider->active) {
-		not_on_the_way = ((App->player->slide_collider->rect.y + App->player->slide_collider->rect.h) < colliders[index]->rect.y)
-			|| ((App->player->slide_collider->rect.y) > (colliders[index]->rect.y + colliders[index]->rect.h));
+	else if (App->scene->Player->slide_collider->active) {
+		not_on_the_way = ((App->scene->Player->slide_collider->rect.y + App->scene->Player->slide_collider->rect.h) < colliders[index]->rect.y)
+			|| ((App->scene->Player->slide_collider->rect.y) > (colliders[index]->rect.y + colliders[index]->rect.h));
 
 	}
 	return !not_on_the_way;
 }
 
 bool j1Collisions::on_the_way_y(int index) {
-	if (App->player->player_collider->active)
-		return !((App->player->player_collider->rect.x + App->player->player_collider->rect.w) < colliders[index]->rect.x || (colliders[index]->rect.x + colliders[index]->rect.w) < App->player->player_collider->rect.x);
-	else if (App->player->slide_collider->active)
-		return !((App->player->slide_collider->rect.x + App->player->slide_collider->rect.w) < colliders[index]->rect.x || (colliders[index]->rect.x + colliders[index]->rect.w) < App->player->slide_collider->rect.x);
+	if (App->scene->Player->player_collider->active)
+		return !((App->scene->Player->player_collider->rect.x + App->scene->Player->player_collider->rect.w) < colliders[index]->rect.x || (colliders[index]->rect.x + colliders[index]->rect.w) < App->scene->Player->player_collider->rect.x);
+	else if (App->scene->Player->slide_collider->active)
+		return !((App->scene->Player->slide_collider->rect.x + App->scene->Player->slide_collider->rect.w) < colliders[index]->rect.x || (colliders[index]->rect.x + colliders[index]->rect.w) < App->scene->Player->slide_collider->rect.x);
 }
 
 void j1Collisions::update_active_colliders() {
 	for (int i = 0; i < MAX_COLLIDERS; ++i) {
 		while (colliders[i] != nullptr) {
 			if (colliders[i]->type == COLLIDER_BACKGROUND) {
-				if ((App->player->player_collider->rect.y + App->player->player_collider->rect.h) < colliders[i]->rect.y) {
+				if ((App->scene->Player->player_collider->rect.y + App->scene->Player->player_collider->rect.h) < colliders[i]->rect.y) {
 					colliders[i]->active = true;
 				}
 				else {

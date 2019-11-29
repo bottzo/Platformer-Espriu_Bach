@@ -127,7 +127,6 @@ void j1Render::ResetViewPort()
 	SDL_RenderSetViewport(renderer, &viewport);
 }
 
-// Blit to screen (if fliping the texture include the tileset)
 bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, SDL_RendererFlip flip, float speed, double angle, int pivot_x, int pivot_y) const
 {
 	bool ret = true;

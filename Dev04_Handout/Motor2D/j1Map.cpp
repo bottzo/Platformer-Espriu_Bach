@@ -4,7 +4,6 @@
 #include "j1Render.h"
 #include "j1Textures.h"
 #include "j1Map.h"
-#include "player.h"
 #include "j1Collisions.h"
 #include "j1Scene.h"
 #include "brofiler/Brofiler/Brofiler.h"
@@ -138,14 +137,14 @@ SDL_Rect TileSet::TilesetRect(uint tiled_gid) {
 
 void j1Map::ChangeMaps(p2SString new_map) {
 	LOG("Erasing player");
-	App->player->CleanUp();
+	App->entities->DestroyEntity(App->scene->Player);
 	LOG("Erasing map colliders");
 	App->collisions->CleanUp();
 	LOG("Unloading map");
 	CleanUp();
 	LOG("Loading new map");
 	Load(new_map.GetString());
-	App->player->Load(App->scene->player_sprite.GetString());
+	App->scene->Player = (player*)App->entities->CreateEntity(Entity::Types::player);
 }
 
 // Called before quitting
@@ -327,11 +326,11 @@ bool j1Map::add_map_colliders() {
 			}
 		}
 		else if (it->data->name == start) {
-			App->player->start_collider=App->collisions->AddCollider(it->data->objects->rect, START_COLLIDER, App->map);
-			App->player->start_collider->rect.x = it->data->objects->rect.x;
-			App->player->start_collider->rect.y = it->data->objects->rect.y;
-			App->player->start_collider->rect.w = it->data->objects->rect.w;
-			App->player->start_collider->rect.h = it->data->objects->rect.h;
+			App->scene->Player->start_collider=App->collisions->AddCollider(it->data->objects->rect, START_COLLIDER, App->map);
+			App->scene->Player->start_collider->rect.x = it->data->objects->rect.x;
+			App->scene->Player->start_collider->rect.y = it->data->objects->rect.y;
+			App->scene->Player->start_collider->rect.w = it->data->objects->rect.w;
+			App->scene->Player->start_collider->rect.h = it->data->objects->rect.h;
 		}
 		else if (it->data->name == end) {
 			App->collisions->AddCollider(it->data->objects->rect, END_COLLIDER, App->map);
@@ -447,8 +446,8 @@ bool j1Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set,j1Module
 	{
 		if (module==this)
 			set->texture = App->tex->Load(PATH(folder.GetString(), image.attribute("source").as_string()));
-		else
-			set->texture = App->tex->Load(PATH(App->player->folder.GetString(), image.attribute("source").as_string()));
+		else if (module==App->entities)
+			set->texture = App->tex->Load(PATH(App->entities->folder.GetString(), image.attribute("source").as_string()));
 		int w, h;
 		SDL_QueryTexture(set->texture, NULL, NULL, &w, &h);
 		set->tex_width = image.attribute("width").as_int();

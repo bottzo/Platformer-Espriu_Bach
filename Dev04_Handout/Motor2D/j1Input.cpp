@@ -2,8 +2,10 @@
 #include "p2Log.h"
 #include "j1App.h"
 #include "j1Input.h"
-#include "player.h"
+#include "j1Scene.h"
 #include "j1Window.h"
+#include "Entity.h"
+#include "player.h"
 #include "j1Collisions.h"
 #include "SDL/include/SDL.h"
 
@@ -144,13 +146,13 @@ bool j1Input::PreUpdate()
 				switch (event.key.keysym.sym)
 				{
 				case SDLK_SPACE:
-					App->player->key_inputs.Push(IN_SLIDE_UP); down = false; break;
+					App->entities->key_inputs.Push(IN_SLIDE_UP); down = false; break;
 				case SDLK_w:
 					up = false; break;
 				case SDLK_a:
-					App->player->key_inputs.Push(IN_LEFT_UP); left = false; break;
+					App->entities->key_inputs.Push(IN_LEFT_UP); left = false; break;
 				case SDLK_d:
-					App->player->key_inputs.Push(IN_RIGHT_UP); right = false; break;
+					App->entities->key_inputs.Push(IN_RIGHT_UP); right = false; break;
 				}
 			}
 			break;
@@ -178,33 +180,33 @@ bool j1Input::PreUpdate()
 
 
 	if (left && right)
-		App->player->key_inputs.Push(IN_LEFT_AND_RIGHT);
+		App->entities->key_inputs.Push(IN_LEFT_AND_RIGHT);
 	else
 	{
 		if (left)
-			App->player->key_inputs.Push(IN_LEFT_DOWN);
+			App->entities->key_inputs.Push(IN_LEFT_DOWN);
 		if (right)
-			App->player->key_inputs.Push(IN_RIGHT_DOWN);
+			App->entities->key_inputs.Push(IN_RIGHT_DOWN);
 	}
 
 	if (up && down)
-		App->player->key_inputs.Push(IN_JUMP_AND_SLIDE);
+		App->entities->key_inputs.Push(IN_JUMP_AND_SLIDE);
 	else
 	{
-		if (down) { //&& App->player->distance.x > App->player->slide_collider->rect.w / 2)
-			App->player->key_inputs.Push(IN_SLIDE_DOWN);
+		if (down) { //&& Player->distance.x > Player->slide_collider->rect.w / 2)
+			App->entities->key_inputs.Push(IN_SLIDE_DOWN);
 		}
-		if (up && (App->player->distance.y == 0))
-			App->player->key_inputs.Push(IN_JUMP);
+		if (up && (App->scene->Player->distance.y == 0))
+			App->entities->key_inputs.Push(IN_JUMP);
 	}
 
-	if (App->player->slide_timer > 0)
+	if (App->scene->Player->slide_timer > 0)
 	{
-		if (SDL_GetTicks() - App->player->slide_timer > SLIDE_TIME)
+		if (SDL_GetTicks() - App->scene->Player->slide_timer > SLIDE_TIME)
 		{
-			App->player->key_inputs.Push(IN_SLIDE_FINISH);
-			App->player->player_collider->active = true; App->player->slide_collider->active = false;
-			App->player->slide_timer = 0;
+			App->entities->key_inputs.Push(IN_SLIDE_FINISH);
+			App->scene->Player->player_collider->active = true; App->scene->Player->slide_collider->active = false;
+			App->scene->Player->slide_timer = 0;
 		}
 	}
 

@@ -10,45 +10,10 @@
 
 player::player() : Entity(Types::player)
 {
-	//Load(); fer el load en entity
 }
 
-player::~player() {
-
-}
-
-SDL_Rect&PlayerAnimation::GetCurrentFrame() {
-	current_frame += frames->duration;
-	if (current_frame >= total_frames)
-		current_frame = 0;
-	return frames[(int)current_frame].rect;
-}
-
-SDL_Rect&PlayerAnimation::DoOneLoop() {
-	current_frame += frames->duration;
-	if (current_frame >= total_frames)
-		current_frame = total_frames-1;
-	return frames[(int)current_frame].rect;
-}
-
-void player::LoadAnimations(pugi::xml_node&node) {
-	LOG("Loading player animations");
-	for (node; node; node = node.next_sibling("tile")) {
-		PlayerAnimation*animation = new PlayerAnimation();
-		animation->name.create(node.child("properties").child("property").attribute("value").as_string());
-		animation->total_frames = node.child("properties").child("property").next_sibling("property").attribute("value").as_uint();
-		LOG("Loading %s animation with %d frames", animation->name.GetString(),animation->total_frames);
-		animation->texture = sprite_tilesets.start->data->texture;
-		pugi::xml_node frame_node = node.child("animation").child("frame");
-		animation->frames = new Frame[animation->total_frames];
-		for (int i = 0;i<animation->total_frames; frame_node = frame_node.next_sibling("frame"),++i) {
-			uint tileset_id = frame_node.attribute("tileid").as_uint();
-			animation->frames[i].duration = frame_node.attribute("duration").as_float()/100;//Dividir entre 1000 pk sigui canvi d'e frame de l0'animacio en cada segon (esta en milisegons en el tmx)
-			animation->frames[i].rect = sprite_tilesets.start->data->TilesetRect(tileset_id+1);//pk el +1??? pk la funcio tilesetrect conta el primer tile com si fos un 1 i no el zero
-		}
-		Animations.add(animation);
-		LOG("Succesfully loaded %s animation", animation->name.GetString());
-	}
+player::~player() 
+{
 }
 
 void player::Updateposition(santa_states state) {
@@ -75,8 +40,8 @@ void player::Updateposition(santa_states state) {
 		speed.x = 30;
 		looking_right = true;
 		if (start_slide) {
-			position.x -= slide_collider->rect.w - (player_collider->rect.w + (player_texture_offset.x - slide_texture_offset.x));
-			slide_collider->SetPos(position.x + slide_texture_offset.x, position.y + slide_texture_offset.y);
+			position.x -= slide_collider->rect.w - (player_collider->rect.w + (App->entities->player_texture_offset.x - App->entities->slide_texture_offset.x));
+			slide_collider->SetPos(position.x + App->entities->slide_texture_offset.x, position.y + App->entities->slide_texture_offset.y);
 			start_slide = false;
 		}
 		break;
@@ -84,8 +49,8 @@ void player::Updateposition(santa_states state) {
 		speed.x = -30;
 		looking_right = false;
 		if (start_slide) {
-			position.x += player_texture_offset.x - slide_texture_offset.x;
-			slide_collider->SetPos(position.x + slide_texture_offset.x, position.y + slide_texture_offset.y);
+			position.x += App->entities->player_texture_offset.x - App->entities->slide_texture_offset.x;
+			slide_collider->SetPos(position.x + App->entities->slide_texture_offset.x, position.y + App->entities->slide_texture_offset.y);
 			start_slide = false;
 		}
 		break;
@@ -128,7 +93,7 @@ void player::Updateposition(santa_states state) {
 			position.y += distance.y;
 			speed.y = 0;
 			if (state == ST_JUMP) {
-				key_inputs.Push(IN_JUMP_FINISH);
+				App->entities->key_inputs.Push(IN_JUMP_FINISH);
 				move_in_air = false;
 				Animations.start->next->next->next->data->current_frame = 0;
 				start_jump = true;
@@ -158,13 +123,13 @@ void player::Updateposition(santa_states state) {
 			position.x += speed.x;
 		}
 	}
-	player_collider->SetPos(position.x+ player_texture_offset.x, position.y +player_texture_offset.y);
-	slide_collider->SetPos(position.x + slide_texture_offset.x, position.y+ slide_texture_offset.y);
+	player_collider->SetPos(position.x+ App->entities->player_texture_offset.x, position.y +App->entities->player_texture_offset.y);
+	slide_collider->SetPos(position.x + App->entities->slide_texture_offset.x, position.y+ App->entities->slide_texture_offset.y);
 }
 
 void player::Draw_player(santa_states state) {
 	BROFILER_CATEGORY("DrawPlayer", Profiler::Color::DarkKhaki);
-	switch (state) {
+	/*switch (state) {
 	case ST_IDLE_RIGHT:
 		App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->data->GetCurrentFrame());
 		break;
@@ -191,24 +156,15 @@ void player::Draw_player(santa_states state) {
 		}
 		break;
 
-	}
-}
-void player::OnCollision(Collider*c1, Collider*c2) {
-	if (c2->type == COLLIDER_DEATH) {
-		position.x = start_collider->rect.x;
-		position.y = start_collider->rect.y;
-	}
-	if (c2->type == END_COLLIDER) {
-		App->map->ChangeMaps("Santa's mountains.tmx");
-	}
+	}*/
 }
 
-santa_states player::current_santa_state(p2Qeue<santa_inputs>& inputs)
+santa_states player::current_santa_state(p2Qeue<inputs>& input)
 {
 	static santa_states state = ST_IDLE_RIGHT;
-	santa_inputs last_input;
+	inputs last_input;
 
-	while (inputs.Pop(last_input))
+	while (input.Pop(last_input))
 	{
 		switch (state)
 		{
@@ -294,56 +250,7 @@ santa_states player::current_santa_state(p2Qeue<santa_inputs>& inputs)
 	return state;
 }
 
-bool player::Load_Entity(const char* file_name) {
-
-	bool ret = true;
-	p2SString tmp("%s%s", folder.GetString(), file_name);
-
-	pugi::xml_parse_result result = player_doc.load_file(tmp.GetString());
-
-	if (result == NULL)
-	{
-		LOG("Could not loadplayer xml file %s. pugi error: %s", file_name, result.description());
-		ret = false;
-	}
-
-	if (ret == true)
-	{
-		bool ret = true;
-		pugi::xml_node player_node = player_doc.child("map").child("tileset");
-		if (player_node == NULL)
-		{
-			LOG("Error parsing player xml file: Cannot find 'tileset' tag.");
-			ret = false;
-		}
-		else
-		{
-			pugi::xml_node tileset;
-			for (tileset = player_node; tileset && ret; tileset = tileset.next_sibling("tileset"))
-			{
-				TileSet* set = new TileSet();
-
-				if (ret == true)
-				{
-					ret = App->map->LoadTilesetDetails(tileset, set);
-				}
-
-				if (ret == true)
-				{
-					ret = App->map->LoadTilesetImage(tileset, set, this);
-				}
-
-				sprite_tilesets.add(set);
-			}
-			player_node = player_node.child("tile");
-			LoadAnimations(player_node);
-			Load_player_info();
-		}
-		return ret;
-	}
-}
-
-void player::Load_player_info() {
+void player::Load_specific_Entity_info() {
 	p2SString group_name; group_name.create("COLLAIDER_PLAYER");
 	p2SString start; start.create("Start");
 	p2SString end; start.create("End");
@@ -354,10 +261,10 @@ void player::Load_player_info() {
 		if (it->data->name == group_name) {
 			for (int i = 0; i < it->data->num_objects; ++i) {
 				if (it->data->objects[i].name == player) {
-					player_collider=App->collisions->AddCollider(it->data->objects[i].rect, COLLIDER_PLAYER1, App->player);
+					player_collider=App->collisions->AddCollider(it->data->objects[i].rect, COLLIDER_PLAYER1, App->entities);
 				}
 				else if (it->data->objects[i].name == slide_collider_name) {
-					slide_collider=App->collisions->AddCollider(it->data->objects[i].rect, COLLIDER_PLAYER1, App->player);
+					slide_collider=App->collisions->AddCollider(it->data->objects[i].rect, COLLIDER_PLAYER1, App->entities);
 					slide_collider->active = false;
 				}
 			}
@@ -367,50 +274,4 @@ void player::Load_player_info() {
 	}
 	position.x = start_collider->rect.x;
 	position.y = start_collider->rect.y;
-}
-
-bool player::positioncamera()
-{
-	App->render->camera.x = -position.x +((App->win->width / 2)-(sprite_tilesets.start->data->tile_width/2));
-	if (App->render->camera.x > 0) {
-		App->render->camera.x = 0;
-	}
-	App->render->camera.y = -(position.y - App->win->height / 2);
-	if (App->render->camera.y <= App->render->initial_camera_y)
-		App->render->camera.y=App->render->initial_camera_y;
-
-	//if (App->win->width / 2 < 0)App->render->camera.x = 0;
-	//if (App->render->camera.y > App->render->initial_camera_y)App->render->camera.y = App->render->initial_camera_y;
-	return true;
-}
-bool player::PostUpdate() {
-	BROFILER_CATEGORY("PlayerPostUpdate", Profiler::Color::Gold);
-	positioncamera();
-return true;
-}
-
-
-
-bool player::CleanUp() {
-	key_inputs.Clear();
-	p2List_item<PlayerAnimation*>* item;
-	item = Animations.start;
-
-	while (item != NULL)
-	{
-		RELEASE(item->data);
-		item = item->next;
-	}
-	Animations.clear();
-	p2List_item<TileSet*>* it;
-	it = sprite_tilesets.start;
-
-	while (it != NULL)
-	{
-		RELEASE(it->data);
-		it = it->next;
-	}
-	sprite_tilesets.clear();
-	player_doc.reset();
-	return true;
 }

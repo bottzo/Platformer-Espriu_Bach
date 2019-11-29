@@ -4,6 +4,7 @@
 #include "j1Module.h"
 
 struct SDL_Texture;
+class player;
 
 class j1Scene : public j1Module
 {
@@ -35,11 +36,10 @@ public:
 
 private:
 	p2SString map_name;
-	
+	bool positioncamera();
 public:
+	player* Player;
 	int actualmap;
-	santa_states state;
-	p2SString player_sprite;
 	p2List<p2SString*> map_names;
 };
 

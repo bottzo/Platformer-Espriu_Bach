@@ -102,11 +102,11 @@ public:
 	iPoint MapToWorld(int x, int y) const;
 	iPoint WorldToMap(int x, int y) const;
 
-private:
-
-	bool LoadMap();
 	bool LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set);
-	bool LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set,j1Module*module);
+	bool LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set, j1Module*module);
+
+private:
+	bool LoadMap();
 	bool LoadLayer(pugi::xml_node& tileset_node, map_layer* layer);
 	bool add_map_colliders();
 	TileSet* GetTilesetFromTileId(int id) const;
