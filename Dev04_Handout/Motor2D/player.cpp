@@ -17,7 +17,7 @@ player::~player()
 {
 }
 
-void player::Updateposition(santa_states state) {
+void player::Updateposition(santa_states state,float dt) {
 	BROFILER_CATEGORY("Updateposition", Profiler::Color::DarkRed);
 	speed.y += App->map->data.gravity;
 	switch (state) {
@@ -62,6 +62,9 @@ void player::Updateposition(santa_states state) {
 		}
 		if (move_in_air) {
 			if (looking_right) {
+				if (speed.x < 0) {
+					speed.x = 0;
+				}
 				if (speed.x < 20) {
 					speed.x += 4;
 				}
@@ -69,6 +72,9 @@ void player::Updateposition(santa_states state) {
 					speed.x = 20;
 			}
 			else {
+				if (speed.x > 0) {
+					speed.x = 0;
+				}
 				if (speed.x > -20) {
 					speed.x -= 4;
 				}
@@ -115,7 +121,8 @@ void player::Updateposition(santa_states state) {
 			speed.x = 0;
 		}
 		else {
-			position.x += speed.x;
+			position.x += (speed.x);
+			LOG("%f",position.x);
 		}
 	}
 	else {
@@ -131,26 +138,26 @@ void player::Updateposition(santa_states state) {
 	slide_collider->SetPos(position.x + App->entities->slide_texture_offset.x, position.y+ App->entities->slide_texture_offset.y);
 }
 
-void player::Draw_player(santa_states state) {
+void player::Draw_player(santa_states state,float dt) {
 	BROFILER_CATEGORY("DrawPlayer", Profiler::Color::DarkKhaki);
 	switch (state) {
 	case ST_IDLE_RIGHT:
-		App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->data->GetCurrentFrame());
+		App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->data->GetCurrentFrame(dt));
 		break;
 	case ST_IDLE_LEFT:
-		App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->data->GetCurrentFrame(),SDL_FLIP_HORIZONTAL);
+		App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->data->GetCurrentFrame(dt),SDL_FLIP_HORIZONTAL);
 		break;
 	case ST_WALK_FORWARD:
-		App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->next->data->GetCurrentFrame());
+		App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->next->data->GetCurrentFrame(dt));
 		break;
 	case ST_WALK_BACKWARD:
-		App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->next->data->GetCurrentFrame(),SDL_FLIP_HORIZONTAL);
+		App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->next->data->GetCurrentFrame(dt),SDL_FLIP_HORIZONTAL);
 		break;
 	case ST_SLIDE_FORWARD:
-		App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->next->next->next->next->data->GetCurrentFrame());
+		App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->next->next->next->next->data->GetCurrentFrame(dt));
 		break;
 	case ST_SLIDE_BACKWARD:
-		App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->next->next->next->next->data->GetCurrentFrame(), SDL_FLIP_HORIZONTAL);
+		App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->next->next->next->next->data->GetCurrentFrame(dt), SDL_FLIP_HORIZONTAL);
 		break;
 	case ST_JUMP:
 		if(looking_right)

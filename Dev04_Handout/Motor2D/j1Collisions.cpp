@@ -92,7 +92,7 @@ bool j1Collisions::PreUpdate()
 
 int j1Collisions::closest_xaxis_collider(santa_states state,bool orientation) {
 	if (state == ST_SLIDE_BACKWARD || state == ST_SLIDE_FORWARD) {
-		if (orientation) {
+		if (App->scene->Player->speed.x > 0) {
 			origin_distance_player.x = App->scene->Player->slide_collider->rect.x + App->scene->Player->slide_collider->rect.w;
 		}
 		else {
@@ -100,7 +100,7 @@ int j1Collisions::closest_xaxis_collider(santa_states state,bool orientation) {
 		}
 	}
 	else {
-		if (orientation) {
+		if (App->scene->Player->speed.x > 0) {
 			origin_distance_player.x = App->scene->Player->player_collider->rect.x + App->scene->Player->player_collider->rect.w;
 		}
 		else {

@@ -24,8 +24,8 @@ public:
 	player();
 	~player();
 	void Load_player_info();
-	void Draw_player(santa_states state);
-	void Updateposition(santa_states state);
+	void Draw_player(santa_states state,float dt);
+	void Updateposition(santa_states state,float dt);
 	p2Point<float> speed;
 	santa_states player::current_santa_state(p2Qeue<inputs>& input);
 	Collider*player_collider;

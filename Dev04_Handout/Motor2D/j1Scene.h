@@ -30,7 +30,7 @@ public:
 	// Called before all Updates
 	bool PostUpdate();
 
-	bool positioncamera(float dt);
+	bool positioncamera();
 	// Called before quitting
 	bool CleanUp();
 

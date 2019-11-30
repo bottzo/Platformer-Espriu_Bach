@@ -32,11 +32,12 @@ struct Frame {
 struct Animation {
 	p2SString name;
 	uint total_frames;
-	float current_frame;
+	uint current_frame;
+	float current_frame_time=0.0f;
 	SDL_Texture* texture;
 	Frame* frames;
-	SDL_Rect& GetCurrentFrame();
-	SDL_Rect& DoOneLoop();
+	SDL_Rect& GetCurrentFrame(float dt=1.0f);
+	SDL_Rect& DoOneLoop(float dt=1.0f);
 };
 
 class Entity{
@@ -66,7 +67,7 @@ public:
 	~EntityManager();
 	bool Awake(pugi::xml_node&config);
 	bool Update(float dt);
-	bool UpdateAll(float dt, bool do_logic);
+	bool UpdateAll(float s,float acumulated_s, bool do_logic);
 	bool CleanUp();
 	void OnCollision(Collider*c1, Collider*c2);
 	Entity* CreateEntity(Entity::Types type);
@@ -77,7 +78,7 @@ public:
 	iPoint player_texture_offset;
 	iPoint slide_texture_offset;
 	p2Qeue<inputs> key_inputs;
-	float acumulated_time;
+	float acumulated_ms;
 	float update_ms_cycle;
 	bool do_logic;
 private:

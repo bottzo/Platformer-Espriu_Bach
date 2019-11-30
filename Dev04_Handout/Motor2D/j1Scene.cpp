@@ -9,6 +9,7 @@
 #include "j1Map.h"
 #include "j1Scene.h"
 #include "player.h"
+#include "j1Collisions.h"
 #include "brofiler/Brofiler/Brofiler.h"
 
 j1Scene::j1Scene() : j1Module()
@@ -62,18 +63,17 @@ bool j1Scene::Update(float dt)
 		App->render->camera.x -= 100*dt;
 	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		App->render->camera.x += 100*dt;*/
-	positioncamera(dt);
 	App->map->Draw();
 	return true;
 }
 
-bool j1Scene::positioncamera(float dt)
+bool j1Scene::positioncamera()
 {
-	App->render->camera.x = (-Player->position.x + ((App->win->width / 2) - (Player->sprite_tilesets.start->data->tile_width / 2)))*dt;
+	App->render->camera.x = (-Player->position.x + ((App->win->width / 2) - (Player->sprite_tilesets.start->data->tile_width / 2)));
 	if (App->render->camera.x > 0) {
 		App->render->camera.x = 0;
 	}
-	App->render->camera.y = -(Player->position.y - App->win->height / 2)*dt;
+	App->render->camera.y = -(Player->position.y - App->win->height / 2);
 	if (App->render->camera.y <= App->render->initial_camera_y)
 		App->render->camera.y = App->render->initial_camera_y;
 

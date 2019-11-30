@@ -82,6 +82,7 @@ bool j1Render::PostUpdate()
 	BROFILER_CATEGORY("RendererPostUpdate", Profiler::Color::Bisque);
 	//SDL_SetRenderDrawColor(renderer, background.r, background.g, background.g, background.a);
 	SDL_RenderPresent(renderer);
+	SDL_RenderClear(renderer);
 	return true;
 }
 

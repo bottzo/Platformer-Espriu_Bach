@@ -5,6 +5,7 @@
 #include "p2Log.h"
 #include "j1Scene.h"
 #include "J1Collisions.h"
+#include "brofiler/Brofiler/Brofiler.h"
 
 Entity::Entity(Types type) : type(type) { Load_Entity(App->entities->player_sprite.GetString()); }
 
@@ -45,29 +46,31 @@ void EntityManager::DestroyEntity(Entity* entity) {
 
 bool EntityManager::Update(float dt)
 {
-	acumulated_time += dt*1000;
-	if (acumulated_time >= update_ms_cycle)
+	acumulated_ms += dt*1000.0f;
+	if (acumulated_ms >= update_ms_cycle)
 		do_logic = true;
-	UpdateAll(dt, do_logic);
+	UpdateAll(dt,acumulated_ms/1000.0f, do_logic);
 	if (do_logic == true) {
-		acumulated_time = 0.0f;
+		acumulated_ms = 0.0f;
 		do_logic = false;
 	}
 	return true;
 }
 
-bool EntityManager::UpdateAll(float dt, bool do_logic) {
+bool EntityManager::UpdateAll(float s,float acumulated_s, bool do_logic) {
+	BROFILER_CATEGORY("Update_all_entities", Profiler::Color::Aquamarine);
 	santa_states state = App->scene->Player->current_santa_state(key_inputs);
 	if (do_logic) {
-		App->scene->Player->Updateposition(state);
+		App->scene->Player->Updateposition(state,acumulated_s);
+		App->scene->positioncamera();
 	}
-	App->scene->Player->Draw_player(state);
+	App->scene->Player->Draw_player(state, s);
 	return true;
 }
 
 EntityManager::EntityManager():j1Module () {
 	name.create("Entities");
-	acumulated_time = 0.0f;
+	acumulated_ms = 0.0f;
 	do_logic = false;
 }
 
@@ -147,18 +150,26 @@ bool Entity::Load_Entity(const char* file_name) {
 	}
 }
 
-SDL_Rect&Animation::GetCurrentFrame() {
-	current_frame += frames->duration;
+SDL_Rect&Animation::GetCurrentFrame(float dt) {
+	current_frame_time += dt;
+	if (frames->duration < current_frame_time) {
+		current_frame += 1;
+		current_frame_time = 0.0f;
+	}
 	if (current_frame >= total_frames)
 		current_frame = 0;
-	return frames[(int)current_frame].rect;
+	return frames[current_frame].rect;
 }
 
-SDL_Rect&Animation::DoOneLoop() {
-	current_frame += frames->duration;
+SDL_Rect&Animation::DoOneLoop(float dt) {
+	current_frame_time += dt;
+	if (frames->duration < current_frame_time) {
+		current_frame += 1;
+		current_frame_time = 0.0f;
+	}
 	if (current_frame >= total_frames)
-		current_frame = total_frames - 1;
-	return frames[(int)current_frame].rect;
+		current_frame =total_frames-1;
+	return frames[current_frame].rect;
 }
 
 void Entity::LoadAnimations(pugi::xml_node&node) {
@@ -173,7 +184,7 @@ void Entity::LoadAnimations(pugi::xml_node&node) {
 		animation->frames = new Frame[animation->total_frames];
 		for (int i = 0; i < animation->total_frames; frame_node = frame_node.next_sibling("frame"), ++i) {
 			uint tileset_id = frame_node.attribute("tileid").as_uint();
-			animation->frames[i].duration = frame_node.attribute("duration").as_float() / 100;//Dividir entre 1000 pk sigui canvi d'e frame de l0'animacio en cada segon (esta en milisegons en el tmx)
+			animation->frames[i].duration = frame_node.attribute("duration").as_float()/1000;//Dividir entre 1000 pk sigui canvi d'e frame de l0'animacio en cada segon (esta en milisegons en el tmx)
 			animation->frames[i].rect = sprite_tilesets.start->data->TilesetRect(tileset_id + 1);//pk el +1??? pk la funcio tilesetrect conta el primer tile com si fos un 1 i no el zero
 		}
 		Animations.add(animation);
