@@ -84,10 +84,7 @@ bool j1Scene::positioncamera()
 // Called each loop iteration
 bool j1Scene::PostUpdate()
 {
-	BROFILER_CATEGORY("ScenePostUpdate", Profiler::Color::Pink);
 	bool ret = true;
-
-	//positioncamera();
 
 	if(App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;

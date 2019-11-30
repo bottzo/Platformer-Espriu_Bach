@@ -62,9 +62,6 @@ void player::Updateposition(santa_states state,float dt) {
 		}
 		if (move_in_air) {
 			if (looking_right) {
-				if (speed.x < 0) {
-					speed.x = 0;
-				}
 				if (speed.x < 20) {
 					speed.x += 4;
 				}
@@ -72,9 +69,6 @@ void player::Updateposition(santa_states state,float dt) {
 					speed.x = 20;
 			}
 			else {
-				if (speed.x > 0) {
-					speed.x = 0;
-				}
 				if (speed.x > -20) {
 					speed.x -= 4;
 				}
@@ -122,7 +116,6 @@ void player::Updateposition(santa_states state,float dt) {
 		}
 		else {
 			position.x += (speed.x);
-			LOG("%f",position.x);
 		}
 	}
 	else {
@@ -161,9 +154,9 @@ void player::Draw_player(santa_states state,float dt) {
 		break;
 	case ST_JUMP:
 		if(looking_right)
-			App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->next->next->next->data->DoOneLoop());
+			App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->next->next->next->data->DoOneLoop(dt));
 		else {
-			App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->next->next->next->data->DoOneLoop(), SDL_FLIP_HORIZONTAL);
+			App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->next->next->next->data->DoOneLoop(dt), SDL_FLIP_HORIZONTAL);
 		}
 		break;
 
