@@ -31,9 +31,9 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	tex = new j1Textures();
 	audio = new j1Audio();
 	scene = new j1Scene();
+	entities = new EntityManager();
 	map = new j1Map();
 	pathfinding = new j1PathFinding();
-	entities = new EntityManager();
 	
 
 	// Ordered for awake / Start / Update
@@ -44,9 +44,9 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(audio);
 	AddModule(map);
 	AddModule(scene);
+	AddModule(entities);
 	AddModule(collisions);
 	AddModule(pathfinding);
-	AddModule(entities);
 	
 
 	// render last to swap buffer

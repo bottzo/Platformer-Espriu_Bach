@@ -52,7 +52,7 @@ public:
 	Entity(Types type);
 	bool Load_Entity(const char* file_name);
 	void LoadAnimations(pugi::xml_node&node);//A entity
-	virtual void Load_specific_Entity_info() {};
+	virtual void Load_specific_Entity_info(){};
 public:
 	p2List<TileSet*>sprite_tilesets;
 	p2List<Animation*>Animations;
@@ -78,6 +78,9 @@ public:
 	iPoint player_texture_offset;
 	iPoint slide_texture_offset;
 	p2Qeue<inputs> key_inputs;
+	float acumulated_time;
+	float update_ms_cycle;
+	bool do_logic;
 private:
 	p2List<Entity*> Entity_list;
 };

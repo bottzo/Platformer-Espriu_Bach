@@ -45,24 +45,30 @@ void EntityManager::DestroyEntity(Entity* entity) {
 
 bool EntityManager::Update(float dt)
 {
-	/*accumulated_time += dt;
-	if (accumulated_time >= update_ms_cycle)
+	acumulated_time += dt;
+	if (acumulated_time >= update_ms_cycle)
 		do_logic = true;
 	UpdateAll(dt, do_logic);
 	if (do_logic == true) {
-		accumulated_time = 0.0f;
+		acumulated_time = 0.0f;
 		do_logic = false;
-	}*/
+	}
 	return true;
 }
 
 bool EntityManager::UpdateAll(float dt, bool do_logic) {
-
+	santa_states state = App->scene->Player->current_santa_state(key_inputs);
+	if (do_logic) {
+		App->scene->Player->Updateposition(state);
+	}
+	App->scene->Player->Draw_player(state);
 	return true;
 }
 
 EntityManager::EntityManager():j1Module () {
 	name.create("Entities");
+	acumulated_time = 0.0f;
+	do_logic = false;
 }
 
 EntityManager::~EntityManager() {
@@ -76,6 +82,7 @@ bool EntityManager::Awake(pugi::xml_node&config) {
 	player_texture_offset.y = config.child("texture_offset").attribute("y").as_int();
 	slide_texture_offset.x = config.child("slide_offset").attribute("x").as_int();
 	slide_texture_offset.y = config.child("slide_offset").attribute("x").as_int();
+	update_ms_cycle= config.child("logic_update_ms").attribute("ms").as_float();
 	return true;
 }
 

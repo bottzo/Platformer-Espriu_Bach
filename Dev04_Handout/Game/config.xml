@@ -41,6 +41,7 @@
     <player_sprite name="santa_animations.tmx"/>
     <texture_offset x="56" y="8"/>
     <slide_offset x="36" y="43"/>
+    <logic_update_ms ms="50"/>
   </Entities>
   <scene>
     <map_name name="Santa's delivering.tmx"/>

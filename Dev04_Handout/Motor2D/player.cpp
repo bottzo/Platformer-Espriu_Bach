@@ -104,6 +104,9 @@ void player::Updateposition(santa_states state) {
 		}
 	}
 
+	player_collider->SetPos(position.x + App->entities->player_texture_offset.x, position.y + App->entities->player_texture_offset.y);
+	slide_collider->SetPos(position.x + App->entities->slide_texture_offset.x, position.y + App->entities->slide_texture_offset.y);
+
 	distance.x=App->collisions->closest_xaxis_collider(state,looking_right);
 	if (looking_right) {
 		if (speed.x >= distance.x) {
