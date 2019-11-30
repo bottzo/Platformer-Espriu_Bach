@@ -152,7 +152,7 @@ void j1Map::ChangeMaps(p2SString new_map) {
 bool j1Map::CleanUp()
 {
 	LOG("Unloading map");
-
+	data.start->to_delete = true;
 	// Remove all tilesets
 	p2List_item<TileSet*>* item;
 	item = data.tilesets.start;
@@ -327,11 +327,7 @@ bool j1Map::add_map_colliders() {
 			}
 		}
 		else if (it->data->name == start) {
-			App->scene->Player->start_collider=App->collisions->AddCollider(it->data->objects->rect, START_COLLIDER, App->map);
-			App->scene->Player->start_collider->rect.x = it->data->objects->rect.x;
-			App->scene->Player->start_collider->rect.y = it->data->objects->rect.y;
-			App->scene->Player->start_collider->rect.w = it->data->objects->rect.w;
-			App->scene->Player->start_collider->rect.h = it->data->objects->rect.h;
+			data.start=App->collisions->AddCollider(it->data->objects->rect, START_COLLIDER, App->map);
 		}
 		else if (it->data->name == end) {
 			App->collisions->AddCollider(it->data->objects->rect, END_COLLIDER, App->map);
@@ -486,13 +482,3 @@ bool j1Map::LoadLayer(pugi::xml_node& layer_node, map_layer* layer) {
 	}
 	return ret;
 }
-
-//bool j1Map::ChangeMaps(p2SString* new_map)
-//{
-//	CleanUp();
-//	App->scene;
-//	LoadMap();
-//	
-//
-//	return true;
-//}

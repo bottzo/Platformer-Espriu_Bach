@@ -51,8 +51,7 @@ public:
 public:
 	Entity(Types type);
 	bool Load_Entity(const char* file_name);
-	void LoadAnimations(pugi::xml_node&node);//A entity
-	virtual void Load_specific_Entity_info(){};
+	void LoadAnimations(pugi::xml_node&node);
 public:
 	p2List<TileSet*>sprite_tilesets;
 	p2List<Animation*>Animations;

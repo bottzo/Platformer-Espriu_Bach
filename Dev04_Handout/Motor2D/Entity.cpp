@@ -6,7 +6,7 @@
 #include "j1Scene.h"
 #include "J1Collisions.h"
 
-Entity::Entity(Types type) : type(type) { if (this->type == Entity::Types::player) { Load_Entity(App->entities->player_sprite.GetString()); } }
+Entity::Entity(Types type) : type(type) { Load_Entity(App->entities->player_sprite.GetString()); }
 
 Entity* EntityManager::CreateEntity(Entity::Types type) {
 	//static_assert(Entity::Types::unknown == 3, "code needs update");
@@ -45,7 +45,7 @@ void EntityManager::DestroyEntity(Entity* entity) {
 
 bool EntityManager::Update(float dt)
 {
-	acumulated_time += dt;
+	acumulated_time += dt*1000;
 	if (acumulated_time >= update_ms_cycle)
 		do_logic = true;
 	UpdateAll(dt, do_logic);
@@ -142,7 +142,6 @@ bool Entity::Load_Entity(const char* file_name) {
 			}
 			entity_node = entity_node.child("tile");
 			LoadAnimations(entity_node);
-			Load_specific_Entity_info();;
 		}
 		return ret;
 	}
@@ -184,8 +183,8 @@ void Entity::LoadAnimations(pugi::xml_node&node) {
 
 void EntityManager::OnCollision(Collider*c1, Collider*c2) {
 	if (c2->type == COLLIDER_DEATH && c1->type==COLLIDER_PLAYER1) {
-		App->scene->Player->position.x = App->scene->Player->start_collider->rect.x;
-		App->scene->Player->position.y = App->scene->Player->start_collider->rect.y;
+		App->scene->Player->position.x = App->map->data.start->rect.x;
+		App->scene->Player->position.y = App->map->data.start->rect.y;
 	}
 	if (c2->type == END_COLLIDER && c1->type == COLLIDER_PLAYER1) {
 		App->map->ChangeMaps("Santa's mountains.tmx");

@@ -30,13 +30,12 @@ public:
 	// Called before all Updates
 	bool PostUpdate();
 
-	bool PositionCamera();
+	bool positioncamera(float dt);
 	// Called before quitting
 	bool CleanUp();
 
 private:
 	p2SString map_name;
-	bool positioncamera();
 public:
 	player* Player;
 	int actualmap;

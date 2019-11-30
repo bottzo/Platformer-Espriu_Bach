@@ -23,14 +23,13 @@ class player:public Entity {
 public:
 	player();
 	~player();
-	void Load_specific_Entity_info();
+	void Load_player_info();
 	void Draw_player(santa_states state);
 	void Updateposition(santa_states state);
 	p2Point<float> speed;
 	santa_states player::current_santa_state(p2Qeue<inputs>& input);
 	Collider*player_collider;
 	Collider*slide_collider;
-	Collider*start_collider;
 	bool looking_right = true;
 	float slide_timer;
 	bool move_in_air;

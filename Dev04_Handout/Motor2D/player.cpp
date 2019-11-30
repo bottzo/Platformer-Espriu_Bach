@@ -10,6 +10,7 @@
 
 player::player() : Entity(Types::player)
 {
+	Load_player_info();
 }
 
 player::~player() 
@@ -253,10 +254,8 @@ santa_states player::current_santa_state(p2Qeue<inputs>& input)
 	return state;
 }
 
-void player::Load_specific_Entity_info() {
+void player::Load_player_info() {
 	p2SString group_name; group_name.create("COLLAIDER_PLAYER");
-	p2SString start; start.create("Start");
-	p2SString end; start.create("End");
 	p2SString player; player.create("player_collider");
 	p2SString slide_collider_name; slide_collider_name.create("slide_collider");
 	p2List_item<objectgroup*>*it = App->map->data.objectgroup.start;
@@ -275,6 +274,6 @@ void player::Load_specific_Entity_info() {
 		}
 		it = it->next;
 	}
-	position.x = start_collider->rect.x;
-	position.y = start_collider->rect.y;
+	position.x = App->map->data.start->rect.x;
+	position.y = App->map->data.start->rect.y;
 }

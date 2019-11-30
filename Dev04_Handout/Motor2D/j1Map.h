@@ -71,6 +71,7 @@ struct MapData
 	p2List<TileSet*>	tilesets;
 	p2List<map_layer*>  layer;
 	p2List<objectgroup*>objectgroup;
+	Collider*           start;
 };
 
 // ----------------------------------------------------

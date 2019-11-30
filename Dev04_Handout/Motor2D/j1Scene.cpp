@@ -33,8 +33,8 @@ bool j1Scene::Awake(pugi::xml_node&config)
 // Called before the first frame
 bool j1Scene::Start()
 {
-	Player = (player*)App->entities->CreateEntity(Entity::Types::player);
 	App->map->Load(map_name.GetString());
+	Player = (player*)App->entities->CreateEntity(Entity::Types::player);
 	return true;
 }
 
@@ -62,29 +62,18 @@ bool j1Scene::Update(float dt)
 		App->render->camera.x -= 100*dt;
 	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		App->render->camera.x += 100*dt;*/
-	
-	/*state = Player->current_santa_state(Player->key_inputs);
-	Player->Updateposition(state);
-	App->map->Draw();
-	Player->Draw_player(state);*/
-
-	/*p2SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d",
-					App->map->data.width, App->map->data.height,
-					App->map->data.tile_width, App->map->data.tile_height,
-					App->map->data.tilesets.count());
-
-	App->win->SetTitle(title.GetString());*/
+	positioncamera(dt);
 	App->map->Draw();
 	return true;
 }
 
-bool j1Scene::positioncamera()
+bool j1Scene::positioncamera(float dt)
 {
-	App->render->camera.x = -Player->position.x + ((App->win->width / 2) - (Player->sprite_tilesets.start->data->tile_width / 2));
+	App->render->camera.x = (-Player->position.x + ((App->win->width / 2) - (Player->sprite_tilesets.start->data->tile_width / 2)))*dt;
 	if (App->render->camera.x > 0) {
 		App->render->camera.x = 0;
 	}
-	App->render->camera.y = -(Player->position.y - App->win->height / 2);
+	App->render->camera.y = -(Player->position.y - App->win->height / 2)*dt;
 	if (App->render->camera.y <= App->render->initial_camera_y)
 		App->render->camera.y = App->render->initial_camera_y;
 
