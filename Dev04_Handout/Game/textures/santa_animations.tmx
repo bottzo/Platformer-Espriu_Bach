@@ -72,22 +72,22 @@
     <property name="total_frames" type="int" value="16"/>
    </properties>
    <animation>
-    <frame tileid="51" duration="40"/>
-    <frame tileid="52" duration="40"/>
-    <frame tileid="53" duration="40"/>
-    <frame tileid="54" duration="44"/>
-    <frame tileid="55" duration="40"/>
-    <frame tileid="56" duration="40"/>
-    <frame tileid="57" duration="40"/>
-    <frame tileid="58" duration="40"/>
-    <frame tileid="59" duration="40"/>
-    <frame tileid="60" duration="40"/>
-    <frame tileid="61" duration="40"/>
-    <frame tileid="62" duration="40"/>
-    <frame tileid="63" duration="40"/>
-    <frame tileid="64" duration="40"/>
-    <frame tileid="65" duration="40"/>
-    <frame tileid="66" duration="40"/>
+    <frame tileid="51" duration="38"/>
+    <frame tileid="52" duration="38"/>
+    <frame tileid="53" duration="38"/>
+    <frame tileid="54" duration="38"/>
+    <frame tileid="55" duration="38"/>
+    <frame tileid="56" duration="38"/>
+    <frame tileid="57" duration="38"/>
+    <frame tileid="58" duration="38"/>
+    <frame tileid="59" duration="38"/>
+    <frame tileid="60" duration="38"/>
+    <frame tileid="61" duration="38"/>
+    <frame tileid="62" duration="38"/>
+    <frame tileid="63" duration="38"/>
+    <frame tileid="64" duration="38"/>
+    <frame tileid="65" duration="38"/>
+    <frame tileid="66" duration="38"/>
    </animation>
   </tile>
   <tile id="68">
