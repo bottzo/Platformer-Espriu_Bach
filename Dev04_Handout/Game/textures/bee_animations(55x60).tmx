@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="2" height="1" tilewidth="55" tileheight="60" nextobjectid="1">
+ <tileset firstgid="1" name="bee_spritesheet 6" tilewidth="55" tileheight="60" tilecount="288" columns="18">
+  <image source="bee_spritesheet 6.png" trans="ff00ff" width="1000" height="1000"/>
+  <tile id="0">
+   <animation>
+    <frame tileid="0" duration="100"/>
+    <frame tileid="1" duration="100"/>
+    <frame tileid="2" duration="100"/>
+    <frame tileid="3" duration="100"/>
+    <frame tileid="18" duration="100"/>
+    <frame tileid="19" duration="100"/>
+    <frame tileid="20" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="20">
+   <animation>
+    <frame tileid="21" duration="100"/>
+    <frame tileid="22" duration="100"/>
+    <frame tileid="23" duration="100"/>
+   </animation>
+  </tile>
+ </tileset>
+ <layer name="Capa de Patrones 1" width="2" height="1">
+  <data encoding="csv">
+1,21
+</data>
+ </layer>
+</map>
