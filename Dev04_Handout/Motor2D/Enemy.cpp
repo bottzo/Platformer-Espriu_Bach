@@ -8,22 +8,19 @@
 
 
 enemy::enemy() {
-	switch (this->kind) {
-	case Enemies::ground:
-		this->type = Entity::Types::ground_enemy; break;
-	case Enemies::air:
-		this->type = Entity::Types::flying_enemy; break;
-	}
+
 }
 
 ground_enemy::ground_enemy() {
 	Load_Enemy(App->entities->ground_enemy_sprite.GetString());
 	this->kind = Enemies::ground;
+	this->type = Entity::Types::ground_enemy;
 }
 
 flying_enemy::flying_enemy() {
 	Load_Enemy(App->entities->flying_enemy_sprite.GetString());
 	this->kind = Enemies::air;
+	this->type = Entity::Types::flying_enemy;
 }
 
 bool ground_enemy::Load_Enemy(const char* file_name) {
@@ -186,12 +183,24 @@ bool flying_enemy::Load_Enemy(const char* file_name) {
 	return ret;
 }
 
-void enemy::Draw_Enemy(float dt) {
-	if(App->entities->GetPlayer()->position.x > this->position.x)
-		App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->data->GetCurrentFrame(dt));
-	else {
-		App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->data->GetCurrentFrame(dt), SDL_FLIP_HORIZONTAL,this);
+void enemy::Draw_Enemy(float dt,Entity* type) {
+	switch (kind) {
+	case Enemies::ground:
+		if (App->entities->GetPlayer()->position.x > this->position.x)
+			App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->data->GetCurrentFrame(dt),SDL_FLIP_NONE,type);
+		else {
+			App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->data->GetCurrentFrame(dt), SDL_FLIP_HORIZONTAL, type);
+		}
+		break;
+	case Enemies::air:
+		if (App->entities->GetPlayer()->position.x > this->position.x)
+			App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->data->GetCurrentFrame(dt), SDL_FLIP_HORIZONTAL, type);
+		else {
+			App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->data->GetCurrentFrame(dt),SDL_FLIP_NONE,type);
+		}
+		break;
 	}
+
 }
 
 	/*#include "Application.h"

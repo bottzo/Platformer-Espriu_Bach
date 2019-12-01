@@ -142,7 +142,7 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 		else{
 			switch (entity->type) {
 			case Entity::Types::ground_enemy: x += ground_enemy_flip_offset; break;
-			case Entity::Types::flying_enemy: x += ground_enemy_flip_offset; break;
+			case Entity::Types::flying_enemy: break;
 			}
 		}
 	}

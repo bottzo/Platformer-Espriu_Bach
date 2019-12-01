@@ -3,6 +3,10 @@
  <tileset firstgid="1" name="bee_spritesheet 6" tilewidth="55" tileheight="60" tilecount="288" columns="18">
   <image source="bee_spritesheet 6.png" trans="ff00ff" width="1000" height="1000"/>
   <tile id="0">
+   <properties>
+    <property name="name" value="move"/>
+    <property name="total_frames" type="int" value="7"/>
+   </properties>
    <animation>
     <frame tileid="0" duration="100"/>
     <frame tileid="1" duration="100"/>
