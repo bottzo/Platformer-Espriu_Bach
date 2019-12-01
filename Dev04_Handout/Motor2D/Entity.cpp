@@ -157,6 +157,8 @@ void EntityManager::OnCollision(Collider*c1, Collider*c2) {
 		}
 	}*/
 	if (c1->type == COLLIDER_PLAYER1 && c2->type == COLLIDER_ENEMY) {
+		App->entities->GetPlayer()->position.x = App->map->data.start->rect.x;
+		App->entities->GetPlayer()->position.y = App->map->data.start->rect.y;
 		/*if (App->scene->penguin != nullptr) {
 			if (App->scene->penguin->enemy_collider == c2) {
 				App->entities->DestroyEntity(App->entities->FindGroundEnemy(App->scene->penguin));

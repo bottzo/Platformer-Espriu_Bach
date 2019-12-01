@@ -191480,7 +191480,7 @@
   </data>
  </layer>
  <objectgroup name="COLLIDER_START">
-  <object id="90" name="Start" x="113" y="1119" width="220" height="149"/>
+  <object id="90" name="Start" x="103.909" y="1132.21" width="220" height="149"/>
  </objectgroup>
  <objectgroup name="COLLIDER_END">
   <object id="94" name="End" x="10137.5" y="1186.5" width="71" height="123"/>
@@ -191522,8 +191522,8 @@
   <object id="88" name="Terrain" x="10144" y="1311" width="65" height="98"/>
  </objectgroup>
  <objectgroup name="COLLAIDER_PLAYER">
-  <object id="81" name="player_collider" x="169" y="1127" width="70" height="127"/>
-  <object id="82" name="slide_collider" x="149" y="1162" width="112" height="99"/>
+  <object id="81" name="player_collider" x="159.909" y="1140.21" width="70" height="127"/>
+  <object id="82" name="slide_collider" x="139.909" y="1175.21" width="112" height="99"/>
  </objectgroup>
  <objectgroup name="COLLIDER_DEATH">
   <object id="67" name="Death" x="381.818" y="1884.85" width="645.455" height="69.697"/>
@@ -191536,7 +191536,7 @@
   <object id="83" name="background" x="640" y="1664.67" width="61.3333" height="62.6667"/>
  </objectgroup>
  <objectgroup name="COLLIDER_ENEMY">
-  <object id="102" name="flying_enemy_collider" x="5821.21" y="1524.24" width="55" height="60"/>
+  <object id="102" name="flying_enemy_collider" x="5801.21" y="1549.57" width="55" height="60"/>
   <object id="103" name="ground_enemy_collider" x="5359" y="1623" width="60" height="102"/>
  </objectgroup>
 </map>
