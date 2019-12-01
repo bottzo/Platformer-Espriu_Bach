@@ -108,8 +108,8 @@ bool j1Audio::PlayMusic(const char* path, float fade_time)
 		// this call blocks until fade out is done
 		Mix_FreeMusic(music);
 	}
+	p2SString tmp("%s%s", music_folder.GetString(), path);
 	
-	p2SString tmp(music_folder.GetString(), path);
 	music = Mix_LoadMUS(tmp.GetString());
 
 
