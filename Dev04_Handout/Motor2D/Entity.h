@@ -9,6 +9,8 @@
 struct TileSet;
 class SDL_Texture;
 class player;
+class ground_enemy;
+class flying_enemy;
 
 enum inputs
 {
@@ -45,8 +47,8 @@ class Entity{
 public:
 	enum class Types
 	{
-		ground_enemy,
 		flying_enemy,
+		ground_enemy,
 		player,
 		unknown
 	};
@@ -73,6 +75,8 @@ public:
 	Entity* CreateEntity(Entity::Types type);
 	void DestroyEntity(Entity* entity);
 	player* GetPlayer() const;
+	ground_enemy* FindGroundEnemy(Entity* entity);
+	flying_enemy* FindFlyingEnemy(Entity* entity);
 public:
 	p2SString folder;
 	p2SString player_sprite;

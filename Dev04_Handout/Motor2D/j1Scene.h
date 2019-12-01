@@ -5,6 +5,8 @@
 
 struct SDL_Texture;
 class player;
+class flying_enemy;
+class ground_enemy;
 
 class j1Scene : public j1Module
 {
@@ -37,6 +39,8 @@ public:
 private:
 	p2SString map_name;
 public:
+	ground_enemy*penguin;
+	flying_enemy* bee;
 	int actualmap;
 	p2List<p2SString*> map_names;
 };

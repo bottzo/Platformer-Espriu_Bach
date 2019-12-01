@@ -9,6 +9,7 @@
 #include "j1Map.h"
 #include "j1Scene.h"
 #include "player.h"
+#include "Enemy.h"
 #include "j1Collisions.h"
 #include "brofiler/Brofiler/Brofiler.h"
 
@@ -35,6 +36,8 @@ bool j1Scene::Start()
 {
 	App->map->Load(map_name.GetString());
 	(player*)App->entities->CreateEntity(Entity::Types::player);
+	penguin=(ground_enemy*)App->entities->CreateEntity(Entity::Types::ground_enemy);
+	bee=(flying_enemy*)App->entities->CreateEntity(Entity::Types::flying_enemy);
 	return true;
 }
 

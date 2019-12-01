@@ -55,8 +55,10 @@
   </tile>
  </tileset>
  <layer name="Capa de Patrones 1" width="3" height="1">
-  <data encoding="csv">
-361,1,384
-</data>
+  <data>
+   <tile gid="361"/>
+   <tile gid="1"/>
+   <tile gid="384"/>
+  </data>
  </layer>
 </map>

@@ -83,7 +83,7 @@ bool ground_enemy::Load_Enemy(const char* file_name) {
 				LOG("Succesfully loaded %s animation", animation->name.GetString());
 			}
 			LOG("Loading enemy position and colliders");
-			p2SString group_name; group_name.create("COLLAIDER_ENEMY");
+			p2SString group_name; group_name.create("COLLIDER_ENEMY");
 			p2SString enemy_collider_string; enemy_collider_string.create("ground_enemy_collider");
 			p2List_item<objectgroup*>*it = App->map->data.objectgroup.start;
 			while (it != NULL) {
@@ -163,7 +163,7 @@ bool flying_enemy::Load_Enemy(const char* file_name) {
 				LOG("Succesfully loaded %s animation", animation->name.GetString());
 			}
 			LOG("Loading enemy position and colliders");
-			p2SString group_name; group_name.create("COLLAIDER_ENEMY");
+			p2SString group_name; group_name.create("COLLIDER_ENEMY");
 			p2SString enemy_collider_string; enemy_collider_string.create("flying_enemy_collider");
 			p2List_item<objectgroup*>*it = App->map->data.objectgroup.start;
 			while (it != NULL) {

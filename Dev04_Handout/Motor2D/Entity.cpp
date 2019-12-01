@@ -31,14 +31,33 @@ void EntityManager::DestroyEntity(Entity* entity) {
 }
 
 player* EntityManager::GetPlayer() const {
-	p2List_item<Entity*>item = Entity_list.start->data;
-	while (item.data != nullptr) {
-		if(item.data->type==Entity::Types::player)
-			return (player*)item.data;
-		item = item.next->data;
+	p2List_item<Entity*>*item = Entity_list.start;
+	while (item->data != nullptr) {
+		if(item->data->type==Entity::Types::player)
+			return (player*)item->data;
+		item = item->next;
 	}
 	return nullptr;
+}
 
+ground_enemy* EntityManager::FindGroundEnemy(Entity* entity) {
+	p2List_item<Entity*>*item = Entity_list.start;
+	while (item != nullptr) {
+		if (item->data->type == Entity::Types::ground_enemy && (Entity_list.find(entity) != -1))
+			return (ground_enemy*)item->data;
+		item = item->next;
+	}
+	return nullptr;
+}
+
+flying_enemy* EntityManager::FindFlyingEnemy(Entity* entity) {
+	p2List_item<Entity*>*item = Entity_list.start;
+	while (item != nullptr) {
+		if (item->data->type == Entity::Types::flying_enemy && (Entity_list.find(entity) != -1))
+			return (flying_enemy*)item->data;
+		item = item->next;
+	}
+	return nullptr;
 }
 
 bool EntityManager::Update(float dt)
@@ -78,8 +97,8 @@ EntityManager::~EntityManager() {
 bool EntityManager::Awake(pugi::xml_node&config) {
 	folder=config.child("folder").child_value();
 	player_sprite.create(config.child("player_sprite").attribute("name").as_string());
-	flying_enemy_sprite.create(config.child("enemy_sprite").attribute("name").as_string());
-	ground_enemy_sprite.create(config.child("enemy_sprite").attribute("name").as_string());
+	flying_enemy_sprite.create(config.child("flying_enemy_sprite").attribute("name").as_string());
+	ground_enemy_sprite.create(config.child("ground_enemy_sprite").attribute("name").as_string());
 	player_texture_offset.x = config.child("texture_offset").attribute("x").as_int();
 	player_texture_offset.y = config.child("texture_offset").attribute("y").as_int();
 	slide_texture_offset.x = config.child("slide_offset").attribute("x").as_int();
@@ -123,5 +142,23 @@ void EntityManager::OnCollision(Collider*c1, Collider*c2) {
 	}
 	if (c2->type == END_COLLIDER && c1->type == COLLIDER_PLAYER1) {
 		App->map->ChangeMaps("Santa's mountains.tmx");
+	}
+	if (c1->type == COLLIDER_PLAYER1 && c2->type == COLLIDER_ENEMY) {
+		if (App->scene->penguin != nullptr) {
+			if (App->scene->penguin->enemy_collider == c2) {
+				App->entities->DestroyEntity(App->entities->FindGroundEnemy(App->scene->penguin));
+				delete App->scene->penguin;
+				App->scene->penguin = nullptr;
+				c2->to_delete = true;
+			}
+		}
+		if ( App->scene->bee != nullptr) {
+			if (App->scene->bee->enemy_collider == c2) {
+				App->entities->DestroyEntity(App->entities->FindFlyingEnemy(App->scene->bee));
+				delete App->scene->bee;
+				App->scene->bee = nullptr;
+				c2->to_delete = true;
+			}
+		}
 	}
 }
