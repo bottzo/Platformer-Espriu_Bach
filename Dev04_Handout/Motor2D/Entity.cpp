@@ -78,6 +78,8 @@ bool EntityManager::UpdateAll(float dt, bool do_logic) {
 	santa_states state = App->entities->GetPlayer()->current_santa_state(key_inputs);
 	if (do_logic) {
 		App->entities->GetPlayer()->Updateposition(state);
+		/*App->scene->penguin->move();
+		App->scene->bee->move();*/
 	}
 	App->scene->positioncamera();
 	App->entities->GetPlayer()->Draw_player(state,dt);
@@ -148,6 +150,12 @@ void EntityManager::OnCollision(Collider*c1, Collider*c2) {
 	if (c2->type == END_COLLIDER && c1->type == COLLIDER_PLAYER1) {
 		App->map->ChangeMaps("Santa's mountains.tmx");
 	}
+	/*if (c1->type == COLLIDER_ENEMY && c2->type == COLLIDER_WALL) {
+		if (App->scene->penguin->enemy_collider == c1) {
+			App->scene->penguin->speed.y = 0;
+			App->scene->penguin->on_the_ground = true;
+		}
+	}*/
 	if (c1->type == COLLIDER_PLAYER1 && c2->type == COLLIDER_ENEMY) {
 		/*if (App->scene->penguin != nullptr) {
 			if (App->scene->penguin->enemy_collider == c2) {

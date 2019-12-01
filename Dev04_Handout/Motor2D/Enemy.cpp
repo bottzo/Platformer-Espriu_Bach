@@ -15,6 +15,7 @@ ground_enemy::ground_enemy() {
 	Load_Enemy(App->entities->ground_enemy_sprite.GetString());
 	this->kind = Enemies::ground;
 	this->type = Entity::Types::ground_enemy;
+	on_the_ground = false;
 }
 
 flying_enemy::flying_enemy() {
@@ -200,6 +201,17 @@ void enemy::Draw_Enemy(float dt,Entity* type) {
 		}
 		break;
 	}
+
+}
+
+void ground_enemy::move()  {
+	/*if (!on_the_ground) {
+		speed.y += App->map->data.gravity;
+		position.y += speed.y;
+	}*/
+}
+
+void flying_enemy::move() {
 
 }
 
