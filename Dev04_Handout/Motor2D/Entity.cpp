@@ -22,8 +22,10 @@ Entity* EntityManager::CreateEntity(Entity::Types type) {
 }
 
 void EntityManager::DestroyEntity(Entity* entity) {
-		delete entity;
-		entity = nullptr;
+	if (Entity_list.find(entity) != -1)
+		Entity_list.del(Entity_list.At(Entity_list.find(entity)));
+	else
+		LOG("Entity to delete not found");
 }
 
 player* EntityManager::GetPlayer() const {
@@ -55,8 +57,8 @@ bool EntityManager::UpdateAll(float dt, bool do_logic) {
 	santa_states state = App->entities->GetPlayer()->current_santa_state(key_inputs);
 	if (do_logic) {
 		App->entities->GetPlayer()->Updateposition(state);
-		App->scene->positioncamera();
 	}
+	App->scene->positioncamera();
 	App->entities->GetPlayer()->Draw_player(state,dt);
 	return true;
 }
@@ -84,14 +86,7 @@ bool EntityManager::Awake(pugi::xml_node&config) {
 
 bool EntityManager::CleanUp() {
 	key_inputs.Clear();
-	p2List_item<Entity*>* item;
-	item = Entity_list.start;
-
-	while (item != NULL)
-	{
-		DestroyEntity(item->data);
-		item = item->next;
-	}
+	Entity_list.clear();
 	return true;
 }
 
