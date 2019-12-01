@@ -25,7 +25,6 @@ public:
 	bool Load_Player(const char* file_name);
 	void Draw_player(santa_states state,float dt);
 	void Updateposition(santa_states state);
-	p2Point<float> speed;
 	santa_states player::current_santa_state(p2Qeue<inputs>& input);
 	Collider*player_collider;
 	Collider*slide_collider;

@@ -56,6 +56,7 @@ public:
 	Entity() {};
 	Entity(Types type);
 	p2Point<float> position;
+	p2Point<float> speed;
 	p2List<TileSet*>sprite_tilesets;
 	Types type;
 protected:
