@@ -1,8 +1,10 @@
 #include "Enemy.h"
+#include "player.h"
 #include "j1Map.h"
 #include "j1App.h"
 #include "j1Collisions.h"
 #include "p2Log.h"
+#include "Entity.h"
 
 
 enemy::enemy() {
@@ -97,7 +99,7 @@ bool ground_enemy::Load_Enemy(const char* file_name) {
 				}
 				it = it->next;
 			}
-			position.x = enemy_collider->rect.x;
+			position.x = enemy_collider->rect.x - App->entities->ground_texture_offset;
 			position.y = enemy_collider->rect.y;
 		}
 	}
@@ -185,7 +187,11 @@ bool flying_enemy::Load_Enemy(const char* file_name) {
 }
 
 void enemy::Draw_Enemy(float dt) {
-	App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->data->GetCurrentFrame(dt));
+	if(App->entities->GetPlayer()->position.x > this->position.x)
+		App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->data->GetCurrentFrame(dt));
+	else {
+		App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->data->GetCurrentFrame(dt), SDL_FLIP_HORIZONTAL,this);
+	}
 }
 
 	/*#include "Application.h"

@@ -84,6 +84,7 @@ public:
 	p2SString ground_enemy_sprite;
 	iPoint player_texture_offset;
 	iPoint slide_texture_offset;
+	int ground_texture_offset;
 	p2Qeue<inputs> key_inputs;
 	float acumulated_ms;
 	float update_ms_cycle;

@@ -9,7 +9,8 @@
   <renderer>
     <vsync value="false"/>
     <camera x="0" y="-1085"/>
-    <santa_flip_offset value="-40"/>
+    <santa_flip_offset value="-38"/>
+    <ground_enemy_flip_offset value="38"/>
   </renderer>
 
   <window>
@@ -43,6 +44,7 @@
     <ground_enemy_sprite name="penguin_animations(174x116).tmx"/>
     <texture_offset x="56" y="8"/>
     <slide_offset x="36" y="43"/>
+    <ground_texture_offset x="75"/>
     <logic_update_ms ms="50"/>
   </Entities>
   <scene>

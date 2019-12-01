@@ -107,6 +107,7 @@ bool EntityManager::Awake(pugi::xml_node&config) {
 	player_texture_offset.y = config.child("texture_offset").attribute("y").as_int();
 	slide_texture_offset.x = config.child("slide_offset").attribute("x").as_int();
 	slide_texture_offset.y = config.child("slide_offset").attribute("x").as_int();
+	ground_texture_offset = config.child("ground_texture_offset").attribute("x").as_int();
 	update_ms_cycle= config.child("logic_update_ms").attribute("ms").as_float();
 	return true;
 }
@@ -148,7 +149,7 @@ void EntityManager::OnCollision(Collider*c1, Collider*c2) {
 		App->map->ChangeMaps("Santa's mountains.tmx");
 	}
 	if (c1->type == COLLIDER_PLAYER1 && c2->type == COLLIDER_ENEMY) {
-		if (App->scene->penguin != nullptr) {
+		/*if (App->scene->penguin != nullptr) {
 			if (App->scene->penguin->enemy_collider == c2) {
 				App->entities->DestroyEntity(App->entities->FindGroundEnemy(App->scene->penguin));
 				delete App->scene->penguin;
@@ -163,6 +164,6 @@ void EntityManager::OnCollision(Collider*c1, Collider*c2) {
 				App->scene->bee = nullptr;
 				c2->to_delete = true;
 			}
-		}
+		}*/
 	}
 }

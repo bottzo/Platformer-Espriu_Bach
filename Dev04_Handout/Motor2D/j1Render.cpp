@@ -6,6 +6,7 @@
 #include "Entity.h"
 #include "player.h"
 #include "j1Collisions.h"
+#include "Entity.h"
 #include "brofiler/Brofiler/Brofiler.h"
 
 #define VSYNC true
@@ -53,6 +54,7 @@ bool j1Render::Awake(pugi::xml_node& config)
 		initial_camera_y = camera.y;
 	}
 	santa_flip_offset = config.child("santa_flip_offset").attribute("value").as_int();
+	ground_enemy_flip_offset = config.child("ground_enemy_flip_offset").attribute("value").as_int();
 	return ret;
 }
 
@@ -129,13 +131,20 @@ void j1Render::ResetViewPort()
 	SDL_RenderSetViewport(renderer, &viewport);
 }
 
-bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, SDL_RendererFlip flip, float speed, double angle, int pivot_x, int pivot_y) const
+bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, SDL_RendererFlip flip, Entity*entity, float speed, double angle, int pivot_x, int pivot_y) const
 {
 	bool ret = true;
 	uint scale = App->win->GetScale();
 
 	if (flip == SDL_FLIP_HORIZONTAL) {
+		if (entity == nullptr)
 			x += santa_flip_offset;
+		else{
+			switch (entity->type) {
+			case Entity::Types::ground_enemy: x += ground_enemy_flip_offset; break;
+			case Entity::Types::flying_enemy: x += ground_enemy_flip_offset; break;
+			}
+		}
 	}
 
 	SDL_Rect rect;
