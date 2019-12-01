@@ -48,9 +48,6 @@ public:
 	p2Point<float> speed;
 	Collider*enemy_collider;
 	p2Point<float>distance;
-	p2List<TileSet*>sprite_tilesets;
-	p2List<Animation*>Animations;
-	pugi::xml_document Enemy_doc;
 	Enemies kind;
 };
 

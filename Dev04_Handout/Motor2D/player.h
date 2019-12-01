@@ -29,9 +29,6 @@ public:
 	santa_states player::current_santa_state(p2Qeue<inputs>& input);
 	Collider*player_collider;
 	Collider*slide_collider;
-	p2List<TileSet*>sprite_tilesets;
-	p2List<Animation*>Animations;
-	pugi::xml_document player_doc;
 	bool looking_right = true;
 	float slide_timer;
 	bool move_in_air;

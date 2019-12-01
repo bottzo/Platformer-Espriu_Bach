@@ -53,9 +53,12 @@ public:
 public:
 	Entity() {};
 	Entity(Types type);
-public:
 	p2Point<float> position;
+	p2List<TileSet*>sprite_tilesets;
 	Types type;
+protected:
+	p2List<Animation*>Animations;
+	pugi::xml_document Entity_doc;
 };
 
 class EntityManager :public j1Module {

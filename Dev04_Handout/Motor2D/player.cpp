@@ -22,7 +22,7 @@ bool player::Load_Player(const char* file_name) {
 	bool ret = true;
 	p2SString tmp("%s%s", App->entities->folder.GetString(), file_name);
 
-	pugi::xml_parse_result result = player_doc.load_file(tmp.GetString());
+	pugi::xml_parse_result result = Entity_doc.load_file(tmp.GetString());
 
 	if (result == NULL)
 	{
@@ -33,7 +33,7 @@ bool player::Load_Player(const char* file_name) {
 	if (ret == true)
 	{
 		bool ret = true;
-		pugi::xml_node entity_node = player_doc.child("map").child("tileset");
+		pugi::xml_node entity_node = Entity_doc.child("map").child("tileset");
 		if (entity_node == NULL)
 		{
 			LOG("Error parsing player xml file: Cannot find 'tileset' tag.");

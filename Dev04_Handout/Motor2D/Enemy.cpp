@@ -28,7 +28,7 @@ bool ground_enemy::Load_Enemy(const char* file_name) {
 	bool ret = true;
 	p2SString tmp("%s%s", App->entities->folder.GetString(), file_name);
 
-	pugi::xml_parse_result result = Enemy_doc.load_file(tmp.GetString());
+	pugi::xml_parse_result result = Entity_doc.load_file(tmp.GetString());
 
 	if (result == NULL)
 	{
@@ -38,7 +38,7 @@ bool ground_enemy::Load_Enemy(const char* file_name) {
 
 	if (ret == true)
 	{
-		pugi::xml_node entity_node = Enemy_doc.child("map").child("tileset");
+		pugi::xml_node entity_node = Entity_doc.child("map").child("tileset");
 		if (entity_node == NULL)
 		{
 			LOG("Error parsing player xml file: Cannot find 'tileset' tag.");
@@ -108,7 +108,7 @@ bool flying_enemy::Load_Enemy(const char* file_name) {
 	bool ret = true;
 	p2SString tmp("%s%s", App->entities->folder.GetString(), file_name);
 
-	pugi::xml_parse_result result = Enemy_doc.load_file(tmp.GetString());
+	pugi::xml_parse_result result = Entity_doc.load_file(tmp.GetString());
 
 	if (result == NULL)
 	{
@@ -118,7 +118,7 @@ bool flying_enemy::Load_Enemy(const char* file_name) {
 
 	if (ret == true)
 	{
-		pugi::xml_node entity_node = Enemy_doc.child("map").child("tileset");
+		pugi::xml_node entity_node = Entity_doc.child("map").child("tileset");
 		if (entity_node == NULL)
 		{
 			LOG("Error parsing player xml file: Cannot find 'tileset' tag.");
