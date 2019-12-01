@@ -143,6 +143,8 @@ void j1Map::ChangeMaps(p2SString new_map) {
 	App->collisions->CleanUp();
 	LOG("Unloading map");
 	CleanUp();
+	LOG("Destroying all entities");
+	App->entities->CleanUp();
 	LOG("Loading new map");
 	Load(new_map.GetString());
 	(player*)App->entities->CreateEntity(Entity::Types::player);

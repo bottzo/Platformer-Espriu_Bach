@@ -59,6 +59,7 @@ public:
 	float initial_camera_y;
 	int santa_flip_offset;
 	int ground_enemy_flip_offset;
+	bool VSync;
 };
 
 #endif // __j1RENDER_H__

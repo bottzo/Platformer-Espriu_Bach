@@ -117,6 +117,14 @@ bool EntityManager::Awake(pugi::xml_node&config) {
 bool EntityManager::CleanUp() {
 	key_inputs.Clear();
 	Entity_list.clear();
+	if (App->scene->bee != nullptr) {
+		delete App->scene->bee;
+		App->scene->bee = nullptr;
+	}
+	if (App->scene->penguin != nullptr) {
+		delete App->scene->penguin;
+		App->scene->penguin = nullptr;
+	}
 	return true;
 }
 

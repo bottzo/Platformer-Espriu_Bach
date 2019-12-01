@@ -16,10 +16,10 @@ We are a group of 2 students of CITM who have made a first version of a platafor
 
 # work done
 Espriu: Part of the audio module, part of the scene module, camera movement, collisions module,the 2 maps, enemys tilesets, background music, UML, framerate
-Bach: module player, part of the audio module, part of the camera movement, scene module, input module, pathfinding module, entities module, enemies module, framerate and timers
+Bach: module player, part of the audio module, part of the camera movement, scene module, input module, pathfinding module, entities module, enemies module, framerate and timers,brofiler
 
 #2.0
-Pathfinding added, entities and enemies added, framerate and timers added. Jumping bug solved, fadetoblack solved, chanbge of maps solved
+Pathfinding added, entities and enemies added, framerate and timers added. Jumping bug solved, change of maps solved, profiling using brofiler(Motors2D folder)
 
 # Everything we used
 We used the tilesets of the "Santa's adventure" free tileset that you can find in itch.io

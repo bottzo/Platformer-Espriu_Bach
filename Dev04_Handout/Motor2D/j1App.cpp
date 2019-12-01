@@ -97,6 +97,7 @@ bool j1App::Awake()
 		organization.create(app_config.child("organization").child_value());
 
 		int cap = app_config.attribute("framerate_cap").as_int(-1);
+		cap_num = cap;
 
 		if (cap > 0)
 		{
@@ -210,8 +211,8 @@ void j1App::FinishUpdate()
 	uint32 frames_on_last_update = prev_last_sec_frame_count;
 
 	static char title[256];
-	sprintf_s(title, 256, "Av.FPS: %.2f Last Frame Ms: %u Last sec frames: %i Last dt: %.3f Time since startup: %.3f Frame Count: %lu ",
-		avg_fps, last_frame_ms, frames_on_last_update, dt, seconds_since_startup, frame_count);
+	sprintf_s(title, 256, "FPS: %i Av.FPS: %.2f Last Frame Ms: %u Cap: %d VSync: %d",
+		frames_on_last_update,avg_fps, last_frame_ms,cap_num,App->render->VSync);
 	App->win->SetTitle(title);
 
 	if (capped_ms > 0 && last_frame_ms < capped_ms)
