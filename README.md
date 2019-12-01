@@ -4,16 +4,31 @@ Game development platformer
 We are a group of 2 students of CITM who have made a first version of a plataformer game.
 
 # Controls
-A-> move left
-D-> move right
-SPACEBAR-> slide
-W-> jump`
+-A-> move left
+
+-D-> move right
+
+-SPACEBAR-> slide
+
+-W-> jump
+
+-Debug key-> F9
 
 # work done
-Espriu: Part of the audio module, part of the scene module, camera movement, collisions module,the 2 maps.
-Bach: module player, part of the audio module, part of the camera movement, scene module, input module, 
+Espriu: Part of the audio module, part of the scene module, camera movement, collisions module,the 2 maps, enemys tilesets, background music, UML, framerate
+Bach: module player, part of the audio module, part of the camera movement, scene module, input module, pathfinding module, entities module, enemies module, framerate and timers
+
+#2.0
+Pathfinding added, entities and enemies added, framerate and timers added. Jumping bug solved, fadetoblack solved, chanbge of maps solved
+
+# Everything we used
+We used the tilesets of the "Santa's adventure" free tileset that you can find in itch.io
+The parallax we used are called "Glacial Mountains: parallax background" by "vnitti"
+The entities are from "ismartal"
+Thanks to all this people for making this game possible
 
 # Github link
+https://github.com/bottzo/Platformer-Espriu_Bach
 
 # License
           Apache License
