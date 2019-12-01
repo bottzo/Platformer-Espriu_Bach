@@ -81,6 +81,10 @@ bool EntityManager::UpdateAll(float dt, bool do_logic) {
 	}
 	App->scene->positioncamera();
 	App->entities->GetPlayer()->Draw_player(state,dt);
+	if (App->scene->bee != nullptr) 
+		App->scene->bee->Draw_Enemy(dt);
+	if(App->scene->penguin!=nullptr)
+		App->scene->penguin->Draw_Enemy(dt);
 	return true;
 }
 

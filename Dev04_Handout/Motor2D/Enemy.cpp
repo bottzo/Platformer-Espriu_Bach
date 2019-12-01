@@ -184,6 +184,10 @@ bool flying_enemy::Load_Enemy(const char* file_name) {
 	return ret;
 }
 
+void enemy::Draw_Enemy(float dt) {
+	App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->data->GetCurrentFrame(dt));
+}
+
 	/*#include "Application.h"
 #include "Enemy.h"
 #include "ModuleCollision.h"

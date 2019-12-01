@@ -43,7 +43,7 @@ public:
 	~enemy() {};
 	void Load_Enemy_info();
 	virtual bool Load_Enemy(const char* file_name) { return true; }
-	//virtual void Draw_Enemy(float dt);
+	void Draw_Enemy(float dt);
 	//virtual void move();
 	p2Point<float> speed;
 	Collider*enemy_collider;
