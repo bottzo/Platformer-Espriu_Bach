@@ -8,6 +8,7 @@
 
 struct TileSet;
 class SDL_Texture;
+class player;
 
 enum inputs
 {
@@ -67,11 +68,12 @@ public:
 	~EntityManager();
 	bool Awake(pugi::xml_node&config);
 	bool Update(float dt);
-	bool UpdateAll(float s,float acumulated_s, bool do_logic);
+	bool UpdateAll(float dt, bool do_logic);
 	bool CleanUp();
 	void OnCollision(Collider*c1, Collider*c2);
 	Entity* CreateEntity(Entity::Types type);
 	void DestroyEntity(Entity* entity);
+	player* GetPlayer() const;
 public:
 	p2SString folder;
 	p2SString player_sprite;

@@ -17,7 +17,7 @@ player::~player()
 {
 }
 
-void player::Updateposition(santa_states state,float dt) {
+void player::Updateposition(santa_states state) {
 	BROFILER_CATEGORY("Updateposition", Profiler::Color::DarkRed);
 	speed.y += App->map->data.gravity;
 	switch (state) {

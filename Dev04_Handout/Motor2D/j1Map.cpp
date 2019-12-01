@@ -138,14 +138,14 @@ SDL_Rect TileSet::TilesetRect(uint tiled_gid) {
 
 void j1Map::ChangeMaps(p2SString new_map) {
 	LOG("Erasing player");
-	App->entities->DestroyEntity(App->scene->Player);
+	App->entities->DestroyEntity(App->entities->GetPlayer());
 	LOG("Erasing map colliders");
 	App->collisions->CleanUp();
 	LOG("Unloading map");
 	CleanUp();
 	LOG("Loading new map");
 	Load(new_map.GetString());
-	App->scene->Player = (player*)App->entities->CreateEntity(Entity::Types::player);
+	(player*)App->entities->CreateEntity(Entity::Types::player);
 }
 
 // Called before quitting

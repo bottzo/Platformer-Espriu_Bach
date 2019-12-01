@@ -196,17 +196,17 @@ bool j1Input::PreUpdate()
 		if (down) { //&& Player->distance.x > Player->slide_collider->rect.w / 2)
 			App->entities->key_inputs.Push(IN_SLIDE_DOWN);
 		}
-		if (up && (App->scene->Player->distance.y == 0))
+		if (up && (App->entities->GetPlayer()->distance.y == 0))
 			App->entities->key_inputs.Push(IN_JUMP);
 	}
 
-	if (App->scene->Player->slide_timer > 0)
+	if (App->entities->GetPlayer()->slide_timer > 0)
 	{
-		if (SDL_GetTicks() - App->scene->Player->slide_timer > SLIDE_TIME)
+		if (SDL_GetTicks() - App->entities->GetPlayer()->slide_timer > SLIDE_TIME)
 		{
 			App->entities->key_inputs.Push(IN_SLIDE_FINISH);
-			App->scene->Player->player_collider->active = true; App->scene->Player->slide_collider->active = false;
-			App->scene->Player->slide_timer = 0;
+			App->entities->GetPlayer()->player_collider->active = true; App->entities->GetPlayer()->slide_collider->active = false;
+			App->entities->GetPlayer()->slide_timer = 0;
 		}
 	}
 

@@ -1,7 +1,6 @@
 #ifndef __player_H__
 #define __player_H__
 #include "Entity.h"
-#include "p2List.h"
 #include "p2Qeue.h"
 
 enum santa_states
@@ -25,7 +24,7 @@ public:
 	~player();
 	void Load_player_info();
 	void Draw_player(santa_states state,float dt);
-	void Updateposition(santa_states state,float dt);
+	void Updateposition(santa_states state);
 	p2Point<float> speed;
 	santa_states player::current_santa_state(p2Qeue<inputs>& input);
 	Collider*player_collider;

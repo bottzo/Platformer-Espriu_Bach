@@ -15,7 +15,6 @@
 j1Scene::j1Scene() : j1Module()
 {
 	name.create("scene");
-	Player = nullptr;
 }
 
 // Destructor
@@ -35,7 +34,7 @@ bool j1Scene::Awake(pugi::xml_node&config)
 bool j1Scene::Start()
 {
 	App->map->Load(map_name.GetString());
-	Player = (player*)App->entities->CreateEntity(Entity::Types::player);
+	(player*)App->entities->CreateEntity(Entity::Types::player);
 	return true;
 }
 
@@ -69,11 +68,11 @@ bool j1Scene::Update(float dt)
 
 bool j1Scene::positioncamera()
 {
-	App->render->camera.x = (-Player->position.x + ((App->win->width / 2) - (Player->sprite_tilesets.start->data->tile_width / 2)));
+	App->render->camera.x = (-App->entities->GetPlayer()->position.x + ((App->win->width / 2) - (App->entities->GetPlayer()->sprite_tilesets.start->data->tile_width / 2)));
 	if (App->render->camera.x > 0) {
 		App->render->camera.x = 0;
 	}
-	App->render->camera.y = -(Player->position.y - App->win->height / 2);
+	App->render->camera.y = -(App->entities->GetPlayer()->position.y - App->win->height / 2);
 	if (App->render->camera.y <= App->render->initial_camera_y)
 		App->render->camera.y = App->render->initial_camera_y;
 

@@ -37,7 +37,6 @@ public:
 private:
 	p2SString map_name;
 public:
-	player* Player;
 	int actualmap;
 	p2List<p2SString*> map_names;
 };

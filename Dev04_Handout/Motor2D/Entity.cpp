@@ -22,26 +22,19 @@ Entity* EntityManager::CreateEntity(Entity::Types type) {
 }
 
 void EntityManager::DestroyEntity(Entity* entity) {
+		delete entity;
+		entity = nullptr;
+}
 
-	p2List_item<Animation*>* item;
-	item = entity->Animations.start;
-
-	while (item != NULL)
-	{
-		RELEASE(item->data);
-		item = item->next;
+player* EntityManager::GetPlayer() const {
+	p2List_item<Entity*>item = Entity_list.start->data;
+	while (item.data != nullptr) {
+		if(item.data->type==Entity::Types::player)
+			return (player*)item.data;
+		item = item.next->data;
 	}
-	entity->Animations.clear();
-	p2List_item<TileSet*>* it;
-	it = entity->sprite_tilesets.start;
+	return nullptr;
 
-	while (it != NULL)
-	{
-		RELEASE(it->data);
-		it = it->next;
-	}
-	entity->sprite_tilesets.clear();
-	entity->Entity_doc.reset();
 }
 
 bool EntityManager::Update(float dt)
@@ -49,7 +42,7 @@ bool EntityManager::Update(float dt)
 	acumulated_ms += dt*1000.0f;
 	if (acumulated_ms >= update_ms_cycle)
 		do_logic = true;
-	UpdateAll(dt,acumulated_ms/1000.0f, do_logic);
+	UpdateAll(dt, do_logic);
 	if (do_logic == true) {
 		acumulated_ms = 0.0f;
 		do_logic = false;
@@ -57,14 +50,14 @@ bool EntityManager::Update(float dt)
 	return true;
 }
 
-bool EntityManager::UpdateAll(float s,float acumulated_s, bool do_logic) {
+bool EntityManager::UpdateAll(float dt, bool do_logic) {
 	BROFILER_CATEGORY("Update_all_entities", Profiler::Color::Aquamarine);
-	santa_states state = App->scene->Player->current_santa_state(key_inputs);
+	santa_states state = App->entities->GetPlayer()->current_santa_state(key_inputs);
 	if (do_logic) {
-		App->scene->Player->Updateposition(state,acumulated_s);
+		App->entities->GetPlayer()->Updateposition(state);
 		App->scene->positioncamera();
 	}
-	App->scene->Player->Draw_player(state, s);
+	App->entities->GetPlayer()->Draw_player(state,dt);
 	return true;
 }
 
@@ -194,8 +187,8 @@ void Entity::LoadAnimations(pugi::xml_node&node) {
 
 void EntityManager::OnCollision(Collider*c1, Collider*c2) {
 	if (c2->type == COLLIDER_DEATH && c1->type==COLLIDER_PLAYER1) {
-		App->scene->Player->position.x = App->map->data.start->rect.x;
-		App->scene->Player->position.y = App->map->data.start->rect.y;
+		App->entities->GetPlayer()->position.x = App->map->data.start->rect.x;
+		App->entities->GetPlayer()->position.y = App->map->data.start->rect.y;
 	}
 	if (c2->type == END_COLLIDER && c1->type == COLLIDER_PLAYER1) {
 		App->map->ChangeMaps("Santa's mountains.tmx");
