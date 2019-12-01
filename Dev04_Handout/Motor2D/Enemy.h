@@ -27,3 +27,44 @@ public:
 };
 
 #endif // __ENEMY_H__*/
+#ifndef __enemy_H__
+#define __enemy_H__
+#include "Entity.h"
+
+class enemy :public Entity {
+public:
+	enum class Enemies {
+		ground,
+		air,
+		unknown
+	};
+public:
+	enemy();
+	~enemy() {};
+	void Load_Enemy_info();
+	virtual bool Load_Enemy(const char* file_name) { return true; }
+	//virtual void Draw_Enemy(float dt);
+	//virtual void move();
+	p2Point<float> speed;
+	Collider*enemy_collider;
+	p2Point<float>distance;
+	p2List<TileSet*>sprite_tilesets;
+	p2List<Animation*>Animations;
+	pugi::xml_document Enemy_doc;
+	Enemies kind;
+};
+
+class ground_enemy :public enemy {
+public:
+	ground_enemy();
+	~ground_enemy() {};
+	bool Load_Enemy(const char* file_name) override;
+};
+
+class flying_enemy :public enemy {
+public:
+	flying_enemy();
+	~flying_enemy() {};
+	bool Load_Enemy(const char* file_name) override;
+};
+#endif // __enemy_H__

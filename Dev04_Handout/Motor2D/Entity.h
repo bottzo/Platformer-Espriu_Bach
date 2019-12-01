@@ -51,15 +51,11 @@ public:
 		unknown
 	};
 public:
+	Entity() {};
 	Entity(Types type);
-	bool Load_Entity(const char* file_name);
-	void LoadAnimations(pugi::xml_node&node);
 public:
-	p2List<TileSet*>sprite_tilesets;
-	p2List<Animation*>Animations;
-	pugi::xml_document Entity_doc;
 	p2Point<float> position;
-	Entity::Types type;
+	Types type;
 };
 
 class EntityManager :public j1Module {
@@ -77,6 +73,8 @@ public:
 public:
 	p2SString folder;
 	p2SString player_sprite;
+	p2SString flying_enemy_sprite;
+	p2SString ground_enemy_sprite;
 	iPoint player_texture_offset;
 	iPoint slide_texture_offset;
 	p2Qeue<inputs> key_inputs;

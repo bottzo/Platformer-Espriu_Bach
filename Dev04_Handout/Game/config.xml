@@ -39,6 +39,8 @@
   <Entities>
     <folder>textures/</folder>
     <player_sprite name="santa_animations.tmx"/>
+    <flying_enemy_sprite name="bee_animations(49x54).tmx"/>
+    <ground_enemy_sprite name="penguin_animations(165x110).tmx"/>
     <texture_offset x="56" y="8"/>
     <slide_offset x="36" y="43"/>
     <logic_update_ms ms="50"/>
