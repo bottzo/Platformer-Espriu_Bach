@@ -99,6 +99,8 @@ public:
 	//Changes the maps
 	void ChangeMaps(p2SString new_map);
 
+	bool CreateWalkabilityMap(int& width, int& height, uchar** buffer) const;
+
 	// TODO 8: Create a method that translates x,y coordinates from map positions to world positions
 	iPoint MapToWorld(int x, int y) const;
 	iPoint WorldToMap(int x, int y) const;

@@ -191498,7 +191498,7 @@
   <object id="19" name="Terrain" x="2081" y="1343" width="94" height="86"/>
   <object id="21" name="Terrain" x="1214" y="1663" width="290" height="255"/>
   <object id="24" name="Terrain " x="2720" y="1279" width="448" height="24"/>
-  <object id="27" name="Terrain" x="2564" y="1345" width="59" height="29"/>
+  <object id="27" name="Terrain" x="2560" y="1345" width="63" height="21"/>
   <object id="31" name="Terrain" x="2369" y="1438" width="63" height="27"/>
   <object id="32" name="Terrain" x="3393" y="1024" width="159" height="91"/>
   <object id="35" name="Terrain" x="3808" y="1309" width="127" height="64"/>

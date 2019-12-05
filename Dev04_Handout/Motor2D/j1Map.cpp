@@ -7,6 +7,7 @@
 #include "j1Collisions.h"
 #include "j1Scene.h"
 #include "player.h"
+#include "j1Pathfinding.h"
 #include "brofiler/Brofiler/Brofiler.h"
 //#include <math.h>
 
@@ -145,8 +146,15 @@ void j1Map::ChangeMaps(p2SString new_map) {
 	CleanUp();
 	LOG("Destroying all entities");
 	App->entities->CleanUp();
+	LOG("Destroying pathfinding map");
+	App->pathfinding->CleanUp();
 	LOG("Loading new map");
 	Load(new_map.GetString());
+	int w, h;
+	uchar* data = NULL;
+	if (App->map->CreateWalkabilityMap(w, h, &data))
+		App->pathfinding->SetMap(w, h, data);
+	RELEASE_ARRAY(data);
 	(player*)App->entities->CreateEntity(Entity::Types::player);
 }
 
@@ -482,5 +490,56 @@ bool j1Map::LoadLayer(pugi::xml_node& layer_node, map_layer* layer) {
 	for (lay; lay; lay = lay.next_sibling("tile"),++i) {
 		layer->tiled_gid[i] = lay.attribute("gid").as_int();
 	}
+	return ret;
+}
+
+bool j1Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
+{
+	bool ret = false;
+	p2List_item<map_layer*>* item;
+	item = data.layer.start;
+
+	for (item = data.layer.start; item != NULL; item = item->next)
+	{
+		map_layer* laye = item->data;
+
+		/*if (laye->properties.Get("Navigation", 0) == 0)
+			continue;*/
+
+		uchar* map = new uchar[laye->width*laye->height];
+		memset(map, 1, laye->width*laye->height);
+
+		for (int y = 0; y < data.height; ++y)
+		{
+			for (int x = 0; x < data.width; ++x)
+			{
+				int i = (y*laye->width) + x;
+
+				int tile_id = laye->Get(x, y);
+				TileSet* tileset = (tile_id > 0) ? GetTilesetFromTileId(tile_id) : NULL;
+
+				if (tileset != NULL)
+				{
+					if (tileset->firstgid == 1)
+						map[i] = ((tile_id - tileset->firstgid) > 0 || (20 < (tile_id - tileset->firstgid) < 24)) ? 0 : 1;
+					else
+						map[i] = 1;
+					/*TileType* ts = tileset->GetTileType(tile_id);
+					if(ts != NULL)
+					{
+						map[i] = ts->properties.Get("walkable", 1);
+					}*/
+				}
+			}
+		}
+
+		*buffer = map;
+		width = data.width;
+		height = data.height;
+		ret = true;
+
+		break;
+	}
+
 	return ret;
 }

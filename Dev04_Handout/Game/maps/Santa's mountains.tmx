@@ -3,7 +3,7 @@
  <properties>
   <property name="Gravity" type="float" value="5"/>
  </properties>
- <tileset firstgid="1" name="tilesets 1" tilewidth="32" tileheight="32" tilecount="25" columns="5">
+ <tileset firstgid="1" name="tileset 1" tilewidth="32" tileheight="32" tilecount="25" columns="5">
   <image source="tileset.png" trans="ff00ff" width="160" height="160"/>
  </tileset>
  <tileset firstgid="26" name="parallax 2" tilewidth="384" tileheight="216" tilecount="6" columns="3">

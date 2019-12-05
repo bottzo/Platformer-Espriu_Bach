@@ -11,6 +11,7 @@
 #include "player.h"
 #include "Enemy.h"
 #include "j1Collisions.h"
+#include "j1Pathfinding.h"
 #include "brofiler/Brofiler/Brofiler.h"
 
 j1Scene::j1Scene() : j1Module()
@@ -35,6 +36,11 @@ bool j1Scene::Awake(pugi::xml_node&config)
 bool j1Scene::Start()
 {
 	App->map->Load(map_name.GetString());
+	int w, h;
+	uchar* data = NULL;
+	if (App->map->CreateWalkabilityMap(w, h, &data))
+		App->pathfinding->SetMap(w, h, data);
+	RELEASE_ARRAY(data);
 	(player*)App->entities->CreateEntity(Entity::Types::player);
 	penguin=(ground_enemy*)App->entities->CreateEntity(Entity::Types::ground_enemy);
 	bee=(flying_enemy*)App->entities->CreateEntity(Entity::Types::flying_enemy);
