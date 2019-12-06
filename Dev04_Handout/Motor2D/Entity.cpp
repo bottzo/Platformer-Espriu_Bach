@@ -78,8 +78,8 @@ bool EntityManager::UpdateAll(float dt, bool do_logic) {
 	santa_states state = App->entities->GetPlayer()->current_santa_state(key_inputs);
 	if (do_logic) {
 		App->entities->GetPlayer()->Updateposition(state);
-		/*App->scene->penguin->move();
-		App->scene->bee->move();*/
+		//App->scene->penguin->move();
+		App->scene->bee->move();
 	}
 	App->scene->positioncamera();
 	App->entities->GetPlayer()->Draw_player(state,dt);

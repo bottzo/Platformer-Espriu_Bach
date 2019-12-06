@@ -191536,7 +191536,7 @@
   <object id="83" name="background" x="640" y="1664.67" width="61.3333" height="62.6667"/>
  </objectgroup>
  <objectgroup name="COLLIDER_ENEMY">
-  <object id="102" name="flying_enemy_collider" x="5801.21" y="1549.57" width="55" height="60"/>
+  <object id="102" name="flying_enemy_collider" x="6434.54" y="1191.99" width="55" height="60"/>
   <object id="103" name="ground_enemy_collider" x="5359" y="1623" width="60" height="102"/>
  </objectgroup>
 </map>

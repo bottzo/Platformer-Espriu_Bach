@@ -14,6 +14,8 @@
 // Details: http://theory.stanford.edu/~amitp/GameProgramming/
 // --------------------------------------------------
 
+class Entity;
+
 class j1PathFinding : public j1Module
 {
 public:
