@@ -47,6 +47,7 @@ public:
 	Collider*enemy_collider;
 	p2Point<float>distance;
 	Enemies kind;
+	int count = 0;
 };
 
 class ground_enemy :public enemy {
@@ -62,6 +63,5 @@ public:
 	flying_enemy();
 	~flying_enemy() {};
 	void move()override;
-	int count = 0;
 };
 #endif // __enemy_H__

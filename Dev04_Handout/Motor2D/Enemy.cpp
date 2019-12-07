@@ -44,10 +44,16 @@ void enemy::Draw_Enemy(float dt) {
 }
 
 void ground_enemy::move()  {
-	/*if (!on_the_ground) {
-		speed.y += App->map->data.gravity;
-		position.y += speed.y;
-	}*/
+	if (count == 4) {
+		App->pathfinding->CreatePath(App->map->WorldToMap((int)position.x, (int)position.y), App->map->WorldToMap((int)App->entities->GetPlayer()->position.x + (int)App->entities->GetPlayer()->player_collider->rect.w, (int)App->entities->GetPlayer()->position.y));
+		const iPoint* destination_ptr = App->pathfinding->GetLastPath()->At(1);
+		iPoint destination(destination_ptr->x, destination_ptr->y);
+		destination = App->map->MapToWorld(destination.x, destination.y);
+		position.x = destination.x;
+		enemy_collider->SetPos(position.x+App->entities->ground_texture_offset, position.y);
+		count = 0;
+	}
+	count++;
 }
 
 void flying_enemy::move() {
