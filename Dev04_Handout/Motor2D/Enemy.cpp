@@ -25,10 +25,21 @@ flying_enemy::flying_enemy() {
 }
 
 void enemy::Draw_Enemy(float dt) {
-	if (App->entities->GetPlayer()->position.x > this->position.x)
-		App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->data->GetCurrentFrame(dt),SDL_FLIP_NONE,this);
-	else {
-		App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->data->GetCurrentFrame(dt), SDL_FLIP_HORIZONTAL, this);
+	switch (kind) {
+	case Enemies::ground:
+		if (App->entities->GetPlayer()->position.x > this->position.x)
+			App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->data->GetCurrentFrame(dt), SDL_FLIP_NONE, this);
+		else {
+			App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->data->GetCurrentFrame(dt), SDL_FLIP_HORIZONTAL, this);
+		}
+		break;
+	case Enemies::air:
+		if (App->entities->GetPlayer()->position.x > this->position.x)
+			App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->data->GetCurrentFrame(dt), SDL_FLIP_HORIZONTAL, this);
+		else {
+			App->render->Blit(Animations.start->data->texture, position.x, position.y, &Animations.start->data->GetCurrentFrame(dt), SDL_FLIP_NONE, this);
+		}
+		break;
 	}
 }
 
