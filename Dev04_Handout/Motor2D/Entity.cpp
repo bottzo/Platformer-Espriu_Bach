@@ -75,7 +75,7 @@ void EntityManager::spawn_entities() {
 				else if(it->data->objects[i].name == flying_collider_string) {
 					current = (enemy*)CreateEntity(Entity::Types::flying_enemy);
 					current->enemy_collider = App->collisions->AddCollider(it->data->objects[i].rect, COLLIDER_ENEMY, App->entities);
-					current->position.x = current->enemy_collider->rect.x - ground_texture_offset;
+					current->position.x = current->enemy_collider->rect.x;
 					current->position.y = current->enemy_collider->rect.y;
 				}
 			}
@@ -169,7 +169,7 @@ void EntityManager::update_enemies() {
 	p2List_item<Entity*>*item = Entity_list.start;
 	enemy*current = nullptr;
 	while (item != NULL) {
-		if (item->data->type != Entity::Types::flying_enemy || item->data->type != Entity::Types::ground_enemy) {
+		if (item->data->type != Entity::Types::flying_enemy && item->data->type != Entity::Types::ground_enemy) {
 			item = item->next;
 			continue;
 		}

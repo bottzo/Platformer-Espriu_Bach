@@ -157,7 +157,7 @@ void j1Map::ChangeMaps(p2SString new_map) {
 	if (App->map->CreateWalkabilityMap(w, h, &data))
 		App->pathfinding->SetMap(w, h, data);
 	RELEASE_ARRAY(data);
-	App->entities->CreateEntity(Entity::Types::player);
+	App->entities->spawn_entities();
 }
 
 // Called before quitting
