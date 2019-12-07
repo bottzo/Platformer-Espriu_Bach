@@ -41,8 +41,7 @@ public:
 public:
 	enemy();
 	~enemy() {};
-	virtual bool Load_Enemy(const char* file_name) { return true; }
-	void Draw_Enemy(float dt, Entity* type);
+	void Draw_Enemy(float dt);
 	virtual void move() {};
 	p2Point<float> speed;
 	Collider*enemy_collider;
@@ -54,7 +53,6 @@ class ground_enemy :public enemy {
 public:
 	ground_enemy();
 	~ground_enemy() {};
-	bool Load_Enemy(const char* file_name) override;
 	void move()override;
 	bool on_the_ground;
 };
@@ -63,7 +61,6 @@ class flying_enemy :public enemy {
 public:
 	flying_enemy();
 	~flying_enemy() {};
-	bool Load_Enemy(const char* file_name) override;
 	void move()override;
 	int count = 0;
 };

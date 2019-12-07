@@ -18,6 +18,10 @@
    </animation>
   </tile>
   <tile id="20">
+   <properties>
+    <property name="name" value="death"/>
+    <property name="total_frames" type="int" value="3"/>
+   </properties>
    <animation>
     <frame tileid="21" duration="100"/>
     <frame tileid="22" duration="100"/>
@@ -26,8 +30,9 @@
   </tile>
  </tileset>
  <layer name="Capa de Patrones 1" width="2" height="1">
-  <data encoding="csv">
-1,21
-</data>
+  <data>
+   <tile gid="1"/>
+   <tile gid="21"/>
+  </data>
  </layer>
 </map>
