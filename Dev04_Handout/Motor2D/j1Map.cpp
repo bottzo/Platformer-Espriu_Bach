@@ -43,6 +43,10 @@ void j1Map::Draw()
 	iPoint cam_size(WorldToMap(-App->render->camera.x+App->render->camera.w, -App->render->camera.y + App->render->camera.h));
 	iPoint cam_pos = WorldToMap(-App->render->camera.x, -App->render->camera.y);
 	while (it != nullptr) {
+		if (it->data->navigation) {
+			it = it->next;
+			continue;
+		}
 		for (int y=cam_pos.y; y <= cam_size.y; ++y)
 		{
 			for (int x=cam_pos.x; x <= cam_size.x; ++x)
@@ -484,7 +488,8 @@ bool j1Map::LoadLayer(pugi::xml_node& layer_node, map_layer* layer) {
 	layer->width = layer_node.attribute("width").as_uint();
 	layer->height = layer_node.attribute("height").as_uint();
 	layer->tiled_gid = new uint[layer->width * layer->height]();
-	layer->parallaxspeed = layer_node.child("properties").child("property").attribute("value").as_float();
+	layer->navigation = layer_node.child("properties").child("property").attribute("value").as_bool();
+	layer->parallaxspeed = layer_node.child("properties").child("property").next_sibling("property").attribute("value").as_float();
 	int i = 0;
 	pugi::xml_node lay = layer_node.child("data").child("tile");
 	for (lay; lay; lay = lay.next_sibling("tile"),++i) {
@@ -503,8 +508,8 @@ bool j1Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
 	{
 		map_layer* laye = item->data;
 
-		/*if (laye->properties.Get("Navigation", 0) == 0)
-			continue;*/
+		if (!laye->navigation)
+			continue;
 
 		uchar* map = new uchar[laye->width*laye->height];
 		memset(map, 1, laye->width*laye->height);
@@ -520,10 +525,7 @@ bool j1Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
 
 				if (tileset != NULL)
 				{
-					if (tileset->firstgid == 1)
-						map[i] = ((tile_id - tileset->firstgid) > 0 || (20 < (tile_id - tileset->firstgid) < 24)) ? 0 : 1;
-					else
-						map[i] = 1;
+					map[i] = ((tile_id - tileset->firstgid) > 0) ? 1 : 0;
 					/*TileType* ts = tileset->GetTileType(tile_id);
 					if(ts != NULL)
 					{

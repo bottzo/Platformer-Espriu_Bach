@@ -65,5 +65,6 @@ public:
 	~flying_enemy() {};
 	bool Load_Enemy(const char* file_name) override;
 	void move()override;
+	int count = 0;
 };
 #endif // __enemy_H__

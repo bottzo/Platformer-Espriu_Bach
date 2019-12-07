@@ -214,12 +214,16 @@ void ground_enemy::move()  {
 }
 
 void flying_enemy::move() {
-	App->pathfinding->CreatePath(App->map->WorldToMap((int)position.x, (int)position.y), App->map->WorldToMap((int)App->entities->GetPlayer()->position.x, (int)App->entities->GetPlayer()->position.y));
-	const iPoint* movement_ptr=App->pathfinding->GetLastPath()->At(1);
-	iPoint movement(movement_ptr->x, movement_ptr->y);
-	movement= App->map->MapToWorld(movement.x,movement.y);
-	position.x = movement.x; position.y = movement.y;
-	enemy_collider->SetPos(position.x,position.y);
+	if (count == 4) {
+		App->pathfinding->CreatePath(App->map->WorldToMap((int)position.x, (int)position.y), App->map->WorldToMap((int)App->entities->GetPlayer()->position.x + (int)App->entities->GetPlayer()->player_collider->rect.w, (int)App->entities->GetPlayer()->position.y));
+		const iPoint* destination_ptr = App->pathfinding->GetLastPath()->At(1);
+		iPoint destination(destination_ptr->x, destination_ptr->y);
+		destination = App->map->MapToWorld(destination.x, destination.y);
+		position.x = destination.x; position.y = destination.y;
+		enemy_collider->SetPos(position.x, position.y);
+		count = 0;
+	}
+	count++;
 }
 
 	/*#include "Application.h"
