@@ -62,7 +62,6 @@ public:
 protected:
 	p2List<Animation*>Animations;
 	pugi::xml_document Entity_doc;
-	bool Load_Entity(const char* file_name);
 };
 
 class EntityManager :public j1Module {
@@ -77,9 +76,8 @@ public:
 	Entity* CreateEntity(Entity::Types type);
 	void DestroyEntity(Entity* entity);
 	player* GetPlayer() const;
-	void update_enemies();
-	void draw_enemies(float dt);
-	void spawn_entities();
+	ground_enemy* FindGroundEnemy(Entity* entity);
+	flying_enemy* FindFlyingEnemy(Entity* entity);
 public:
 	p2SString folder;
 	p2SString player_sprite;

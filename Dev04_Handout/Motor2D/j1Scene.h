@@ -39,6 +39,8 @@ public:
 private:
 	p2SString map_name;
 public:
+	ground_enemy*penguin;
+	flying_enemy* bee;
 	int actualmap;
 	p2List<p2SString*> map_names;
 };

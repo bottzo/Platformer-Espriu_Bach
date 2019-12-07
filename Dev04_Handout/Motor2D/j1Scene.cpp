@@ -41,7 +41,9 @@ bool j1Scene::Start()
 	if (App->map->CreateWalkabilityMap(w, h, &data))
 		App->pathfinding->SetMap(w, h, data);
 	RELEASE_ARRAY(data);
-	App->entities->spawn_entities();
+	(player*)App->entities->CreateEntity(Entity::Types::player);
+	penguin=(ground_enemy*)App->entities->CreateEntity(Entity::Types::ground_enemy);
+	bee=(flying_enemy*)App->entities->CreateEntity(Entity::Types::flying_enemy);
 	return true;
 }
 
