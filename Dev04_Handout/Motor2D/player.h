@@ -22,7 +22,6 @@ class player:public Entity {
 public:
 	player();
 	~player();
-	bool Load_Player(const char* file_name);
 	void Draw_player(santa_states state,float dt);
 	void Updateposition(santa_states state);
 	santa_states player::current_santa_state(p2Qeue<inputs>& input);

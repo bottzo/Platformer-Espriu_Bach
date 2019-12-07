@@ -6,6 +6,7 @@
 #include "j1Scene.h"
 #include "J1Collisions.h"
 #include "Enemy.h"
+#include "j1Window.h"
 #include "brofiler/Brofiler/Brofiler.h"
 
 Entity::Entity(Types type) : type(type) {}
@@ -40,26 +41,6 @@ player* EntityManager::GetPlayer() const {
 	return nullptr;
 }
 
-ground_enemy* EntityManager::FindGroundEnemy(Entity* entity) {
-	p2List_item<Entity*>*item = Entity_list.start;
-	while (item != nullptr) {
-		if (item->data->type == Entity::Types::ground_enemy && (Entity_list.find(entity) != -1))
-			return (ground_enemy*)item->data;
-		item = item->next;
-	}
-	return nullptr;
-}
-
-flying_enemy* EntityManager::FindFlyingEnemy(Entity* entity) {
-	p2List_item<Entity*>*item = Entity_list.start;
-	while (item != nullptr) {
-		if (item->data->type == Entity::Types::flying_enemy && (Entity_list.find(entity) != -1))
-			return (flying_enemy*)item->data;
-		item = item->next;
-	}
-	return nullptr;
-}
-
 bool EntityManager::Update(float dt)
 {
 	acumulated_ms += dt*1000.0f;
@@ -73,20 +54,159 @@ bool EntityManager::Update(float dt)
 	return true;
 }
 
+void EntityManager::spawn_entities() {
+	p2SString enemy_group_name; enemy_group_name.create("COLLIDER_ENEMY");
+	p2SString ground_collider_string; ground_collider_string.create("ground_enemy_collider");
+	p2SString flying_collider_string; flying_collider_string.create("flying_enemy_collider");
+	p2SString player_group_name; player_group_name.create("COLLAIDER_PLAYER");
+	p2SString player_string; player_string.create("player_collider");
+	p2SString slide_collider_name; slide_collider_name.create("slide_collider");
+	p2List_item<objectgroup*>*it = App->map->data.objectgroup.start;
+	while (it != NULL) {
+		if (it->data->name == enemy_group_name) {
+			enemy*current=nullptr;
+			for (int i = 0; i < it->data->num_objects; ++i) {
+				if (it->data->objects[i].name == ground_collider_string) {
+					current=(enemy*)CreateEntity(Entity::Types::ground_enemy);
+					current->enemy_collider = App->collisions->AddCollider(it->data->objects[i].rect, COLLIDER_ENEMY, App->entities);
+					current->position.x = current->enemy_collider->rect.x - ground_texture_offset;
+					current->position.y = current->enemy_collider->rect.y;
+				}
+				else if(it->data->objects[i].name == flying_collider_string) {
+					current = (enemy*)CreateEntity(Entity::Types::flying_enemy);
+					current->enemy_collider = App->collisions->AddCollider(it->data->objects[i].rect, COLLIDER_ENEMY, App->entities);
+					current->position.x = current->enemy_collider->rect.x - ground_texture_offset;
+					current->position.y = current->enemy_collider->rect.y;
+				}
+			}
+		}
+		else if (it->data->name == player_group_name) {
+			player*ptr=nullptr;
+			for (int i = 0; i < it->data->num_objects; ++i) {
+				if (it->data->objects[i].name == player_string) {
+					if(ptr==nullptr)
+						ptr=(player*)CreateEntity(Entity::Types::player);
+					ptr->player_collider = App->collisions->AddCollider(it->data->objects[i].rect, COLLIDER_PLAYER1, App->entities);
+					ptr->position.x = App->map->data.start->rect.x;
+					ptr->position.y = App->map->data.start->rect.y;
+				}
+				else if (it->data->objects[i].name == slide_collider_name) {
+					if (ptr == nullptr)
+						ptr = (player*)CreateEntity(Entity::Types::player);
+					ptr->slide_collider = App->collisions->AddCollider(it->data->objects[i].rect, COLLIDER_PLAYER1, App->entities);
+					ptr->slide_collider->active = false;
+				}
+			}
+		}
+		it = it->next;
+	}
+}
+
+bool Entity::Load_Entity(const char* file_name) {
+	bool ret = true;
+	p2SString tmp("%s%s", App->entities->folder.GetString(), file_name);
+
+	pugi::xml_parse_result result = Entity_doc.load_file(tmp.GetString());
+
+	if (result == NULL)
+	{
+		LOG("Could not load entity xml file %s. pugi error: %s", file_name, result.description());
+		ret = false;
+	}
+
+	if (ret == true)
+	{
+		pugi::xml_node entity_node = Entity_doc.child("map").child("tileset");
+		if (entity_node == NULL)
+		{
+			LOG("Error parsing entity xml file: Cannot find 'tileset' tag.");
+			ret = false;
+		}
+		else
+		{
+			pugi::xml_node tileset;
+			for (tileset = entity_node; tileset && ret; tileset = tileset.next_sibling("tileset"))
+			{
+				TileSet* set = new TileSet();
+
+				if (ret == true)
+				{
+					ret = App->map->LoadTilesetDetails(tileset, set);
+				}
+
+				if (ret == true)
+				{
+					ret = App->map->LoadTilesetImage(tileset, set, App->entities);
+				}
+
+				sprite_tilesets.add(set);
+			}
+			entity_node = entity_node.child("tile");
+
+			LOG("Loading entity animations");
+			for (entity_node; entity_node; entity_node = entity_node.next_sibling("tile")) {
+				Animation*animation = new Animation();
+				animation->name.create(entity_node.child("properties").child("property").attribute("value").as_string());
+				animation->total_frames = entity_node.child("properties").child("property").next_sibling("property").attribute("value").as_uint();
+				LOG("Loading %s animation with %d frames", animation->name.GetString(), animation->total_frames);
+				animation->texture = sprite_tilesets.start->data->texture;
+				pugi::xml_node frame_node = entity_node.child("animation").child("frame");
+				animation->frames = new Frame[animation->total_frames];
+				for (int i = 0; i < animation->total_frames; frame_node = frame_node.next_sibling("frame"), ++i) {
+					uint tileset_id = frame_node.attribute("tileid").as_uint();
+					animation->frames[i].duration = frame_node.attribute("duration").as_float() / 1000;//Dividir entre 1000 pk sigui canvi d'e frame de l0'animacio en cada segon (esta en milisegons en el tmx)
+					animation->frames[i].rect = sprite_tilesets.start->data->TilesetRect(tileset_id + 1);//pk el +1??? pk la funcio tilesetrect conta el primer tile com si fos un 1 i no el zero
+				}
+				Animations.add(animation);
+				LOG("Succesfully loaded %s animation", animation->name.GetString());
+			}
+		}
+	}
+	return ret;
+}
+
+void EntityManager::update_enemies() {
+	p2List_item<Entity*>*item = Entity_list.start;
+	enemy*current = nullptr;
+	while (item != NULL) {
+		if (item->data->type != Entity::Types::flying_enemy || item->data->type != Entity::Types::ground_enemy) {
+			item = item->next;
+			continue;
+		}
+		current = (enemy*)item->data;
+		if (abs(current->position.x - GetPlayer()->position.x)<App->win->width) {
+			current->move();
+		}
+		item = item->next;
+	}
+}
+
+void EntityManager::draw_enemies(float dt) {
+	p2List_item<Entity*>*item = Entity_list.start;
+	enemy*current = nullptr;
+	while (item != NULL) {
+		if (item->data->type != Entity::Types::flying_enemy && item->data->type != Entity::Types::ground_enemy) {
+			item = item->next;
+			continue;
+		}
+		current = (enemy*)item->data;
+		if (abs(current->position.x - GetPlayer()->position.x) < App->win->width) {
+			current->Draw_Enemy(dt);
+		}
+		item = item->next;
+	}
+}
+
 bool EntityManager::UpdateAll(float dt, bool do_logic) {
 	BROFILER_CATEGORY("Update_all_entities", Profiler::Color::Aquamarine);
-	santa_states state = App->entities->GetPlayer()->current_santa_state(key_inputs);
+	santa_states state = GetPlayer()->current_santa_state(key_inputs);
 	if (do_logic) {
-		App->entities->GetPlayer()->Updateposition(state);
-		//App->scene->penguin->move();
-		App->scene->bee->move();
+		GetPlayer()->Updateposition(state);
+		update_enemies();
 	}
 	App->scene->positioncamera();
-	App->entities->GetPlayer()->Draw_player(state,dt);
-	if (App->scene->bee != nullptr) 
-		App->scene->bee->Draw_Enemy(dt, App->scene->bee);
-	if(App->scene->penguin!=nullptr)
-		App->scene->penguin->Draw_Enemy(dt, App->scene->penguin);
+	GetPlayer()->Draw_player(state,dt);
+	draw_enemies(dt);
 	return true;
 }
 
@@ -117,14 +237,6 @@ bool EntityManager::Awake(pugi::xml_node&config) {
 bool EntityManager::CleanUp() {
 	key_inputs.Clear();
 	Entity_list.clear();
-	if (App->scene->bee != nullptr) {
-		delete App->scene->bee;
-		App->scene->bee = nullptr;
-	}
-	if (App->scene->penguin != nullptr) {
-		delete App->scene->penguin;
-		App->scene->penguin = nullptr;
-	}
 	return true;
 }
 
