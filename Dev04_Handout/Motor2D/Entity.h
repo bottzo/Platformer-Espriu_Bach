@@ -54,6 +54,7 @@ public:
 	};
 public:
 	Entity() {};
+	virtual ~Entity();
 	Entity(Types type);
 	p2Point<float> position;
 	p2Point<float> speed;
@@ -68,7 +69,7 @@ protected:
 class EntityManager :public j1Module {
 public:
 	EntityManager();
-	~EntityManager();
+	virtual ~EntityManager();
 	bool Awake(pugi::xml_node&config);
 	bool Update(float dt);
 	bool UpdateAll(float dt, bool do_logic);

@@ -11,6 +11,8 @@
 
 Entity::Entity(Types type) : type(type) {}
 
+Entity::~Entity(){}
+
 Entity* EntityManager::CreateEntity(Entity::Types type) {
 	//static_assert(Entity::Types::unknown == 3, "code needs update");
 	Entity* ret = nullptr;

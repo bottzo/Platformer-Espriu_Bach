@@ -11,6 +11,8 @@
 
 enemy::enemy() {}
 
+enemy::~enemy() {}
+
 ground_enemy::ground_enemy() {
 	Load_Entity(App->entities->ground_enemy_sprite.GetString());
 	this->kind = Enemies::ground;

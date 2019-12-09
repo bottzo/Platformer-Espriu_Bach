@@ -40,7 +40,7 @@ public:
 	};
 public:
 	enemy();
-	~enemy() {};
+	virtual ~enemy();
 	void Draw_Enemy(float dt);
 	virtual void move() {};
 	p2Point<float> speed;
