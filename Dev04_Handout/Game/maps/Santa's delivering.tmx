@@ -191493,7 +191493,7 @@
   </data>
  </layer>
  <objectgroup name="COLLIDER_START">
-  <object id="90" name="Start" x="9642.94" y="1138.39" width="220" height="149"/>
+  <object id="90" name="Start" x="98.9393" y="1054.39" width="220" height="149"/>
  </objectgroup>
  <objectgroup name="COLLIDER_END">
   <object id="94" name="End" x="10137.5" y="1186.5" width="71" height="123"/>
@@ -191535,8 +191535,8 @@
   <object id="88" name="Terrain" x="10144" y="1311" width="65" height="98"/>
  </objectgroup>
  <objectgroup name="COLLAIDER_PLAYER">
-  <object id="81" name="player_collider" x="9698.94" y="1146.39" width="70" height="127"/>
-  <object id="82" name="slide_collider" x="9678.94" y="1181.39" width="112" height="99"/>
+  <object id="81" name="player_collider" x="154.939" y="1062.39" width="70" height="127"/>
+  <object id="82" name="slide_collider" x="134.939" y="1097.39" width="112" height="99"/>
  </objectgroup>
  <objectgroup name="COLLIDER_DEATH">
   <object id="67" name="Death" x="381.818" y="1884.85" width="645.455" height="69.697"/>
