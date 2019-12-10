@@ -20,6 +20,8 @@ class j1Collisions;
 class j1MapChange;
 class j1PathFinding;
 class EntityManager;
+class j1Fonts;
+class j1Gui;
 
 class j1App
 {

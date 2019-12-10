@@ -14,6 +14,8 @@
 #include "player.h"
 #include "j1Collisions.h"
 #include "Entity.h"
+#include "j1Fonts.h"
+#include "j1Gui.h"
 #include "j1Pathfinding.h"
 #include "brofiler/Brofiler/Brofiler.h"
 
