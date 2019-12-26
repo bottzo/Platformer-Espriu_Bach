@@ -48,6 +48,7 @@ bool j1Scene::Start()
 	App->gui->AddImage(350, 0, { 485, 829, 328, 103 });
 	// TODO 4: Create the text "Hello World" as a UI element
 	App->gui->AddText(500, 105, "Hellow world", {0,255,255,255}, App->font->Load("fonts/open_sans/OpenSans-Light.ttf"));
+	App->gui->AddButton(400, 125, { 642,169,229,69 }, { 0,113,229,69 }, { 411,169,229,69 });
 	return true;
 }
 

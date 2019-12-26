@@ -17,14 +17,15 @@ struct SDL_Color;
 enum class UiTypes {
 	Unknown,
 	Image,
-	Text
+	Text,
+	Button
 };
 
 class UiElement {
 public:
 	UiElement(int x, int y, UiTypes uitype, UiElement* parent, j1Module* elementmodule);
 	virtual ~UiElement();
-	//virtual void Update() = 0;
+	virtual void Update() = 0;
 	virtual void Draw(SDL_Texture* atlas) = 0;
 	iPoint position;
 	UiTypes type;
@@ -63,10 +64,11 @@ public:
 	// Gui creation functions
 	void DeleteAllUiElements();
 	void DeleteUiElement(UiElement*element);
+	void Update_Ui();
 	void Draw_Ui();
-	//void Update_mouse();
 	UiElement*AddImage(int x,int y,SDL_Rect source_rect,UiElement* parent=nullptr,j1Module* elementmodule=nullptr);
 	UiElement* AddText(int x, int y, const char*text, SDL_Color color = { 255, 255, 255, 255 }, _TTF_Font*font = nullptr,UiElement* parent = nullptr, j1Module* elementmodule = nullptr);
+	UiElement* AddButton(int x, int y, SDL_Rect source_unhover, SDL_Rect source_hover, SDL_Rect source_click, UiElement* parent=nullptr, j1Module* elementmodule=nullptr);
 	const SDL_Texture* GetAtlas() const;
 
 private:
@@ -78,14 +80,33 @@ private:
 class UiImage :public UiElement {
 public:
 	UiImage(int x, int y, SDL_Rect source_rect, UiElement* parent, j1Module* elementmodule);
-	void Draw(SDL_Texture* tex)override;
+	void Draw(SDL_Texture* atlas)override;
+	void Update()override;
 	SDL_Rect Image;
+};
+
+enum class Button_state{
+	unhovered,
+	hovered,
+	clicked
+};
+
+class UiButton :public UiElement {
+public:
+	UiButton(int x, int y, SDL_Rect source_unhover, SDL_Rect source_hover, SDL_Rect source_click,UiElement* parent, j1Module* elementmodule);
+	void Draw(SDL_Texture* atlas)override;
+	void Update()override;
+	SDL_Rect unhover;
+	SDL_Rect hover;
+	SDL_Rect click;
+	Button_state current_state;
 };
 
 class UiText :public UiElement {
 public:
 	UiText(int x, int y,const char*text,SDL_Color color, _TTF_Font*font = nullptr, UiElement* parent=nullptr, j1Module* elementmodule=nullptr);
-	void Draw(SDL_Texture* tex)override;
+	void Draw(SDL_Texture* atlas)override;
+	void Update()override;
 	_TTF_Font*font_type;
 	const char*message;
 	SDL_Color color;

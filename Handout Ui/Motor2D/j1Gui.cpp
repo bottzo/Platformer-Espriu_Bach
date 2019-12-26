@@ -42,6 +42,7 @@ bool j1Gui::PreUpdate()
 }
 
 bool j1Gui::Update(float dt) {
+	Update_Ui();
 	Draw_Ui();
 	return true;
 }
@@ -74,7 +75,13 @@ void j1Gui::DeleteUiElement(UiElement* element) {
 	if (UiElementList.find(element) != -1)
 		UiElementList .del(UiElementList.At(UiElementList.find(element)));
 	else
-		LOG("Entity to delete not found");
+		LOG("UiElement to delete not found");
+}
+
+void j1Gui::Update_Ui() {
+	for (int i = 0; i < UiElementList.count(); ++i) {
+		UiElementList[i]->Update();
+	}
 }
 
 void j1Gui::Draw_Ui() {
@@ -89,24 +96,69 @@ UiElement* j1Gui::AddImage(int x, int y, SDL_Rect source_rect, UiElement* parent
 	return Image;
 }
 
+UiElement* j1Gui::AddText(int x, int y, const char*text, SDL_Color color, _TTF_Font*font, UiElement* parent, j1Module* elementmodule) {
+	UiElement* Text = new UiText(x, y, text, color, font, parent, elementmodule);
+	UiElementList.add(Text);
+	return Text;
+}
+
+UiElement* j1Gui::AddButton(int x, int y, SDL_Rect source_unhover, SDL_Rect source_hover, SDL_Rect source_click, UiElement* parent, j1Module* elementmodule) {
+	UiElement* Button = new UiButton(x, y,source_unhover,source_hover,source_click, parent, elementmodule);
+	UiElementList.add(Button);
+	return Button;
+}
+
+
 UiElement::UiElement(int x, int y, UiTypes uitype, UiElement* parent, j1Module* elementmodule) : type(uitype), parent(parent), Module(elementmodule) { position.x = x; position.y=y; };
 
 UiElement::~UiElement() {};
 
 UiImage::UiImage(int x, int y,SDL_Rect source_rect, UiElement* parent, j1Module* elementmodule):UiElement(x,y,UiTypes::Image,parent,elementmodule),Image(source_rect) {}
 
+void UiImage::Update() {
+	//fer que la imatge es mogui amb la camera
+}
+
 void UiImage::Draw(SDL_Texture* atlas) {
 	App->render->Blit(atlas,position.x,position.y,&Image);
 }
+
+UiText::UiText(int x, int y, const char*text, SDL_Color color, _TTF_Font*font, UiElement* parent, j1Module* elementmodule) : UiElement(x, y, UiTypes::Text, parent, elementmodule), font_type(font), message(text), color(color) {}
 
 void UiText::Draw(SDL_Texture* atlas) {
 	App->render->Blit(App->font->Print(message,color, font_type),position.x,position.y);
 }
 
-UiText::UiText(int x, int y,const char*text,SDL_Color color, _TTF_Font*font, UiElement* parent, j1Module* elementmodule): UiElement(x, y, UiTypes::Text, parent, elementmodule),font_type(font),message(text),color(color) {}
+void UiText::Update() {
+	//fer que el text es mogui amb la camera
+}
 
-UiElement* j1Gui::AddText(int x, int y,const char*text, SDL_Color color, _TTF_Font*font, UiElement* parent, j1Module* elementmodule) {
-	UiElement* Text = new UiText(x, y,text,color,font, parent, elementmodule);
-	UiElementList.add(Text);
-	return Text;
+UiButton::UiButton(int x, int y, SDL_Rect source_unhover, SDL_Rect source_hover, SDL_Rect source_click, UiElement* parent, j1Module* elementmodule) :UiElement(x, y, UiTypes::Button, parent, elementmodule), unhover(source_unhover),hover(source_hover),click(source_click),current_state(Button_state::unhovered) {}
+
+void UiButton::Update() {
+	int x, y;
+	App->input->GetMousePosition(x,y);
+	if (position.x < x && x< position.x + unhover.w && position.y < y && y< position.y + unhover.h) {
+		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
+			current_state = Button_state::clicked;
+		else
+			current_state = Button_state::hovered;
+	}
+	else {
+		current_state = Button_state::unhovered;
+	}
+}
+
+void UiButton::Draw(SDL_Texture*atlas) {
+	switch (current_state) {
+	case Button_state::unhovered:
+		App->render->Blit(atlas, position.x, position.y, &unhover);
+		break;
+	case Button_state::hovered:
+		App->render->Blit(atlas, position.x, position.y, &hover);
+		break;
+	case Button_state::clicked:
+		App->render->Blit(atlas, position.x, position.y, &click);
+		break;
+	}
 }
