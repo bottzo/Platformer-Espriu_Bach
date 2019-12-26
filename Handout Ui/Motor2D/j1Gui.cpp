@@ -95,6 +95,18 @@ UiElement::~UiElement() {};
 
 UiImage::UiImage(int x, int y,SDL_Rect source_rect, UiElement* parent, j1Module* elementmodule):UiElement(x,y,UiTypes::Image,parent,elementmodule),Image(source_rect) {}
 
-void UiImage::Draw(SDL_Texture* tex) {
-	App->render->Blit(tex,position.x,position.y,&Image);
+void UiImage::Draw(SDL_Texture* atlas) {
+	App->render->Blit(atlas,position.x,position.y,&Image);
+}
+
+void UiText::Draw(SDL_Texture* atlas) {
+	App->render->Blit(App->font->Print(message,color, font_type),position.x,position.y);
+}
+
+UiText::UiText(int x, int y,const char*text,SDL_Color color, _TTF_Font*font, UiElement* parent, j1Module* elementmodule): UiElement(x, y, UiTypes::Text, parent, elementmodule),font_type(font),message(text),color(color) {}
+
+UiElement* j1Gui::AddText(int x, int y,const char*text, SDL_Color color, _TTF_Font*font, UiElement* parent, j1Module* elementmodule) {
+	UiElement* Text = new UiText(x, y,text,color,font, parent, elementmodule);
+	UiElementList.add(Text);
+	return Text;
 }

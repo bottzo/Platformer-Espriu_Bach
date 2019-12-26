@@ -10,6 +10,7 @@
 #include "j1PathFinding.h"
 #include "j1Gui.h"
 #include "j1Scene.h"
+#include "j1Fonts.h"
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -46,7 +47,7 @@ bool j1Scene::Start()
 	// TODO 3: Create the banner (rect {485, 829, 328, 103}) as a UI element
 	App->gui->AddImage(350, 0, { 485, 829, 328, 103 });
 	// TODO 4: Create the text "Hello World" as a UI element
-
+	App->gui->AddText(500, 105, "Hellow world", {0,255,255,255}, App->font->Load("fonts/open_sans/OpenSans-Light.ttf"));
 	return true;
 }
 
