@@ -43,6 +43,7 @@ bool j1Gui::PreUpdate()
 
 bool j1Gui::Update(float dt) {
 	Update_Ui();
+	Draw_Ui();
 	return true;
 }
 
@@ -95,8 +96,8 @@ UiElement* j1Gui::AddImage(int x, int y, SDL_Rect source_rect, UiElement* parent
 	return Image;
 }
 
-UiElement* j1Gui::AddText(int x, int y, const char*text, _TTF_Font*font, SDL_Color color, int size, UiElement* parent, j1Module* elementmodule) {
-	UiElement* Text = new UiText(x, y, text,size, color, font, parent, elementmodule);
+UiElement* j1Gui::AddText(int x, int y, const char*text, SDL_Color color, _TTF_Font*font, UiElement* parent, j1Module* elementmodule) {
+	UiElement* Text = new UiText(x, y, text, color, font, parent, elementmodule);
 	UiElementList.add(Text);
 	return Text;
 }
@@ -108,70 +109,36 @@ UiElement* j1Gui::AddButton(int x, int y, SDL_Rect source_unhover, SDL_Rect sour
 }
 
 
-UiElement::UiElement(int x, int y, int w, int h, UiTypes uitype, UiElement* parent, j1Module* elementmodule) : type(uitype), parent(parent), Module(elementmodule), ui_rect({ x,y,w,h }) { if (parent != nullptr)SetLocalPos(x, y); }
+UiElement::UiElement(int x, int y, UiTypes uitype, UiElement* parent, j1Module* elementmodule) : type(uitype), parent(parent), Module(elementmodule) { position.x = x; position.y=y; };
 
 UiElement::~UiElement() {};
 
-const iPoint UiElement::GetScreenPos() {
-	iPoint position(ui_rect.x,ui_rect.y);
-	return position;
-}
-
-const iPoint UiElement::GetLocalPos() {
-	if (parent == nullptr) {
-		iPoint position(ui_rect.x, ui_rect.y);
-		return position;
-	}
-	else {
-		iPoint position(ui_rect.x - parent->GetScreenPos().x, ui_rect.y - parent->GetScreenPos().y);
-		return position;
-	}
-}
-
-const SDL_Rect UiElement::GetScreenRect() {
-	return ui_rect;
-}
-
-const SDL_Rect UiElement::GetLocalRect() {
-	return {GetLocalPos().x,GetLocalPos().y,ui_rect.w,ui_rect.h};
-}
-
-void UiElement::SetLocalPos(int x,int y) {
-	if (parent == nullptr) {
-		ui_rect.x = x; ui_rect.y = y;
-	}
-	else {
-		ui_rect.x = parent->GetScreenPos().x + x;
-		ui_rect.y = parent->GetScreenPos().y + y;
-	}
-}
-
-UiImage::UiImage(int x, int y, SDL_Rect source_rect, UiElement* parent, j1Module* elementmodule) :UiElement(x, y,source_rect.w,source_rect.h, UiTypes::Image, parent, elementmodule),atlas_rect(source_rect) {}
+UiImage::UiImage(int x, int y,SDL_Rect source_rect, UiElement* parent, j1Module* elementmodule):UiElement(x,y,UiTypes::Image,parent,elementmodule),Image(source_rect) {}
 
 void UiImage::Update() {
 	//fer que la imatge es mogui amb la camera
 }
 
 void UiImage::Draw(SDL_Texture* atlas) {
-	App->render->Blit(atlas,GetScreenPos().x,GetScreenPos().y,&atlas_rect);
+	App->render->Blit(atlas,position.x,position.y,&Image);
 }
 
-UiText::UiText(int x, int y, const char*text,int size, SDL_Color color, _TTF_Font*font, UiElement* parent, j1Module* elementmodule) : UiElement(x, y,size,size, UiTypes::Text, parent, elementmodule), font_type(font), message(text), color(color) {}
+UiText::UiText(int x, int y, const char*text, SDL_Color color, _TTF_Font*font, UiElement* parent, j1Module* elementmodule) : UiElement(x, y, UiTypes::Text, parent, elementmodule), font_type(font), message(text), color(color) {}
 
 void UiText::Draw(SDL_Texture* atlas) {
-	App->render->Blit(App->font->Print(message,color, font_type),GetScreenPos().x,GetScreenPos().y);
+	App->render->Blit(App->font->Print(message,color, font_type),position.x,position.y);
 }
 
 void UiText::Update() {
 	//fer que el text es mogui amb la camera
 }
 
-UiButton::UiButton(int x, int y, SDL_Rect source_unhover, SDL_Rect source_hover, SDL_Rect source_click, UiElement* parent, j1Module* elementmodule) :UiElement(x, y,source_unhover.w,source_unhover.h, UiTypes::Button, parent, elementmodule), unhover(source_unhover),hover(source_hover),click(source_click),current_state(Button_state::unhovered) {}
+UiButton::UiButton(int x, int y, SDL_Rect source_unhover, SDL_Rect source_hover, SDL_Rect source_click, UiElement* parent, j1Module* elementmodule) :UiElement(x, y, UiTypes::Button, parent, elementmodule), unhover(source_unhover),hover(source_hover),click(source_click),current_state(Button_state::unhovered) {}
 
 void UiButton::Update() {
 	int x, y;
 	App->input->GetMousePosition(x,y);
-	if (GetScreenPos().x < x && x< GetScreenPos().x + unhover.w && GetScreenPos().y < y && y< GetScreenPos().y + unhover.h) {
+	if (position.x < x && x< position.x + unhover.w && position.y < y && y< position.y + unhover.h) {
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
 			current_state = Button_state::clicked;
 		else
@@ -185,13 +152,13 @@ void UiButton::Update() {
 void UiButton::Draw(SDL_Texture*atlas) {
 	switch (current_state) {
 	case Button_state::unhovered:
-		App->render->Blit(atlas, GetScreenPos().x, GetScreenPos().y, &unhover);
+		App->render->Blit(atlas, position.x, position.y, &unhover);
 		break;
 	case Button_state::hovered:
-		App->render->Blit(atlas, GetScreenPos().x, GetScreenPos().y, &hover);
+		App->render->Blit(atlas, position.x, position.y, &hover);
 		break;
 	case Button_state::clicked:
-		App->render->Blit(atlas, GetScreenPos().x, GetScreenPos().y, &click);
+		App->render->Blit(atlas, position.x, position.y, &click);
 		break;
 	}
 }

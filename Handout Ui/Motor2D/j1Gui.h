@@ -23,21 +23,14 @@ enum class UiTypes {
 
 class UiElement {
 public:
-	UiElement(int x, int y, int w,int h, UiTypes uitype, UiElement* parent, j1Module* elementmodule);
+	UiElement(int x, int y, UiTypes uitype, UiElement* parent, j1Module* elementmodule);
 	virtual ~UiElement();
 	virtual void Update() = 0;
 	virtual void Draw(SDL_Texture* atlas) = 0;
-	const SDL_Rect GetScreenRect();
-	const SDL_Rect GetLocalRect();
-	const iPoint GetLocalPos();
-	const iPoint GetScreenPos();
-	void SetLocalPos(int x, int y);
+	iPoint position;
 	UiTypes type;
-protected:
 	UiElement* parent;
 	j1Module* Module;
-private:
-	SDL_Rect ui_rect;
 };
 
 // ---------------------------------------------------
@@ -74,7 +67,7 @@ public:
 	void Update_Ui();
 	void Draw_Ui();
 	UiElement*AddImage(int x,int y,SDL_Rect source_rect,UiElement* parent=nullptr,j1Module* elementmodule=nullptr);
-	UiElement* AddText(int x, int y, const char*text, _TTF_Font*font = nullptr, SDL_Color color = { 255, 255, 255, 255 }, int size = 12, UiElement* parent = nullptr, j1Module* elementmodule = nullptr);
+	UiElement* AddText(int x, int y, const char*text, SDL_Color color = { 255, 255, 255, 255 }, _TTF_Font*font = nullptr,UiElement* parent = nullptr, j1Module* elementmodule = nullptr);
 	UiElement* AddButton(int x, int y, SDL_Rect source_unhover, SDL_Rect source_hover, SDL_Rect source_click, UiElement* parent=nullptr, j1Module* elementmodule=nullptr);
 	const SDL_Texture* GetAtlas() const;
 
@@ -89,7 +82,7 @@ public:
 	UiImage(int x, int y, SDL_Rect source_rect, UiElement* parent, j1Module* elementmodule);
 	void Draw(SDL_Texture* atlas)override;
 	void Update()override;
-	SDL_Rect atlas_rect;
+	SDL_Rect Image;
 };
 
 enum class Button_state{
@@ -111,7 +104,7 @@ public:
 
 class UiText :public UiElement {
 public:
-	UiText(int x, int y,const char*text,int size,SDL_Color color, _TTF_Font*font = nullptr, UiElement* parent=nullptr, j1Module* elementmodule=nullptr);
+	UiText(int x, int y,const char*text,SDL_Color color, _TTF_Font*font = nullptr, UiElement* parent=nullptr, j1Module* elementmodule=nullptr);
 	void Draw(SDL_Texture* atlas)override;
 	void Update()override;
 	_TTF_Font*font_type;
