@@ -45,10 +45,12 @@ bool j1Scene::Start()
 
 	debug_tex = App->tex->Load("maps/path2.png");
 	// TODO 3: Create the banner (rect {485, 829, 328, 103}) as a UI element
-	App->gui->AddImage(350, 0, { 485, 829, 328, 103 });
 	// TODO 4: Create the text "Hello World" as a UI element
-	App->gui->AddText(500, 105, "Hellow world", {0,255,255,255}, App->font->Load("fonts/open_sans/OpenSans-Light.ttf"));
-	App->gui->AddButton(400, 125, { 642,169,229,69 }, { 0,113,229,69 }, { 411,169,229,69 });
+	window = App->gui->AddImage(350, 130, { 0, 512, 483, 512 });
+	UiElement*Image = App->gui->AddImage(350, 0, { 485, 829, 328, 103 }, window);
+	UiElement*title = App->gui->AddText(500, 105, "Titile", App->font->Load("fonts/open_sans/OpenSans-Light.ttf"), { 0,255,255,255 }, 48, window);
+	UiElement*Button=App->gui->AddButton(400, 125, { 642,169,229,69 }, { 0,113,229,69 }, { 411,169,229,69 },window);
+	UiElement*text = App->gui->AddText(500, 105, "Button", App->font->Load("fonts/open_sans/OpenSans-Light.ttf"), { 0,255,255,255 },12,Button);
 	return true;
 }
 
@@ -107,6 +109,7 @@ bool j1Scene::Update(float dt)
 		App->render->camera.x -= floor(200.0f * dt);
 
 	App->map->Draw();
+	App->gui->Draw_Ui();
 
 	int x, y;
 	App->input->GetMousePosition(x, y);
@@ -135,7 +138,6 @@ bool j1Scene::Update(float dt)
 		iPoint pos = App->map->MapToWorld(path->At(i)->x, path->At(i)->y);
 		App->render->Blit(debug_tex, pos.x, pos.y);
 	}
-
 	return true;
 }
 
