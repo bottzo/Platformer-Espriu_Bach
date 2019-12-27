@@ -23,7 +23,7 @@ enum class UiTypes {
 
 class UiElement {
 public:
-	UiElement(int x, int y, int w,int h, UiTypes uitype, UiElement* parent, j1Module* elementmodule);
+	UiElement(int x, int y, int w,int h, bool interactuable,bool draggeable, UiTypes uitype, UiElement* parent, j1Module* elementmodule);
 	virtual ~UiElement();
 	virtual void Update() = 0;
 	virtual void Draw(SDL_Texture* atlas) = 0;
@@ -32,8 +32,9 @@ public:
 	const iPoint GetLocalPos();
 	const iPoint GetScreenPos();
 	void SetLocalPos(int x, int y);
+	bool draggable;
+	bool interactuable;
 	UiTypes type;
-protected:
 	UiElement* parent;
 	j1Module* Module;
 private:
@@ -73,9 +74,14 @@ public:
 	void DeleteUiElement(UiElement*element);
 	void Update_Ui();
 	void Draw_Ui();
-	UiElement*AddImage(int x,int y,SDL_Rect source_rect,UiElement* parent=nullptr,j1Module* elementmodule=nullptr);
-	UiElement* AddText(int x, int y, const char*text, _TTF_Font*font = nullptr, SDL_Color color = { 255, 255, 255, 255 }, int size = 12, UiElement* parent = nullptr, j1Module* elementmodule = nullptr);
-	UiElement* AddButton(int x, int y, SDL_Rect source_unhover, SDL_Rect source_hover, SDL_Rect source_click, UiElement* parent=nullptr, j1Module* elementmodule=nullptr);
+	//If the ui has a parent the x,y will be the local coordenates respect the parent
+	UiElement*AddImage(int x,int y,SDL_Rect source_rect,bool interactuable=true, bool draggeable=false, UiElement* parent=nullptr,j1Module* elementmodule=nullptr);
+	//If the ui has a parent the x,y will be the local coordenates respect the parent
+	UiElement* AddText(int x, int y, const char*text, _TTF_Font*font = nullptr, SDL_Color color = { 255, 255, 255, 255 }, int size = 12, bool interactuable = false, bool draggeable = false, UiElement* parent = nullptr, j1Module* elementmodule = nullptr);
+	//If the ui has a parent the x,y will be the local coordenates respect the parent
+	UiElement* AddButton(int x, int y, SDL_Rect source_unhover, SDL_Rect source_hover, SDL_Rect source_click, bool interactuable=true, bool draggeable=false, UiElement* parent=nullptr, j1Module* elementmodule=nullptr);
+	UiElement* MouseInUi();
+	bool MouseClick();
 	const SDL_Texture* GetAtlas() const;
 
 private:
@@ -86,7 +92,7 @@ private:
 
 class UiImage :public UiElement {
 public:
-	UiImage(int x, int y, SDL_Rect source_rect, UiElement* parent, j1Module* elementmodule);
+	UiImage(int x, int y, SDL_Rect source_rect,bool interactuable,bool draggeable, UiElement* parent, j1Module* elementmodule);
 	void Draw(SDL_Texture* atlas)override;
 	void Update()override;
 	SDL_Rect atlas_rect;
@@ -100,7 +106,7 @@ enum class Button_state{
 
 class UiButton :public UiElement {
 public:
-	UiButton(int x, int y, SDL_Rect source_unhover, SDL_Rect source_hover, SDL_Rect source_click,UiElement* parent, j1Module* elementmodule);
+	UiButton(int x, int y, SDL_Rect source_unhover, SDL_Rect source_hover, SDL_Rect source_click, bool interactuable, bool draggeable, UiElement* parent, j1Module* elementmodule);
 	void Draw(SDL_Texture* atlas)override;
 	void Update()override;
 	SDL_Rect unhover;
@@ -111,12 +117,13 @@ public:
 
 class UiText :public UiElement {
 public:
-	UiText(int x, int y,const char*text,int size,SDL_Color color, _TTF_Font*font = nullptr, UiElement* parent=nullptr, j1Module* elementmodule=nullptr);
+	UiText(int x, int y,const char*text,int size,SDL_Color color, bool interactuable, bool draggeable, _TTF_Font*font = nullptr, UiElement* parent=nullptr, j1Module* elementmodule=nullptr);
 	void Draw(SDL_Texture* atlas)override;
 	void Update()override;
 	_TTF_Font*font_type;
 	const char*message;
 	SDL_Color color;
+	SDL_Texture* texture;
 };
 
 #endif // __j1GUI_H__

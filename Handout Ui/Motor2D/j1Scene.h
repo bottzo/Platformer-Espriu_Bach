@@ -39,7 +39,6 @@ private:
 	SDL_Texture* debug_tex;
 	GuiImage* banner;
 	GuiText* text;
-	UiElement*window;
 };
 
 #endif // __j1SCENE_H__

@@ -46,11 +46,12 @@ bool j1Scene::Start()
 	debug_tex = App->tex->Load("maps/path2.png");
 	// TODO 3: Create the banner (rect {485, 829, 328, 103}) as a UI element
 	// TODO 4: Create the text "Hello World" as a UI element
-	window = App->gui->AddImage(350, 130, { 0, 512, 483, 512 });
-	UiElement*Image = App->gui->AddImage(350, 0, { 485, 829, 328, 103 }, window);
-	UiElement*title = App->gui->AddText(500, 105, "Titile", App->font->Load("fonts/open_sans/OpenSans-Light.ttf"), { 0,255,255,255 }, 48, window);
-	UiElement*Button=App->gui->AddButton(400, 125, { 642,169,229,69 }, { 0,113,229,69 }, { 411,169,229,69 },window);
-	UiElement*text = App->gui->AddText(500, 105, "Button", App->font->Load("fonts/open_sans/OpenSans-Light.ttf"), { 0,255,255,255 },12,Button);
+
+	UiElement*window = App->gui->AddImage(350, 130, { 0, 512, 483, 512 },true,true);
+	UiElement*Image = App->gui->AddImage(65, 100, { 485, 829, 328, 103 },true,true,window);
+	UiElement*title = App->gui->AddText(140, 25, "SpaceShip", App->font->Load("fonts/open_sans/OpenSans-Light.ttf",48), { 0,255,255,255 }, 48,false,false,window);
+	UiElement*Button=App->gui->AddButton(120, 230, { 642,169,229,69 }, { 0,113,229,69 }, { 411,169,229,69 },true,true,window);
+	UiElement*text = App->gui->AddText(100, 23, "Button", App->font->Load("fonts/open_sans/OpenSans-Light.ttf"), { 0,255,255,255 },12,true,false,Button);
 	return true;
 }
 
