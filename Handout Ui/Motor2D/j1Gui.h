@@ -25,13 +25,14 @@ class UiElement {
 public:
 	UiElement(int x, int y, int w,int h, bool interactuable,bool draggeable, UiTypes uitype, UiElement* parent, j1Module* elementmodule);
 	virtual ~UiElement();
-	virtual void Update() = 0;
+	virtual void Update(int dx,int dy) = 0;
 	virtual void Draw(SDL_Texture* atlas) = 0;
 	const SDL_Rect GetScreenRect();
 	const SDL_Rect GetLocalRect();
 	const iPoint GetLocalPos();
 	const iPoint GetScreenPos();
 	void SetLocalPos(int x, int y);
+	bool outofparent();
 	bool draggable;
 	bool interactuable;
 	UiTypes type;
@@ -80,6 +81,7 @@ public:
 	UiElement* AddText(int x, int y, const char*text, _TTF_Font*font = nullptr, SDL_Color color = { 255, 255, 255, 255 }, int size = 12, bool interactuable = false, bool draggeable = false, UiElement* parent = nullptr, j1Module* elementmodule = nullptr);
 	//If the ui has a parent the x,y will be the local coordenates respect the parent
 	UiElement* AddButton(int x, int y, SDL_Rect source_unhover, SDL_Rect source_hover, SDL_Rect source_click, bool interactuable=true, bool draggeable=false, UiElement* parent=nullptr, j1Module* elementmodule=nullptr);
+	void DraggUiElements(UiElement*parent,int dx,int dy);
 	UiElement* MouseInUi();
 	bool MouseClick();
 	const SDL_Texture* GetAtlas() const;
@@ -94,7 +96,7 @@ class UiImage :public UiElement {
 public:
 	UiImage(int x, int y, SDL_Rect source_rect,bool interactuable,bool draggeable, UiElement* parent, j1Module* elementmodule);
 	void Draw(SDL_Texture* atlas)override;
-	void Update()override;
+	void Update(int dx, int dy)override;
 	SDL_Rect atlas_rect;
 };
 
@@ -108,7 +110,7 @@ class UiButton :public UiElement {
 public:
 	UiButton(int x, int y, SDL_Rect source_unhover, SDL_Rect source_hover, SDL_Rect source_click, bool interactuable, bool draggeable, UiElement* parent, j1Module* elementmodule);
 	void Draw(SDL_Texture* atlas)override;
-	void Update()override;
+	void Update(int dx,int dy)override;
 	SDL_Rect unhover;
 	SDL_Rect hover;
 	SDL_Rect click;
@@ -119,7 +121,7 @@ class UiText :public UiElement {
 public:
 	UiText(int x, int y,const char*text,int size,SDL_Color color, bool interactuable, bool draggeable, _TTF_Font*font = nullptr, UiElement* parent=nullptr, j1Module* elementmodule=nullptr);
 	void Draw(SDL_Texture* atlas)override;
-	void Update()override;
+	void Update(int dx, int dy)override;
 	_TTF_Font*font_type;
 	const char*message;
 	SDL_Color color;

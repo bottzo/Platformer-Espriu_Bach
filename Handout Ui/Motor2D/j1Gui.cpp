@@ -78,8 +78,10 @@ void j1Gui::DeleteUiElement(UiElement* element) {
 }
 
 void j1Gui::Update_Ui() {
+	int dx, dy;
+	App->input->GetMouseMotion(dx, dy);
 	for (int i = 0; i < UiElementList.count(); ++i) {
-		UiElementList[i]->Update();
+		UiElementList[i]->Update(dx,dy);
 	}
 }
 
@@ -102,6 +104,15 @@ UiElement* j1Gui::MouseInUi() {
 
 bool j1Gui::MouseClick() {
 	return (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT);
+}
+
+void j1Gui::DraggUiElements(UiElement*parent, int dx, int dy) {
+	for (int i = 0; i < UiElementList.count(); ++i) {
+		if (UiElementList[i]->parent == parent) {
+			UiElementList[i]->SetLocalPos(UiElementList[i]->GetLocalPos().x + dx, UiElementList[i]->GetLocalPos().y + dy);
+			DraggUiElements(UiElementList[i], dx, dy);
+		}
+	}
 }
 
 UiElement* j1Gui::AddImage(int x, int y, SDL_Rect source_rect, bool interactuable, bool draggeable, UiElement* parent, j1Module* elementmodule) {
@@ -159,43 +170,45 @@ void UiElement::SetLocalPos(int x,int y) {
 		ui_rect.x = parent->GetScreenPos().x + x;
 		ui_rect.y = parent->GetScreenPos().y + y;
 	}
+}bool UiElement::outofparent() {
+	return (GetScreenPos().x + GetScreenRect().w*0.5f<parent->GetScreenPos().x || GetScreenPos().x>parent->GetScreenPos().x + parent->GetScreenRect().w-GetScreenRect().w*0.5 || GetScreenPos().y + GetScreenRect().h*0.5f<parent->GetScreenPos().y || GetScreenPos().y>parent->GetScreenPos().y + parent->GetScreenRect().h-GetScreenRect().h*0.5f);
 }
+
+
 
 UiImage::UiImage(int x, int y, SDL_Rect source_rect,bool interactuable, bool draggeable, UiElement* parent, j1Module* elementmodule) :UiElement(x, y,source_rect.w,source_rect.h, interactuable, draggeable, UiTypes::Image, parent, elementmodule),atlas_rect(source_rect) {}
 
-void UiImage::Update() {
+void UiImage::Update(int dx, int dy) {
 	//fer que la imatge es mogui amb la camera
-	if (draggable&&interactuable) {
-		int x, y;
-		App->input->GetMouseMotion(x, y);
-		if (App->gui->MouseClick() && App->gui->MouseInUi() == this && x != 0 && y != 0)
-			SetLocalPos(GetLocalPos().x + x, GetLocalPos().y + y);
+	if (draggable && interactuable && App->gui->MouseClick() && App->gui->MouseInUi() == this && dx != 0 && dy != 0) {
+		SetLocalPos(GetLocalPos().x + dx, GetLocalPos().y + dy);
+		App->gui->DraggUiElements(this, dx, dy);
 	}
 }
 
 void UiImage::Draw(SDL_Texture* atlas) {
-	App->render->Blit(atlas,GetScreenPos().x,GetScreenPos().y,&atlas_rect);
+	if(parent==nullptr||!outofparent())
+		App->render->Blit(atlas,GetScreenPos().x,GetScreenPos().y,&atlas_rect);
 }
 
 UiText::UiText(int x, int y, const char*text,int size, SDL_Color color, bool interactuable, bool draggeable, _TTF_Font*font, UiElement* parent, j1Module* elementmodule) : UiElement(x, y, interactuable, draggeable, size,size, UiTypes::Text, parent, elementmodule), font_type(font), message(text), color(color),texture(App->font->Print(message, color, font_type)) {}
 
 void UiText::Draw(SDL_Texture* atlas) {
-	App->render->Blit(texture,GetScreenPos().x,GetScreenPos().y);
+	if(parent==nullptr||!outofparent())
+		App->render->Blit(texture,GetScreenPos().x,GetScreenPos().y);
 }
 
-void UiText::Update() {
+void UiText::Update(int dx, int dy) {
 	//fer que el text es mogui amb la camera
-	if (draggable&&interactuable) {
-		int x, y;
-		App->input->GetMouseMotion(x, y);
-		if (App->gui->MouseClick() && App->gui->MouseInUi() == this && x != 0 && y != 0)
-			SetLocalPos(GetLocalPos().x + x, GetLocalPos().y + y);
+	if (draggable && interactuable && App->gui->MouseClick() && App->gui->MouseInUi() == this && dx != 0 && dy != 0) {
+		SetLocalPos(GetLocalPos().x + dx, GetLocalPos().y + dy);
+		App->gui->DraggUiElements(this, dx, dy);
 	}
 }
 
 UiButton::UiButton(int x, int y, SDL_Rect source_unhover, SDL_Rect source_hover, SDL_Rect source_click, bool interactuable, bool draggeable, UiElement* parent, j1Module* elementmodule) :UiElement(x, y,source_unhover.w,source_unhover.h, interactuable, draggeable, UiTypes::Button, parent, elementmodule), unhover(source_unhover),hover(source_hover),click(source_click),current_state(Button_state::unhovered) {}
 
-void UiButton::Update() {
+void UiButton::Update(int dx, int dy) {
 	if (App->gui->MouseInUi()==this&&interactuable) {
 		if (App->gui->MouseClick())
 			current_state = Button_state::clicked;
@@ -205,24 +218,24 @@ void UiButton::Update() {
 	else {
 		current_state = Button_state::unhovered;
 	}
-	if (draggable&&interactuable) {
-		int x, y;
-		App->input->GetMouseMotion(x, y);
-		if (App->gui->MouseClick() && App->gui->MouseInUi()==this && x != 0 && y != 0)
-			SetLocalPos(GetLocalPos().x + x, GetLocalPos().y + y);
+	if (draggable && interactuable && App->gui->MouseClick() && App->gui->MouseInUi() == this && dx != 0 && dy != 0) {
+		SetLocalPos(GetLocalPos().x + dx, GetLocalPos().y + dy);
+		App->gui->DraggUiElements(this, dx, dy);
 	}
 }
 
 void UiButton::Draw(SDL_Texture*atlas) {
-	switch (current_state) {
-	case Button_state::unhovered:
-		App->render->Blit(atlas, GetScreenPos().x, GetScreenPos().y, &unhover);
-		break;
-	case Button_state::hovered:
-		App->render->Blit(atlas, GetScreenPos().x, GetScreenPos().y, &hover);
-		break;
-	case Button_state::clicked:
-		App->render->Blit(atlas, GetScreenPos().x, GetScreenPos().y, &click);
-		break;
+	if (parent == nullptr || !outofparent()) {
+		switch (current_state) {
+		case Button_state::unhovered:
+			App->render->Blit(atlas, GetScreenPos().x, GetScreenPos().y, &unhover);
+			break;
+		case Button_state::hovered:
+			App->render->Blit(atlas, GetScreenPos().x, GetScreenPos().y, &hover);
+			break;
+		case Button_state::clicked:
+			App->render->Blit(atlas, GetScreenPos().x, GetScreenPos().y, &click);
+			break;
+		}
 	}
 }
