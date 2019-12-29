@@ -100,7 +100,7 @@ bool j1Scene::PreUpdate()
 	}
 	if (App->input->reciving_text&&App->input->GetKey(SDL_SCANCODE_BACKSPACE) == KEY_DOWN) {
 		if (default_input_text != nullptr) {
-			App->input->input_text.Cut(App->input->input_text.Length()+1);
+			App->input->input_text.Cut(App->input->input_text.Length()-2);
 			App->gui->RemoveUiElement(default_input_text);
 			default_input_text = App->gui->AddText(10, 0, App->input->input_text.GetString(), App->font->fonts[3], { 255,255,255,255 }, 42, false, false, App->scene->input_lable);
 		}
@@ -114,10 +114,10 @@ bool j1Scene::Update(float dt)
 	// Gui ---
 	
 	// -------
-	if(App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
+	if(App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN&& !App->input->reciving_text)
 		App->LoadGame("save_game.xml");
 
-	if(App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
+	if(App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN && !App->input->reciving_text)
 		App->SaveGame("save_game.xml");
 
 	if(App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)

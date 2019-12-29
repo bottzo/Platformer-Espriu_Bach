@@ -32,15 +32,20 @@ public:
 	// Called before all Updates
 	bool PostUpdate();
 
-	bool positioncamera();
 	// Called before quitting
 	bool CleanUp();
+
+	bool positioncamera();
+
+	void ui_callback(UiElement*element);
 
 private:
 	p2SString map_name;
 public:
 	int actualmap;
 	p2List<p2SString*> map_names;
+	UiElement*input_lable;
+	UiElement*default_input_text;
 };
 
 #endif // __j1SCENE_H__

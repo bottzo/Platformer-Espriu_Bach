@@ -96,6 +96,8 @@ public:
 	j1MapChange*        scenechange;
 	j1PathFinding*      pathfinding;
 	EntityManager*      entities;
+	j1Fonts*            font;
+	j1Gui*              gui;
 
 
 private:

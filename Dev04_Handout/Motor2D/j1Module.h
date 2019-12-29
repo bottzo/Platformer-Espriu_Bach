@@ -20,6 +20,7 @@ enum update_status
 
 struct Collider;
 class j1App;
+class UiElement;
 
 class j1Module
 {
@@ -77,6 +78,10 @@ public:
 	virtual bool Save(pugi::xml_node&) const
 	{
 		return true;
+	}
+
+	virtual void ui_callback(UiElement*element) {
+
 	}
 
 public:

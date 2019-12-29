@@ -7,6 +7,8 @@
 #include "Entity.h"
 #include "player.h"
 #include "j1Collisions.h"
+#include "j1Gui.h"
+#include "j1Fonts.h"
 #include "SDL/include/SDL.h"
 
 #define MAX_KEYS 300
@@ -47,6 +49,7 @@ bool j1Input::Awake(pugi::xml_node& config)
 bool j1Input::Start()
 {
 	SDL_StopTextInput();
+	reciving_text = false;
 	return true;
 }
 
@@ -130,6 +133,13 @@ bool j1Input::PreUpdate()
 			//LOG("Mouse button %d up", event.button.button-1);
 			break;
 
+		case SDL_TEXTINPUT:
+			input_text += event.text.text;
+			if (App->scene->default_input_text != nullptr)
+				App->gui->RemoveUiElement(App->scene->default_input_text);
+			App->scene->default_input_text = App->gui->AddText(10, 0, input_text.GetString(), App->font->Load("fonts/open_sans/OpenSans-Light.ttf", 42), { 255,255,255,255 }, 42, false, false, App->scene->input_lable);
+			break;
+
 		case SDL_MOUSEMOTION:
 			int scale = App->win->GetScale();
 			mouse_motion_x = event.motion.xrel / scale;
@@ -178,26 +188,27 @@ bool j1Input::PreUpdate()
 
 
 
-
-	if (left && right)
-		App->entities->key_inputs.Push(IN_LEFT_AND_RIGHT);
-	else
-	{
-		if (left)
-			App->entities->key_inputs.Push(IN_LEFT_DOWN);
-		if (right)
-			App->entities->key_inputs.Push(IN_RIGHT_DOWN);
-	}
-
-	if (up && down)
-		App->entities->key_inputs.Push(IN_JUMP_AND_SLIDE);
-	else
-	{
-		if (down) { //&& Player->distance.x > Player->slide_collider->rect.w / 2)
-			App->entities->key_inputs.Push(IN_SLIDE_DOWN);
+	if (!reciving_text) {
+		if (left && right)
+			App->entities->key_inputs.Push(IN_LEFT_AND_RIGHT);
+		else
+		{
+			if (left)
+				App->entities->key_inputs.Push(IN_LEFT_DOWN);
+			if (right)
+				App->entities->key_inputs.Push(IN_RIGHT_DOWN);
 		}
-		if (up && (App->entities->GetPlayer()->distance.y == 0))
-			App->entities->key_inputs.Push(IN_JUMP);
+
+		if (up && down)
+			App->entities->key_inputs.Push(IN_JUMP_AND_SLIDE);
+		else
+		{
+			if (down) { //&& Player->distance.x > Player->slide_collider->rect.w / 2)
+				App->entities->key_inputs.Push(IN_SLIDE_DOWN);
+			}
+			if (up && (App->entities->GetPlayer()->distance.y == 0))
+				App->entities->key_inputs.Push(IN_JUMP);
+		}
 	}
 
 	if (App->entities->GetPlayer()->slide_timer > 0)

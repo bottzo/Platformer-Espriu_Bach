@@ -36,6 +36,8 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	entities = new EntityManager();
 	map = new j1Map();
 	pathfinding = new j1PathFinding();
+	font = new j1Fonts();
+	gui = new j1Gui();
 	
 
 	// Ordered for awake / Start / Update
@@ -49,6 +51,8 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(collisions);
 	AddModule(entities);
 	AddModule(pathfinding);
+	AddModule(font);
+	AddModule(gui);
 	
 
 	// render last to swap buffer
