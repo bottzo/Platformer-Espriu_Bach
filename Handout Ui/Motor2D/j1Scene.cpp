@@ -62,7 +62,7 @@ void j1Scene::ui_callback(UiElement*element) {
 	if (element == input_lable) {
 		//App->render->DrawQuad(default_input_text->GetScreenRect(), 255, 255, 255);
 		App->gui->RemoveUiElement(default_input_text);
-		default_input_text = nullptr;
+		App->input->GetTextInput();
 	}
 }
 

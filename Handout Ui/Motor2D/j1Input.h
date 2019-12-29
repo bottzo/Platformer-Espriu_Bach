@@ -70,6 +70,7 @@ public:
 
 	void GetTextInput();
 	void StopGetTextInput();
+	char* ConcatenateText(char*dest, char*src);
 
 private:
 	bool		windowEvents[WE_COUNT];
@@ -79,6 +80,7 @@ private:
 	int			mouse_motion_y;
 	int			mouse_x;
 	int			mouse_y;
+	char*input_text;
 };
 
 #endif // __j1INPUT_H__

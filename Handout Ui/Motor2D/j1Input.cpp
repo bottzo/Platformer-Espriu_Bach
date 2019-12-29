@@ -117,6 +117,11 @@ bool j1Input::PreUpdate()
 				//LOG("Mouse button %d up", event.button.button-1);
 			break;
 
+			case SDL_TEXTINPUT:
+				input_text = ConcatenateText(input_text, event.text.text);
+				LOG("%s", input_text);
+			break;
+
 			case SDL_MOUSEMOTION:
 				int scale = App->win->GetScale();
 				mouse_motion_x = event.motion.xrel / scale;
@@ -125,8 +130,6 @@ bool j1Input::PreUpdate()
 				mouse_y = event.motion.y / scale;
 				//LOG("Mouse motion x %d y %d", mouse_motion_x, mouse_motion_y);
 			break;
-			/*case SDL_TEXTINPUT:
-			break;*/
 		}
 	}
 
@@ -139,6 +142,17 @@ void j1Input::GetTextInput() {
 
 void j1Input::StopGetTextInput() {
 	SDL_StopTextInput();
+}
+
+char* j1Input::ConcatenateText(char*dest,char*src) {
+	if (dest == nullptr) {
+		dest = src;
+	}
+	else {
+		int size = strlen(dest);
+		dest[size] = src[0];
+	}
+	return dest;
 }
 
 // Called before quitting
