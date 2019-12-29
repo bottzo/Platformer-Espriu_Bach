@@ -25,6 +25,11 @@
     <atlas file="gui/atlas.png"/>
   </gui>
 
+  <MainMenu>
+    <folder>textures/</folder>
+    <backgroundImage name="Santa's background.png"/>
+  </MainMenu>
+
   <file_system>
     <path>data.zip</path>
   </file_system>

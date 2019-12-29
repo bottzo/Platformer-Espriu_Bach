@@ -17,6 +17,8 @@
 #include "j1Fonts.h"
 #include "j1Gui.h"
 #include "j1Pathfinding.h"
+#include "ModuleFadeToBlack.h"
+#include "j1MainMenu.h"
 #include "brofiler/Brofiler/Brofiler.h"
 
 
@@ -38,6 +40,8 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	pathfinding = new j1PathFinding();
 	font = new j1Fonts();
 	gui = new j1Gui();
+	fade = new ModuleFadeToBlack();
+	home = new j1MainMenu();
 	
 
 	// Ordered for awake / Start / Update
@@ -46,6 +50,8 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(win);
 	AddModule(tex);
 	AddModule(audio);
+	AddModule(fade);
+	AddModule(home);
 	AddModule(map);
 	AddModule(scene);
 	AddModule(collisions);
@@ -244,7 +250,8 @@ bool j1App::PreUpdate()
 			continue;
 		}
 
-		ret = item->data->PreUpdate();
+		if (item->data->IsEneabled())
+			ret = item->data->PreUpdate();
 	}
 
 	return ret;
@@ -267,7 +274,8 @@ bool j1App::DoUpdate()
 			continue;
 		}
 
-		ret = item->data->Update(dt);
+		if (item->data->IsEneabled())
+			ret = item->data->Update(dt);
 	}
 
 	return ret;
@@ -289,7 +297,8 @@ bool j1App::PostUpdate()
 			continue;
 		}
 
-		ret = item->data->PostUpdate();
+		if (item->data->IsEneabled())
+			ret = item->data->PostUpdate();
 	}
 
 	return ret;
@@ -305,7 +314,8 @@ bool j1App::CleanUp()
 
 	while(item != NULL && ret == true)
 	{
-		ret = item->data->CleanUp();
+		if (item->data->IsEneabled())
+			ret = item->data->CleanUp();
 		item = item->prev;
 	}
 

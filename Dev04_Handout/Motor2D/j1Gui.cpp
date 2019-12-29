@@ -57,6 +57,7 @@ bool j1Gui::Update(float dt) {
 			focusedUi->Module->ui_callback(focusedUi);
 		}
 	Update_Ui();
+	Draw_Ui();
 	return true;
 }
 

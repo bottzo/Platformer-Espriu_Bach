@@ -164,7 +164,8 @@ void j1Map::ChangeMaps(p2SString new_map) {
 bool j1Map::CleanUp()
 {
 	LOG("Unloading map");
-	data.start->to_delete = true;
+	if(data.start!=nullptr)
+		data.start->to_delete = true;
 	// Remove all tilesets
 	p2List_item<TileSet*>* item;
 	item = data.tilesets.start;

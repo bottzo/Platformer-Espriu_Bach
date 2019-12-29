@@ -187,37 +187,38 @@ bool j1Input::PreUpdate()
 	}
 
 
-
-	if (!reciving_text) {
-		if (left && right)
-			App->entities->key_inputs.Push(IN_LEFT_AND_RIGHT);
-		else
-		{
-			if (left)
-				App->entities->key_inputs.Push(IN_LEFT_DOWN);
-			if (right)
-				App->entities->key_inputs.Push(IN_RIGHT_DOWN);
-		}
-
-		if (up && down)
-			App->entities->key_inputs.Push(IN_JUMP_AND_SLIDE);
-		else
-		{
-			if (down) { //&& Player->distance.x > Player->slide_collider->rect.w / 2)
-				App->entities->key_inputs.Push(IN_SLIDE_DOWN);
+	if (App->entities->IsEneabled()) {
+		if (!reciving_text) {
+			if (left && right)
+				App->entities->key_inputs.Push(IN_LEFT_AND_RIGHT);
+			else
+			{
+				if (left)
+					App->entities->key_inputs.Push(IN_LEFT_DOWN);
+				if (right)
+					App->entities->key_inputs.Push(IN_RIGHT_DOWN);
 			}
-			if (up && (App->entities->GetPlayer()->distance.y == 0))
-				App->entities->key_inputs.Push(IN_JUMP);
-		}
-	}
 
-	if (App->entities->GetPlayer()->slide_timer > 0)
-	{
-		if (SDL_GetTicks() - App->entities->GetPlayer()->slide_timer > SLIDE_TIME)
+			if (up && down)
+				App->entities->key_inputs.Push(IN_JUMP_AND_SLIDE);
+			else
+			{
+				if (down) { //&& Player->distance.x > Player->slide_collider->rect.w / 2)
+					App->entities->key_inputs.Push(IN_SLIDE_DOWN);
+				}
+				if (up && (App->entities->GetPlayer()->distance.y == 0))
+					App->entities->key_inputs.Push(IN_JUMP);
+			}
+		}
+
+		if (App->entities->GetPlayer()->slide_timer > 0)
 		{
-			App->entities->key_inputs.Push(IN_SLIDE_FINISH);
-			App->entities->GetPlayer()->player_collider->active = true; App->entities->GetPlayer()->slide_collider->active = false;
-			App->entities->GetPlayer()->slide_timer = 0;
+			if (SDL_GetTicks() - App->entities->GetPlayer()->slide_timer > SLIDE_TIME)
+			{
+				App->entities->key_inputs.Push(IN_SLIDE_FINISH);
+				App->entities->GetPlayer()->player_collider->active = true; App->entities->GetPlayer()->slide_collider->active = false;
+				App->entities->GetPlayer()->slide_timer = 0;
+			}
 		}
 	}
 

@@ -22,6 +22,8 @@ class j1PathFinding;
 class EntityManager;
 class j1Fonts;
 class j1Gui;
+class ModuleFadeToBlack;
+class j1MainMenu;
 
 class j1App
 {
@@ -98,6 +100,8 @@ public:
 	EntityManager*      entities;
 	j1Fonts*            font;
 	j1Gui*              gui;
+	ModuleFadeToBlack*  fade;
+	j1MainMenu*         home;
 
 
 private:

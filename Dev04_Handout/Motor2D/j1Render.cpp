@@ -7,6 +7,7 @@
 #include "player.h"
 #include "j1Collisions.h"
 #include "Entity.h"
+#include "j1MainMenu.h"
 #include "brofiler/Brofiler/Brofiler.h"
 
 #define VSYNC true
@@ -150,6 +151,8 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 	SDL_Rect rect;
 	rect.x = (int)(camera.x * speed) + x * scale;
 	rect.y = (int)(camera.y * speed) + y * scale;
+	if (App->home->IsEneabled())
+		rect.y = 0 + y * scale;
 
 	if(section != NULL)
 	{

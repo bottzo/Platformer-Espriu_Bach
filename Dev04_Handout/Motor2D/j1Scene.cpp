@@ -31,12 +31,22 @@ bool j1Scene::Awake(pugi::xml_node&config)
 	LOG("Loading Scene");
 	bool ret = true;
 	map_name.create(config.child("map_name").attribute("name").as_string());
+	App->entities->Disable();
+	App->map->Disable();
+	App->collisions->Disable();
 	return ret;
 }
 
 // Called before the first frame
 bool j1Scene::Start()
 {
+	App->map->Load(map_name.GetString());
+	int w, h;
+	uchar* data = NULL;
+	if (App->map->CreateWalkabilityMap(w, h, &data))
+		App->pathfinding->SetMap(w, h, data);
+	RELEASE_ARRAY(data);
+	App->entities->spawn_entities();
 	return true;
 }
 
@@ -61,7 +71,8 @@ bool j1Scene::PreUpdate()
 bool j1Scene::Update(float dt)
 {
 	BROFILER_CATEGORY("UpdateScene", Profiler::Color::HoneyDew);
-	App->map->Draw();
+	if(App->map->IsEneabled())
+		App->map->Draw();
 	return true;
 }
 
