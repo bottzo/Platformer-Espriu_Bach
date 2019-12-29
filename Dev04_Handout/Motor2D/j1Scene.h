@@ -41,6 +41,8 @@ public:
 
 	void ui_callback(UiElement*element);
 
+	void check_console_input(p2SString input);
+
 private:
 	p2SString map_name;
 public:
@@ -53,7 +55,13 @@ public:
 	UiElement*Continue_button;
 	_TTF_Font*SceneButtonsFont;
 	_TTF_Font*ContinueFont;
+	UiElement*ConsoleTitle;
+	UiElement*Console;
 	bool Exit;
+	int CurrentMap;
+	//console orders
+	p2SString exit;
+	p2SString change_map;
 };
 
 #endif // __j1SCENE_H__

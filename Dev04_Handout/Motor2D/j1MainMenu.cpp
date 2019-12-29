@@ -56,9 +56,13 @@ bool j1MainMenu::Update(float dt) {
 }
 bool j1MainMenu::CleanUp() {
 	App->tex->UnLoad(background_texture);
+	App->tex->UnLoad(Title);
 	App->gui->RemoveUiElement(Play_button);
 	App->gui->RemoveUiElement(Continue_button);
 	App->gui->RemoveUiElement(Exit_button);
+	folder.Clear();
+	BackgroundImagePath.Clear();
+	TitlePath.Clear();
 	App->font->fonts.clear();
 	return true;
 }
