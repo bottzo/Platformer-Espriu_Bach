@@ -26,6 +26,7 @@
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 {
 	PERF_START(ptimer);
+	freeze = false;
 	want_to_save = want_to_load = false;
 
 	input = new j1Input();
@@ -198,6 +199,8 @@ void j1App::PrepareUpdate()
 	last_sec_frame_count++;
 
 	dt = frame_time.ReadSec();
+	if (freeze)
+		dt = 0;
 	frame_time.Start();
 }
 

@@ -7,6 +7,7 @@ struct SDL_Texture;
 class player;
 class flying_enemy;
 class ground_enemy;
+class UiElement;
 
 class j1Scene : public j1Module
 {
@@ -46,6 +47,7 @@ public:
 	p2List<p2SString*> map_names;
 	UiElement*input_lable;
 	UiElement*default_input_text;
+	UiElement*Settings_window;
 };
 
 #endif // __j1SCENE_H__

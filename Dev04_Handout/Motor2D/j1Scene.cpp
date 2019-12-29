@@ -13,6 +13,7 @@
 #include "j1Collisions.h"
 #include "j1Pathfinding.h"
 #include "j1Gui.h"
+#include "j1MainMenu.h"
 #include "j1Fonts.h"
 #include "brofiler/Brofiler/Brofiler.h"
 
@@ -104,9 +105,11 @@ bool j1Scene::PostUpdate()
 {
 	bool ret = true;
 
-	if(App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-		ret = false;
-
+	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN&&!App->home->IsEneabled()) {
+		if(Settings_window==nullptr)
+			Settings_window = App->gui->AddImage(-App->render->camera.x, -App->render->camera.y, { 0, 512, 483, 512 }, false, true);
+		App->freeze = true;
+	}
 	return ret;
 }
 

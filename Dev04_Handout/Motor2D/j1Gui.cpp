@@ -5,6 +5,7 @@
 #include "j1Textures.h"
 #include "j1Fonts.h"
 #include "j1Input.h"
+#include "j1MainMenu.h"
 #include "j1Gui.h"
 
 j1Gui::j1Gui() : j1Module()
@@ -114,6 +115,10 @@ void j1Gui::Draw_Ui() {
 UiElement* j1Gui::UiUnderMouse() {
 	int x, y;
 	App->input->GetMousePosition(x, y);
+	if (!App->home->IsEneabled()) {
+		x -= App->render->camera.x;
+		y -= App->render->camera.y;
+	}
 	UiElement*Element = nullptr;
 	for (int i = 0; i < UiElementList.count(); ++i) {
 		if (UiElementList[i]->GetScreenPos().x < x && x < UiElementList[i]->GetScreenPos().x + UiElementList[i]->GetScreenRect().w && UiElementList[i]->GetScreenPos().y < y && y < UiElementList[i]->GetScreenPos().y + UiElementList[i]->GetScreenRect().h && (UiElementList[i]->interactuable || UiElementList[i]->draggable))
