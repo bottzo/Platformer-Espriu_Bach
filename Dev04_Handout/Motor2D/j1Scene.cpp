@@ -21,6 +21,7 @@ j1Scene::j1Scene() : j1Module()
 {
 	name.create("scene");
 	Exit = false;
+	exit.create("exit");
 }
 
 // Destructor
@@ -58,6 +59,8 @@ bool j1Scene::PreUpdate()
 	if (App->input->reciving_text&&App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN) {
 		SDL_StopTextInput();
 		App->input->reciving_text = false;
+		check_console_input(App->input->input_text);
+		App->input->input_text.Clear();
 	}
 	if (App->input->reciving_text&&App->input->GetKey(SDL_SCANCODE_BACKSPACE) == KEY_DOWN) {
 		if (default_input_text != nullptr) {
@@ -67,6 +70,12 @@ bool j1Scene::PreUpdate()
 		}
 	}
 	return true;
+}
+
+void j1Scene::check_console_input(p2SString input) {
+	if (input == exit) {
+		Exit = true;
+	}
 }
 
 // Called each loop iteration
@@ -133,6 +142,22 @@ bool j1Scene::PostUpdate()
 		}
 		App->freeze = true;
 	}
+	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_DOWN && !App->home->IsEneabled()) {
+		if (Console == nullptr) {
+			if(SceneButtonsFont==nullptr)
+				SceneButtonsFont = App->font->Load("fonts/open_sans/OpenSans-ExtraBoldItalic.ttf", 42);
+			Console = App->gui->AddImage(-App->render->camera.x, -App->render->camera.y, { 0, 512, 483, 512 }, false, true);
+			ConsoleTitle=App->gui->AddText(150, 50, "CONSOLE", SceneButtonsFont, { 0,0,255,255 }, 42, false, false, Console);
+			input_lable = App->gui->AddImage(65, 100, { 488, 569, 344, 61 }, true, false, Console, this);
+			default_input_text = App->gui->AddText(10, 0, "Type here", App->font->Load("fonts/open_sans/OpenSans-Light.ttf", 42), { 255,255,255,255 }, 42, false, false, input_lable);
+		}
+		else {
+			Console->SetLocalPos(-App->render->camera.x, -App->render->camera.y);
+			ConsoleTitle->SetLocalPos(150, 50);
+			input_lable->SetLocalPos(65, 100);
+		}
+	}
+
 	return ret;
 }
 
