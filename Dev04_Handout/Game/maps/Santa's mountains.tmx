@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="319" height="60" tilewidth="32" tileheight="32" nextobjectid="59">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="319" height="60" tilewidth="32" tileheight="32" nextobjectid="62">
  <properties>
   <property name="Gravity" type="float" value="5"/>
  </properties>
@@ -191543,6 +191543,11 @@
  </objectgroup>
  <objectgroup name="COLLIDER_END">
   <object id="56" name="End" x="10144.4" y="100.803" width="63" height="1206.79"/>
+ </objectgroup>
+ <objectgroup name="COLLIDER_ENEMY">
+  <object id="59" name="flying_enemy_collider" x="1184.5" y="1046" width="55" height="60"/>
+  <object id="60" name="flying_enemy_collider" x="3524.5" y="994" width="55" height="60"/>
+  <object id="61" name="flying_enemy_collider" x="9080.5" y="1318" width="55" height="60"/>
  </objectgroup>
  <layer name="Navigation" width="319" height="60">
   <properties>
