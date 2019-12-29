@@ -61,7 +61,7 @@ bool j1MainMenu::CleanUp() {
 
 void j1MainMenu::ui_callback(UiElement*element) {
 	if (element == Play_button) {
-		App->fade->FadeToBlack(this, App->entities);
+		App->fade->FadeToBlack(this, App->entities,1.5f);
 	}
 	if (element == Exit_button) {
 		Exit = true;
