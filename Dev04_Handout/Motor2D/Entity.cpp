@@ -62,6 +62,15 @@ bool EntityManager::Update(float dt)
 	return true;
 }
 
+void EntityManager::reset_enemies() {
+	for (int i = 0; i < Entity_list.count(); ++i) {
+		if (Entity_list[i]->type == Entity::Types::flying_enemy || Entity_list[i]->type == Entity::Types::ground_enemy) {
+			Entity_list[i]->position.x = Entity_list[i]->initial_positon.x;
+			Entity_list[i]->position.y = Entity_list[i]->initial_positon.y;
+		}
+	}
+}
+
 void EntityManager::spawn_entities() {
 	p2SString enemy_group_name; enemy_group_name.create("COLLIDER_ENEMY");
 	p2SString ground_collider_string; ground_collider_string.create("ground_enemy_collider");
@@ -79,12 +88,16 @@ void EntityManager::spawn_entities() {
 					current->enemy_collider = App->collisions->AddCollider(it->data->objects[i].rect, COLLIDER_ENEMY, App->entities);
 					current->position.x = current->enemy_collider->rect.x - ground_texture_offset;
 					current->position.y = current->enemy_collider->rect.y;
+					current->initial_positon.x = current->position.x;
+					current->initial_positon.y = current->position.y;
 				}
 				else if(it->data->objects[i].name == flying_collider_string) {
 					current = (enemy*)CreateEntity(Entity::Types::flying_enemy);
 					current->enemy_collider = App->collisions->AddCollider(it->data->objects[i].rect, COLLIDER_ENEMY, App->entities);
 					current->position.x = current->enemy_collider->rect.x;
 					current->position.y = current->enemy_collider->rect.y;
+					current->initial_positon.x = current->position.x;
+					current->initial_positon.y = current->position.y;
 				}
 			}
 		}
@@ -272,8 +285,9 @@ SDL_Rect&Animation::DoOneLoop(float dt) {
 
 void EntityManager::OnCollision(Collider*c1, Collider*c2) {
 	if (c2->type == COLLIDER_DEATH && c1->type==COLLIDER_PLAYER1) {
-		App->entities->GetPlayer()->position.x = App->map->data.start->rect.x;
-		App->entities->GetPlayer()->position.y = App->map->data.start->rect.y;
+		GetPlayer()->position.x = App->map->data.start->rect.x;
+		GetPlayer()->position.y = App->map->data.start->rect.y;
+		reset_enemies();
 	}
 	if (c2->type == END_COLLIDER && c1->type == COLLIDER_PLAYER1) {
 		App->map->ChangeMaps("Santa's mountains.tmx");
@@ -285,8 +299,9 @@ void EntityManager::OnCollision(Collider*c1, Collider*c2) {
 		}
 	}*/
 	if (c1->type == COLLIDER_PLAYER1 && c2->type == COLLIDER_ENEMY) {
-		App->entities->GetPlayer()->position.x = App->map->data.start->rect.x;
-		App->entities->GetPlayer()->position.y = App->map->data.start->rect.y;
+		GetPlayer()->position.x = App->map->data.start->rect.x;
+		GetPlayer()->position.y = App->map->data.start->rect.y;
+		reset_enemies();
 		/*if (App->scene->penguin != nullptr) {
 			if (App->scene->penguin->enemy_collider == c2) {
 				App->entities->DestroyEntity(App->entities->FindGroundEnemy(App->scene->penguin));

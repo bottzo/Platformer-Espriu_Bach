@@ -60,6 +60,7 @@ public:
 	p2Point<float> speed;
 	p2List<TileSet*>sprite_tilesets;
 	Types type;
+	iPoint initial_positon;
 protected:
 	p2List<Animation*>Animations;
 	pugi::xml_document Entity_doc;
@@ -82,6 +83,7 @@ public:
 	void update_enemies();
 	void draw_enemies(float dt);
 	void spawn_entities();
+	void reset_enemies();
 public:
 	p2SString folder;
 	p2SString player_sprite;
