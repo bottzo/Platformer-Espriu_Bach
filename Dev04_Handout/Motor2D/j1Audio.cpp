@@ -24,7 +24,7 @@ bool j1Audio::Awake(pugi::xml_node& config)
 	bool ret = true;
 	SDL_Init(0);
 
-	music_folder.create(config.child("audio").child("music").child_value("folder"));
+	 music_folder.create(config.child("audio").child("music").child_value("folder"));
 	
 
 	return ret;

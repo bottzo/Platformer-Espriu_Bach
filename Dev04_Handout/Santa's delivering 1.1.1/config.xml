@@ -1,0 +1,64 @@
+<!-- Config file for the game -->
+
+<config>
+  <app framerate_cap="30">
+    <title>Game Development Testbed</title>
+    <organization>UPC</organization>
+  </app>
+	
+  <renderer>
+    <vsync value="false"/>
+    <camera x="0" y="-1085"/>
+    <santa_flip_offset value="-38"/>
+    <ground_enemy_flip_offset value="38"/>
+  </renderer>
+
+  <window>
+    <resolution width="1024" height="768" scale="1"/>
+    <fullscreen value="false"/>
+    <borderless value="false"/>
+    <resizable value="false"/>
+    <fullscreen_window value="false"/>
+  </window>
+
+  <gui>
+    <atlas file="gui/atlas.png"/>
+  </gui>
+
+  <MainMenu>
+    <folder>textures/</folder>
+    <backgroundImage name="Santa's background.png"/>
+    <TitleImage name="Santa's delivering title.png"/>
+  </MainMenu>
+
+  <file_system>
+    <path>data.zip</path>
+  </file_system>
+
+  <audio>
+    <music> 
+      <folder>audio/music/</folder>
+    </music>
+   <sfx> 
+      <folder>audio/fx/</folder>
+    </sfx>
+  </audio>
+
+  <map>
+    <folder>maps/</folder>
+  </map>
+  <Entities>
+    <folder>textures/</folder>
+    <player_sprite name="santa_animations.tmx"/>
+    <flying_enemy_sprite name="bee_animations(55x60).tmx"/>
+    <ground_enemy_sprite name="penguin_animations(174x116).tmx"/>
+    <texture_offset x="56" y="8"/>
+    <slide_offset x="36" y="43"/>
+    <ground_texture_offset x="75"/>
+    <logic_update_ms ms="50"/>
+  </Entities>
+  <scene>
+    <map_name name="Santa's delivering.tmx"/>
+  </scene>
+
+</config>
