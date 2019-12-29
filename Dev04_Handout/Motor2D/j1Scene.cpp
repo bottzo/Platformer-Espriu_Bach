@@ -22,6 +22,8 @@ j1Scene::j1Scene() : j1Module()
 	name.create("scene");
 	Exit = false;
 	exit.create("exit");
+	change_map.create("change map");
+	CurrentMap = 1;
 }
 
 // Destructor
@@ -75,6 +77,16 @@ bool j1Scene::PreUpdate()
 void j1Scene::check_console_input(p2SString input) {
 	if (input == exit) {
 		Exit = true;
+	}
+	if (input == change_map) {
+		if (CurrentMap == 1) {
+			App->map->ChangeMaps("Santa's mountains.tmx");
+			CurrentMap = 2;
+		}
+		else {
+			App->map->ChangeMaps("Santa's delivering.tmx");
+			CurrentMap = 1;
+		}
 	}
 }
 

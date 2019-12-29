@@ -58,8 +58,10 @@ public:
 	UiElement*ConsoleTitle;
 	UiElement*Console;
 	bool Exit;
+	int CurrentMap;
 	//console orders
 	p2SString exit;
+	p2SString change_map;
 };
 
 #endif // __j1SCENE_H__
