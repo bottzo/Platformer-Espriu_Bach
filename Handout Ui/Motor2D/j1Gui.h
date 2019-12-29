@@ -82,7 +82,7 @@ public:
 	//If the ui has a parent the x,y will be the local coordenates respect the parent
 	UiElement* AddButton(int x, int y, SDL_Rect source_unhover, SDL_Rect source_hover, SDL_Rect source_click, bool interactuable=true, bool draggeable=false, UiElement* parent=nullptr, j1Module* elementmodule=nullptr);
 	void DraggUiElements(UiElement*parent,int dx,int dy);
-	UiElement* MouseInUi();
+	UiElement* UiUnderMouse();
 	bool MouseClick();
 	UiElement*FocusNextElement(UiElement*current_element);
 	UiElement*focusedUi;
