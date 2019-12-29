@@ -31,7 +31,7 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 bool j1Gui::Start()
 {
 	atlas = App->tex->Load(atlas_file_name.GetString());
-
+	focusedUi = nullptr;
 	return true;
 }
 
@@ -42,6 +42,15 @@ bool j1Gui::PreUpdate()
 }
 
 bool j1Gui::Update(float dt) {
+	if (MouseClick() && MouseInUi() != nullptr && MouseInUi()->interactuable)
+		focusedUi = MouseInUi();
+	else if (MouseClick() && MouseInUi() == nullptr)
+		focusedUi = nullptr;
+	if (App->input->GetKey(SDL_SCANCODE_TAB) == KEY_DOWN)
+		focusedUi = FocusNextElement(focusedUi);
+	if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
+		if (focusedUi != nullptr&&focusedUi->Module != nullptr)
+			focusedUi->Module->ui_click_button_callback(focusedUi);
 	Update_Ui();
 	return true;
 }
@@ -70,9 +79,14 @@ void j1Gui::DeleteAllUiElements() {
 	UiElementList.clear();
 }
 
-void j1Gui::DeleteUiElement(UiElement* element) {
-	if (UiElementList.find(element) != -1)
-		UiElementList .del(UiElementList.At(UiElementList.find(element)));
+void j1Gui::RemoveUiElement(UiElement* element) {
+	if (UiElementList.find(element) != -1) {
+		for (int i = 0; i < UiElementList.count(); ++i) {
+			if (UiElementList[i]->parent == element)
+				RemoveUiElement(UiElementList[i]);
+		}
+		UiElementList.del(UiElementList.At(UiElementList.find(element)));
+	}
 	else
 		LOG("UiElement to delete not found");
 }
@@ -113,6 +127,27 @@ void j1Gui::DraggUiElements(UiElement*parent, int dx, int dy) {
 			DraggUiElements(UiElementList[i], dx, dy);
 		}
 	}
+}
+
+UiElement*j1Gui::FocusNextElement(UiElement*current_element) {
+	if(current_element==nullptr){
+		for (int i = 0; i < UiElementList.count(); ++i) {
+			if (UiElementList[i]->parent == nullptr && UiElementList[i]->interactuable)
+				return UiElementList[i];
+		}
+	}
+	else {
+		bool iteration = true;
+		for (int i = UiElementList.find(current_element); i < UiElementList.count(); ++i) {
+			if (UiElementList[i]->parent == nullptr&&UiElementList[i]->interactuable)
+				return UiElementList[i];
+			if (i == UiElementList.count() - 1 && iteration) {
+				iteration = false;
+				i = 0;
+			}
+		}
+	}
+	return nullptr;
 }
 
 UiElement* j1Gui::AddImage(int x, int y, SDL_Rect source_rect, bool interactuable, bool draggeable, UiElement* parent, j1Module* elementmodule) {
@@ -180,6 +215,13 @@ UiImage::UiImage(int x, int y, SDL_Rect source_rect,bool interactuable, bool dra
 
 void UiImage::Update(int dx, int dy) {
 	//fer que la imatge es mogui amb la camera
+	if (App->gui->MouseInUi() == this&&interactuable) {
+		if (App->gui->MouseClick()) {
+			if (Module != nullptr){
+				Module->ui_click_button_callback(this);
+			}
+		}
+	}
 	if (draggable && interactuable && App->gui->MouseClick() && App->gui->MouseInUi() == this && dx != 0 && dy != 0) {
 		SetLocalPos(GetLocalPos().x + dx, GetLocalPos().y + dy);
 		App->gui->DraggUiElements(this, dx, dy);
@@ -200,6 +242,13 @@ void UiText::Draw(SDL_Texture* atlas) {
 
 void UiText::Update(int dx, int dy) {
 	//fer que el text es mogui amb la camera
+	if (App->gui->MouseInUi() == this&&interactuable) {
+		if (App->gui->MouseClick()) {
+			if (Module != nullptr) {
+				Module->ui_click_button_callback(this);
+			}
+		}
+	}
 	if (draggable && interactuable && App->gui->MouseClick() && App->gui->MouseInUi() == this && dx != 0 && dy != 0) {
 		SetLocalPos(GetLocalPos().x + dx, GetLocalPos().y + dy);
 		App->gui->DraggUiElements(this, dx, dy);
@@ -210,8 +259,12 @@ UiButton::UiButton(int x, int y, SDL_Rect source_unhover, SDL_Rect source_hover,
 
 void UiButton::Update(int dx, int dy) {
 	if (App->gui->MouseInUi()==this&&interactuable) {
-		if (App->gui->MouseClick())
+		if (App->gui->MouseClick()) {
 			current_state = Button_state::clicked;
+			if (Module!=nullptr) {
+				Module->ui_click_button_callback(this);
+			}
+		}
 		else
 			current_state = Button_state::hovered;
 	}

@@ -72,7 +72,7 @@ public:
 	// TODO 2: Create the factory methods
 	// Gui creation functions
 	void DeleteAllUiElements();
-	void DeleteUiElement(UiElement*element);
+	void RemoveUiElement(UiElement*element);
 	void Update_Ui();
 	void Draw_Ui();
 	//If the ui has a parent the x,y will be the local coordenates respect the parent
@@ -84,6 +84,8 @@ public:
 	void DraggUiElements(UiElement*parent,int dx,int dy);
 	UiElement* MouseInUi();
 	bool MouseClick();
+	UiElement*FocusNextElement(UiElement*current_element);
+	UiElement*focusedUi;
 	const SDL_Texture* GetAtlas() const;
 
 private:

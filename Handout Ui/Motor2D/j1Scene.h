@@ -35,10 +35,14 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	void ui_click_button_callback(UiElement*);
+
 private:
 	SDL_Texture* debug_tex;
 	GuiImage* banner;
 	GuiText* text;
+	UiElement*input_lable;
+	UiElement*default_input_text;
 };
 
 #endif // __j1SCENE_H__
