@@ -50,7 +50,7 @@ bool j1Gui::Update(float dt) {
 		focusedUi = FocusNextElement(focusedUi);
 	if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
 		if (focusedUi != nullptr&&focusedUi->Module != nullptr)
-			focusedUi->Module->ui_click_button_callback(focusedUi);
+			focusedUi->Module->ui_callback(focusedUi);
 	Update_Ui();
 	return true;
 }
@@ -218,7 +218,7 @@ void UiImage::Update(int dx, int dy) {
 	if (App->gui->UiUnderMouse() == this&&interactuable) {
 		if (App->gui->MouseClick()) {
 			if (Module != nullptr){
-				Module->ui_click_button_callback(this);
+				Module->ui_callback(this);
 			}
 		}
 	}
@@ -245,7 +245,7 @@ void UiText::Update(int dx, int dy) {
 	if (App->gui->UiUnderMouse() == this&&interactuable) {
 		if (App->gui->MouseClick()) {
 			if (Module != nullptr) {
-				Module->ui_click_button_callback(this);
+				Module->ui_callback(this);
 			}
 		}
 	}
@@ -262,7 +262,7 @@ void UiButton::Update(int dx, int dy) {
 		if (App->gui->MouseClick()) {
 			current_state = Button_state::clicked;
 			if (Module!=nullptr) {
-				Module->ui_click_button_callback(this);
+				Module->ui_callback(this);
 			}
 		}
 		else

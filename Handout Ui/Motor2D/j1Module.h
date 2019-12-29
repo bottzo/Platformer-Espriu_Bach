@@ -72,7 +72,7 @@ public:
 	{
 		return true;
 	}
-	virtual void ui_click_button_callback(UiElement*element) {
+	virtual void ui_callback(UiElement*element) {
 
 	}
 

@@ -35,7 +35,7 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-	void ui_click_button_callback(UiElement*);
+	void ui_callback(UiElement*);
 
 private:
 	SDL_Texture* debug_tex;
