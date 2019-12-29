@@ -20,8 +20,10 @@ public:
 	void ui_callback(UiElement*element);
 private:
 	SDL_Texture*background_texture;
+	SDL_Texture*Title;
 	p2SString folder;
 	p2SString BackgroundImagePath;
+	p2SString TitlePath;
 	UiElement*Play_button;
 	UiElement*Continue_button;
 	UiElement*Exit_button;

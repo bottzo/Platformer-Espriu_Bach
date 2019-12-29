@@ -28,6 +28,7 @@
   <MainMenu>
     <folder>textures/</folder>
     <backgroundImage name="Santa's background.png"/>
+    <TitleImage name="Santa's delivering title.png"/>
   </MainMenu>
 
   <file_system>

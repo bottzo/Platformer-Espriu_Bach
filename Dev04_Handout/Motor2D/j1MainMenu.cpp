@@ -22,13 +22,16 @@ bool j1MainMenu::Awake(pugi::xml_node&config) {
 	bool ret = true;
 	folder.create(config.child("folder").child_value());
 	BackgroundImagePath.create(config.child("backgroundImage").attribute("name").as_string());
+	TitlePath.create(config.child("TitleImage").attribute("name").as_string());
 	return ret;
 }
 
 bool j1MainMenu::Start() {
 	Exit = false;
 	p2SString tmp("%s%s", folder.GetString(), BackgroundImagePath.GetString());
+	p2SString tmp2("%s%s", folder.GetString(), TitlePath.GetString());
 	background_texture = App->tex->Load(tmp.GetString());
+	Title= App->tex->Load(tmp2.GetString());
 	MenuButtonsFont = App->font->Load("fonts/open_sans/OpenSans-ExtraBoldItalic.ttf", 42);
 	ContinueFont = App->font->Load("fonts/open_sans/OpenSans-ExtraBoldItalic.ttf", 36);
 	Play_button = App->gui->AddButton(400, 430, { 642,169,229,69 }, { 0,113,229,69 }, { 411,169,229,69 }, true, false,nullptr,this);
@@ -43,6 +46,7 @@ bool j1MainMenu::Start() {
 
 bool j1MainMenu::Update(float dt) {
 	App->render->Blit(background_texture,0,0);
+	App->render->Blit(Title, 310, -60);
 	bool ret = true;
 	if (Exit) {
 		ret = false;
