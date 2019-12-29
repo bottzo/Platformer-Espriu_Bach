@@ -20,6 +20,7 @@
 j1Scene::j1Scene() : j1Module()
 {
 	name.create("scene");
+	Exit = false;
 }
 
 // Destructor
@@ -72,9 +73,14 @@ bool j1Scene::PreUpdate()
 bool j1Scene::Update(float dt)
 {
 	BROFILER_CATEGORY("UpdateScene", Profiler::Color::HoneyDew);
+	bool ret = true;
 	if(App->map->IsEneabled())
 		App->map->Draw();
-	return true;
+	if (Exit) {
+		ret = false;
+		Exit = false;
+	}
+	return ret;
 }
 
 void j1Scene::ui_callback(UiElement*element) {
@@ -83,6 +89,15 @@ void j1Scene::ui_callback(UiElement*element) {
 		App->gui->RemoveUiElement(default_input_text);
 		SDL_StartTextInput();
 		App->input->reciving_text = true;
+	}
+	if (element == Exit_button) {
+		Exit = true;
+	}
+	if (element == Continue_button) {
+		App->freeze = false;
+		App->gui->RemoveUiElement(Settings_window);
+		App->gui->RemoveUiElement(Exit_button);
+		Settings_window = nullptr;
 	}
 }
 
@@ -106,8 +121,16 @@ bool j1Scene::PostUpdate()
 	bool ret = true;
 
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN&&!App->home->IsEneabled()) {
-		if(Settings_window==nullptr)
+		if (Settings_window == nullptr) {
 			Settings_window = App->gui->AddImage(-App->render->camera.x, -App->render->camera.y, { 0, 512, 483, 512 }, false, true);
+			SceneButtonsFont = App->font->Load("fonts/open_sans/OpenSans-ExtraBoldItalic.ttf", 42);
+			App->gui->AddText(170, 50, "PAUSE", SceneButtonsFont, { 0,0,255,255 }, 42, false, false, Settings_window);
+			Exit_button = App->gui->AddButton(120, 230, { 642,169,229,69 }, { 0,113,229,69 }, { 411,169,229,69 }, true, false, Settings_window, this);
+			App->gui->AddText(68, 2, "EXIT", SceneButtonsFont, { 0,0,255,255 }, 42, false, false, Exit_button);
+			ContinueFont = App->font->Load("fonts/open_sans/OpenSans-ExtraBoldItalic.ttf", 36);
+			Continue_button = App->gui->AddButton(120, 130, { 642,169,229,69 }, { 0,113,229,69 }, { 411,169,229,69 }, true, false, Settings_window, this);
+			App->gui->AddText(23, 7, "CONTINUE", ContinueFont, { 0,0,255,255 }, 36, false, false, Continue_button);
+		}
 		App->freeze = true;
 	}
 	return ret;

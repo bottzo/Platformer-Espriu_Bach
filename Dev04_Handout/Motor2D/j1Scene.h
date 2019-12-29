@@ -8,6 +8,7 @@ class player;
 class flying_enemy;
 class ground_enemy;
 class UiElement;
+struct _TTF_Font;
 
 class j1Scene : public j1Module
 {
@@ -48,6 +49,11 @@ public:
 	UiElement*input_lable;
 	UiElement*default_input_text;
 	UiElement*Settings_window;
+	UiElement*Exit_button;
+	UiElement*Continue_button;
+	_TTF_Font*SceneButtonsFont;
+	_TTF_Font*ContinueFont;
+	bool Exit;
 };
 
 #endif // __j1SCENE_H__
