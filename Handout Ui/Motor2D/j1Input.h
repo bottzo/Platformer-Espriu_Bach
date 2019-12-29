@@ -68,9 +68,9 @@ public:
 	void GetMousePosition(int &x, int &y);
 	void GetMouseMotion(int& x, int& y);
 
-	void GetTextInput();
-	void StopGetTextInput();
-	char* ConcatenateText(char*dest, char*src);
+	//Text input
+	p2SString input_text;
+	bool reciving_text;
 
 private:
 	bool		windowEvents[WE_COUNT];
@@ -80,7 +80,6 @@ private:
 	int			mouse_motion_y;
 	int			mouse_x;
 	int			mouse_y;
-	char*input_text;
 };
 
 #endif // __j1INPUT_H__

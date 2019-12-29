@@ -62,7 +62,8 @@ void j1Scene::ui_callback(UiElement*element) {
 	if (element == input_lable) {
 		//App->render->DrawQuad(default_input_text->GetScreenRect(), 255, 255, 255);
 		App->gui->RemoveUiElement(default_input_text);
-		App->input->GetTextInput();
+		SDL_StartTextInput();
+		App->input->reciving_text = true;
 	}
 }
 
@@ -93,6 +94,17 @@ bool j1Scene::PreUpdate()
 		}
 	}
 
+	if (App->input->reciving_text&&App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN) {
+		SDL_StopTextInput();
+		App->input->reciving_text = false;
+	}
+	if (App->input->reciving_text&&App->input->GetKey(SDL_SCANCODE_BACKSPACE) == KEY_DOWN) {
+		if (default_input_text != nullptr) {
+			App->input->input_text.Cut(App->input->input_text.Length()+1);
+			App->gui->RemoveUiElement(default_input_text);
+			default_input_text = App->gui->AddText(10, 0, App->input->input_text.GetString(), App->font->fonts[3], { 255,255,255,255 }, 42, false, false, App->scene->input_lable);
+		}
+	}
 	return true;
 }
 

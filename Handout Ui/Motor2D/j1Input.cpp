@@ -3,6 +3,9 @@
 #include "j1App.h"
 #include "j1Input.h"
 #include "j1Window.h"
+#include "j1Scene.h"
+#include "j1Gui.h"
+#include "j1Fonts.h"
 #include "SDL/include/SDL.h"
 
 #define MAX_KEYS 300
@@ -42,6 +45,7 @@ bool j1Input::Awake(pugi::xml_node& config)
 bool j1Input::Start()
 {
 	SDL_StopTextInput();
+	bool reciving_text = false;
 	return true;
 }
 
@@ -118,8 +122,10 @@ bool j1Input::PreUpdate()
 			break;
 
 			case SDL_TEXTINPUT:
-				input_text = ConcatenateText(input_text, event.text.text);
-				LOG("%s", input_text);
+				input_text += event.text.text;
+				if (App->scene->default_input_text != nullptr)
+					App->gui->RemoveUiElement(App->scene->default_input_text);
+				App->scene->default_input_text = App->gui->AddText(10, 0, input_text.GetString(), App->font->Load("fonts/open_sans/OpenSans-Light.ttf", 42), { 255,255,255,255 }, 42, false, false, App->scene->input_lable);
 			break;
 
 			case SDL_MOUSEMOTION:
@@ -134,25 +140,6 @@ bool j1Input::PreUpdate()
 	}
 
 	return true;
-}
-
-void j1Input::GetTextInput() {
-	SDL_StartTextInput();
-}
-
-void j1Input::StopGetTextInput() {
-	SDL_StopTextInput();
-}
-
-char* j1Input::ConcatenateText(char*dest,char*src) {
-	if (dest == nullptr) {
-		dest = src;
-	}
-	else {
-		int size = strlen(dest);
-		dest[size] = src[0];
-	}
-	return dest;
 }
 
 // Called before quitting

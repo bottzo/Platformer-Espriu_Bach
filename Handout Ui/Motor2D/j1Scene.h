@@ -37,12 +37,13 @@ public:
 
 	void ui_callback(UiElement*);
 
+	UiElement*input_lable;
+	UiElement*default_input_text;
+
 private:
 	SDL_Texture* debug_tex;
 	GuiImage* banner;
 	GuiText* text;
-	UiElement*input_lable;
-	UiElement*default_input_text;
 };
 
 #endif // __j1SCENE_H__

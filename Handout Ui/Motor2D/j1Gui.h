@@ -3,12 +3,13 @@
 
 #include "j1Module.h"
 #include "p2DynArray.h"
+#include "p2Point.h"
 #include "j1App.h"
+#include "SDL/include/SDL.h"
 
 
 struct SDL_Texture;
 struct _TTF_Font;
-struct SDL_Color;
 
 #define CURSOR_WIDTH 2
 
