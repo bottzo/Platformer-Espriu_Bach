@@ -59,9 +59,11 @@ public:
 	UiElement*Console;
 	bool Exit;
 	int CurrentMap;
+	bool colliders;
 	//console orders
 	p2SString exit;
 	p2SString change_map;
+	p2SString Collisions;
 };
 
 #endif // __j1SCENE_H__

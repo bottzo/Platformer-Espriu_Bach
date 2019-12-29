@@ -23,6 +23,8 @@ j1Scene::j1Scene() : j1Module()
 	Exit = false;
 	exit.create("exit");
 	change_map.create("change map");
+	Collisions.create("collisions");
+	colliders = false;
 	CurrentMap = 1;
 }
 
@@ -87,6 +89,9 @@ void j1Scene::check_console_input(p2SString input) {
 			App->map->ChangeMaps("Santa's delivering.tmx");
 			CurrentMap = 1;
 		}
+	}
+	if (input == Collisions) {
+		colliders = true;
 	}
 }
 

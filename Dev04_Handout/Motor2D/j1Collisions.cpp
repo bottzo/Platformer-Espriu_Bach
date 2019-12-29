@@ -6,6 +6,7 @@
 #include "p2Log.h"
 #include "Entity.h"
 #include "player.h"
+#include "j1Scene.h"
 #include "j1Map.h"
 
 j1Collisions::j1Collisions()
@@ -252,8 +253,11 @@ bool j1Collisions::Update(float dt)
 
 void j1Collisions::DebugDraw()
 {
-	if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN) {
+	if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN||App->scene->colliders) {
 		debug =! debug;
+		if (App->scene->colliders) {
+			App->scene->colliders = false;
+		}
 	}
 
 	if (debug == false) {
