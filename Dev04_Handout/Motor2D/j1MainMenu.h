@@ -23,7 +23,11 @@ private:
 	p2SString folder;
 	p2SString BackgroundImagePath;
 	UiElement*Play_button;
+	UiElement*Continue_button;
+	UiElement*Exit_button;
 	_TTF_Font*MenuButtonsFont;
+	_TTF_Font*ContinueFont;
+	bool Exit;
 };
 
 #endif // __MAINMENU_H__

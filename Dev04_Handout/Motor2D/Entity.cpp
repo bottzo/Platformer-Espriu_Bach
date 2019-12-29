@@ -43,6 +43,12 @@ player* EntityManager::GetPlayer() const {
 	return nullptr;
 }
 
+bool EntityManager::Start() {
+	App->collisions->Enable();
+	App->map->Enable();
+	return true;
+}
+
 bool EntityManager::Update(float dt)
 {
 	acumulated_ms += dt*1000.0f;

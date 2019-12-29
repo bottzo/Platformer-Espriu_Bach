@@ -71,6 +71,7 @@ public:
 	EntityManager();
 	virtual ~EntityManager();
 	bool Awake(pugi::xml_node&config);
+	bool Start();
 	bool Update(float dt);
 	bool UpdateAll(float dt, bool do_logic);
 	bool CleanUp();
