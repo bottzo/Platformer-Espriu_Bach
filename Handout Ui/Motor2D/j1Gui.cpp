@@ -42,15 +42,20 @@ bool j1Gui::PreUpdate()
 }
 
 bool j1Gui::Update(float dt) {
-	if (MouseClick() && UiUnderMouse() != nullptr && UiUnderMouse()->interactuable)
+	if (MouseClick() && UiUnderMouse() != nullptr && UiUnderMouse()->interactuable) {
 		focusedUi = UiUnderMouse();
+		if (focusedUi->Module != nullptr) {
+			focusedUi->Module->ui_callback(focusedUi);
+		}
+	}
 	else if (MouseClick() && UiUnderMouse() == nullptr)
 		focusedUi = nullptr;
 	if (App->input->GetKey(SDL_SCANCODE_TAB) == KEY_DOWN)
 		focusedUi = FocusNextElement(focusedUi);
 	if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
-		if (focusedUi != nullptr&&focusedUi->Module != nullptr)
+		if (focusedUi != nullptr&&focusedUi->Module != nullptr) {
 			focusedUi->Module->ui_callback(focusedUi);
+		}
 	Update_Ui();
 	return true;
 }
@@ -110,7 +115,7 @@ UiElement* j1Gui::UiUnderMouse() {
 	App->input->GetMousePosition(x, y);
 	UiElement*Element=nullptr;
 	for (int i = 0; i < UiElementList.count(); ++i) {
-		if (UiElementList[i]->GetScreenPos().x < x && x < UiElementList[i]->GetScreenPos().x + UiElementList[i]->GetScreenRect().w && UiElementList[i]->GetScreenPos().y < y && y < UiElementList[i]->GetScreenPos().y + UiElementList[i]->GetScreenRect().h && UiElementList[i]->interactuable)
+		if (UiElementList[i]->GetScreenPos().x < x && x < UiElementList[i]->GetScreenPos().x + UiElementList[i]->GetScreenRect().w && UiElementList[i]->GetScreenPos().y < y && y < UiElementList[i]->GetScreenPos().y + UiElementList[i]->GetScreenRect().h && (UiElementList[i]->interactuable|| UiElementList[i]->draggable))
 			Element = UiElementList[i];
 	}
 	return Element;
@@ -132,18 +137,20 @@ void j1Gui::DraggUiElements(UiElement*parent, int dx, int dy) {
 UiElement*j1Gui::FocusNextElement(UiElement*current_element) {
 	if(current_element==nullptr){
 		for (int i = 0; i < UiElementList.count(); ++i) {
-			if (UiElementList[i]->parent == nullptr && UiElementList[i]->interactuable)
+			if (UiElementList[i]->interactuable)
 				return UiElementList[i];
 		}
 	}
 	else {
 		bool iteration = true;
-		for (int i = UiElementList.find(current_element); i < UiElementList.count(); ++i) {
-			if (UiElementList[i]->parent == nullptr&&UiElementList[i]->interactuable)
+		for (int i = UiElementList.find(current_element)+1; i < UiElementList.count(); ++i) {
+			if (UiElementList[i]->interactuable)
 				return UiElementList[i];
 			if (i == UiElementList.count() - 1 && iteration) {
 				iteration = false;
 				i = 0;
+				if(UiElementList[i]->interactuable)
+					return UiElementList[i];
 			}
 		}
 	}
@@ -215,14 +222,11 @@ UiImage::UiImage(int x, int y, SDL_Rect source_rect,bool interactuable, bool dra
 
 void UiImage::Update(int dx, int dy) {
 	//fer que la imatge es mogui amb la camera
-	if (App->gui->UiUnderMouse() == this&&interactuable) {
-		if (App->gui->MouseClick()) {
-			if (Module != nullptr){
-				Module->ui_callback(this);
-			}
-		}
-	}
-	if (draggable && interactuable && App->gui->MouseClick() && App->gui->UiUnderMouse() == this && dx != 0 && dy != 0) {
+	if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN && App->gui->focusedUi == this)
+		App->gui->focusedUi = nullptr;
+	if (App->gui->MouseClick() && App->gui->focusedUi == this)
+		App->gui->focusedUi = nullptr;
+	if (draggable && App->gui->MouseClick() && App->gui->UiUnderMouse() == this && dx != 0 && dy != 0) {
 		SetLocalPos(GetLocalPos().x + dx, GetLocalPos().y + dy);
 		App->gui->DraggUiElements(this, dx, dy);
 	}
@@ -233,7 +237,7 @@ void UiImage::Draw(SDL_Texture* atlas) {
 		App->render->Blit(atlas,GetScreenPos().x,GetScreenPos().y,&atlas_rect);
 }
 
-UiText::UiText(int x, int y, const char*text,int size, SDL_Color color, bool interactuable, bool draggeable, _TTF_Font*font, UiElement* parent, j1Module* elementmodule) : UiElement(x, y, interactuable, draggeable, size,size, UiTypes::Text, parent, elementmodule), font_type(font), message(text), color(color),texture(App->font->Print(message, color, font_type)) {}
+UiText::UiText(int x, int y, const char*text,int size, SDL_Color color, bool interactuable, bool draggeable, _TTF_Font*font, UiElement* parent, j1Module* elementmodule) : UiElement(x, y, size, size, interactuable, draggeable, UiTypes::Text, parent, elementmodule), font_type(font), message(text), color(color),texture(App->font->Print(message, color, font_type)) {}
 
 void UiText::Draw(SDL_Texture* atlas) {
 	if(parent==nullptr||!outofparent())
@@ -242,14 +246,11 @@ void UiText::Draw(SDL_Texture* atlas) {
 
 void UiText::Update(int dx, int dy) {
 	//fer que el text es mogui amb la camera
-	if (App->gui->UiUnderMouse() == this&&interactuable) {
-		if (App->gui->MouseClick()) {
-			if (Module != nullptr) {
-				Module->ui_callback(this);
-			}
-		}
-	}
-	if (draggable && interactuable && App->gui->MouseClick() && App->gui->UiUnderMouse() == this && dx != 0 && dy != 0) {
+	if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN && App->gui->focusedUi == this)
+		App->gui->focusedUi = nullptr;
+	if (App->gui->MouseClick() && App->gui->focusedUi == this)
+		App->gui->focusedUi = nullptr;
+	if (draggable && App->gui->MouseClick() && App->gui->UiUnderMouse() == this && dx != 0 && dy != 0) {
 		SetLocalPos(GetLocalPos().x + dx, GetLocalPos().y + dy);
 		App->gui->DraggUiElements(this, dx, dy);
 	}
@@ -258,20 +259,21 @@ void UiText::Update(int dx, int dy) {
 UiButton::UiButton(int x, int y, SDL_Rect source_unhover, SDL_Rect source_hover, SDL_Rect source_click, bool interactuable, bool draggeable, UiElement* parent, j1Module* elementmodule) :UiElement(x, y,source_unhover.w,source_unhover.h, interactuable, draggeable, UiTypes::Button, parent, elementmodule), unhover(source_unhover),hover(source_hover),click(source_click),current_state(Button_state::unhovered) {}
 
 void UiButton::Update(int dx, int dy) {
-	if (App->gui->UiUnderMouse()==this&&interactuable) {
-		if (App->gui->MouseClick()) {
-			current_state = Button_state::clicked;
-			if (Module!=nullptr) {
-				Module->ui_callback(this);
-			}
-		}
-		else
-			current_state = Button_state::hovered;
-	}
-	else {
+	if (App->gui->focusedUi == this)
+		current_state = Button_state::hovered;
+	else if(App->gui->UiUnderMouse()==this)
+		current_state = Button_state::hovered;
+	else
 		current_state = Button_state::unhovered;
+	if (App->gui->MouseClick() && App->gui->focusedUi == this) {
+		current_state = Button_state::clicked;
+		App->gui->focusedUi = nullptr;
 	}
-	if (draggable && interactuable && App->gui->MouseClick() && App->gui->UiUnderMouse() == this && dx != 0 && dy != 0) {
+	if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN && App->gui->focusedUi == this) {
+		current_state = Button_state::clicked;
+		App->gui->focusedUi = nullptr;
+	}
+	if (draggable && App->gui->MouseClick() && App->gui->UiUnderMouse() == this && dx != 0 && dy != 0) {
 		SetLocalPos(GetLocalPos().x + dx, GetLocalPos().y + dy);
 		App->gui->DraggUiElements(this, dx, dy);
 	}

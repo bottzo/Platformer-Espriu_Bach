@@ -47,11 +47,11 @@ bool j1Scene::Start()
 	// TODO 3: Create the banner (rect {485, 829, 328, 103}) as a UI element
 	// TODO 4: Create the text "Hello World" as a UI element
 
-	UiElement*window = App->gui->AddImage(350, 130, { 0, 512, 483, 512 },true,true);
+	UiElement*window = App->gui->AddImage(350, 130, { 0, 512, 483, 512 },false,true);
 	UiElement*Image = App->gui->AddImage(65, 100, { 485, 829, 328, 103 },false,false,window);
 	UiElement*title = App->gui->AddText(140, 25, "SpaceShip", App->font->Load("fonts/open_sans/OpenSans-Light.ttf",48), { 0,255,255,255 }, 48,false,false,window);
 	UiElement*Button=App->gui->AddButton(120, 230, { 642,169,229,69 }, { 0,113,229,69 }, { 411,169,229,69 },true,false,window);
-	UiElement*text = App->gui->AddText(100, 23, "Button", App->font->Load("fonts/open_sans/OpenSans-Light.ttf"), { 0,255,255,255 },12,true,false,Button);
+	UiElement*text = App->gui->AddText(100, 23, "Button", App->font->Load("fonts/open_sans/OpenSans-Light.ttf"), { 0,255,255,255 },12,false,false,Button);
 	input_lable = App->gui->AddImage(65, 300, { 488, 569, 344, 61 }, true, false, window,this);
 	default_input_text = App->gui->AddText(10, 0, "Your name", App->font->Load("fonts/open_sans/OpenSans-Light.ttf",42), { 255,255,255,255 }, 42, false, false, input_lable);
 
