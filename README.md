@@ -16,9 +16,19 @@ We are a group of 2 students of CITM who have made a first version of a platafor
 
 -Debug key-> F9
 
+-left shift
+
+- Console functions:
+
+-exit (close the game)
+
+-change map (changes the maps)
+
+-collision (shows the collisions maps)
+
 # work done
 Espriu: Part of the audio module, part of the scene module, camera movement, collisions module,the 2 maps, enemys tilesets, background music, UML, framerate, background, title, atlas
-Bach: module player, part of the audio module, part of the camera movement, scene module, input module, pathfinding module, entities module, enemies module, framerate and timers,brofiler, UI implementation, fonts implementation
+Bach: module player, part of the audio module, part of the camera movement, scene module, input module, pathfinding module, entities module, enemies module, framerate and timers,brofiler, UI implementation, fonts implementation, console
 
 #2.0
 Pathfinding added, entities and enemies added, framerate and timers added. Jumping bug solved, change of maps solved, profiling using brofiler(Motors2D folder)

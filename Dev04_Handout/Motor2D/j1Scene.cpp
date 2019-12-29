@@ -52,6 +52,7 @@ bool j1Scene::Start()
 		App->pathfinding->SetMap(w, h, data);
 	RELEASE_ARRAY(data);
 	App->entities->spawn_entities();
+	App->audio->PlayMusic("audio/music/music.ogg");
 	return true;
 }
 
