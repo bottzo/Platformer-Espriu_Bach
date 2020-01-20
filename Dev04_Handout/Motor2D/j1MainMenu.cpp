@@ -5,9 +5,7 @@
 #include "j1Textures.h"
 #include "j1Gui.h"
 #include "j1Fonts.h"
-#include "j1Collisions.h"
-#include "Entity.h"
-#include "j1Map.h"
+#include "j1Scene.h"
 #include "p2Log.h"
 
 j1MainMenu::j1MainMenu() : j1Module() {
@@ -69,7 +67,7 @@ bool j1MainMenu::CleanUp() {
 
 void j1MainMenu::ui_callback(UiElement*element) {
 	if (element == Play_button) {
-		App->fade->FadeToBlack(this, App->entities,1.5f);
+		App->fade->FadeToBlack(this, App->scene,1.5f);
 	}
 	if (element == Exit_button) {
 		Exit = true;

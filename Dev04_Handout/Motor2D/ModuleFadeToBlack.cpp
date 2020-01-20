@@ -85,3 +85,7 @@ bool ModuleFadeToBlack::IsFading() const
 {
 	return current_step != fade_step::none;
 }
+
+bool ModuleFadeToBlack::CleanUp() {
+	return true;
+}

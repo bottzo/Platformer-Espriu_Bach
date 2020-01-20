@@ -53,6 +53,11 @@ j1Collisions::j1Collisions()
 j1Collisions::~j1Collisions()
 {}
 
+void j1Collisions::Init() {
+	enabled = false;
+	active = true;
+}
+
 bool j1Collisions::PreUpdate()
 {
 	// Remove all colliders scheduled for deletion

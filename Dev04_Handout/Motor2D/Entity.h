@@ -61,7 +61,6 @@ public:
 	p2List<TileSet*>sprite_tilesets;
 	Types type;
 	iPoint initial_positon;
-protected:
 	p2List<Animation*>Animations;
 	pugi::xml_document Entity_doc;
 	bool Load_Entity(const char* file_name);
@@ -71,6 +70,7 @@ class EntityManager :public j1Module {
 public:
 	EntityManager();
 	virtual ~EntityManager();
+	void Init();
 	bool Awake(pugi::xml_node&config);
 	bool Start();
 	bool Update(float dt);

@@ -52,8 +52,8 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(tex);
 	AddModule(audio);
 	AddModule(home);
-	AddModule(map);
 	AddModule(scene);
+	AddModule(map);
 	AddModule(collisions);
 	AddModule(entities);
 	AddModule(pathfinding);
@@ -145,7 +145,8 @@ bool j1App::Start()
 
 	while(item != NULL && ret == true)
 	{
-		ret = item->data->Start();
+		if(item->data->IsEneabled())
+			ret = item->data->Start();
 		item = item->next;
 	}
 
@@ -249,12 +250,11 @@ bool j1App::PreUpdate()
 	{
 		pModule = item->data;
 
-		if(pModule->active == false) {
+		if(pModule->active == false || !pModule->IsEneabled()) {
 			continue;
 		}
 
-		if (item->data->IsEneabled())
-			ret = item->data->PreUpdate();
+		ret = item->data->PreUpdate();
 	}
 
 	return ret;
@@ -273,12 +273,11 @@ bool j1App::DoUpdate()
 	{
 		pModule = item->data;
 
-		if(pModule->active == false) {
+		if(pModule->active == false || !pModule->IsEneabled()) {
 			continue;
 		}
 
-		if (item->data->IsEneabled())
-			ret = item->data->Update(dt);
+		ret = item->data->Update(dt);
 	}
 
 	return ret;
@@ -296,12 +295,11 @@ bool j1App::PostUpdate()
 	{
 		pModule = item->data;
 
-		if(pModule->active == false) {
+		if(pModule->active == false || !pModule->IsEneabled()) {
 			continue;
 		}
 
-		if (item->data->IsEneabled())
-			ret = item->data->PostUpdate();
+		ret = item->data->PostUpdate();
 	}
 
 	return ret;

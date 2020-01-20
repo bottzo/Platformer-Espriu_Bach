@@ -12,6 +12,7 @@ public:
 
 	bool Start();
 	bool Update(float dt);
+	bool CleanUp();
 	bool FadeToBlack(j1Module* j1Module_off, j1Module* j1Module_on, float time = 2.0f);
 	bool IsFading() const;
 

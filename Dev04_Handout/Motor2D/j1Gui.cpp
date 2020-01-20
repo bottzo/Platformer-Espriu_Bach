@@ -72,6 +72,7 @@ bool j1Gui::PostUpdate()
 bool j1Gui::CleanUp()
 {
 	LOG("Freeing GUI");
+	App->tex->UnLoad(atlas);
 	DeleteAllUiElements();
 	return true;
 }

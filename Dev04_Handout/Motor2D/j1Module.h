@@ -29,7 +29,7 @@ public:
 	j1Module() : active(false)
 	{}
 
-	void Init()
+	virtual void Init()
 	{
 		active = true;
 	}
@@ -110,7 +110,7 @@ public:
 	p2SString	name;
 	bool		active;
 	virtual void OnCollision(Collider*, Collider*) {};
-private:
+protected:
 	bool enabled = true;
 
 };

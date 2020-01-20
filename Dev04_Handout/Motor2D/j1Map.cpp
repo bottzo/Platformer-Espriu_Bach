@@ -20,6 +20,11 @@ j1Map::j1Map() : j1Module(), map_loaded(false)
 j1Map::~j1Map()
 {}
 
+void j1Map::Init() {
+	enabled = false;
+	active = true;
+}
+
 // Called before render is available
 bool j1Map::Awake(pugi::xml_node& config)
 {
@@ -172,6 +177,7 @@ bool j1Map::CleanUp()
 
 	while(item != NULL)
 	{
+		App->tex->UnLoad(item->data->texture);
 		RELEASE(item->data);
 		item = item->next;
 	}

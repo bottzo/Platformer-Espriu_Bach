@@ -25,12 +25,16 @@ j1Scene::j1Scene() : j1Module()
 	change_map.create("change map");
 	Collisions.create("collisions");
 	colliders = false;
-	CurrentMap = 1;
 }
 
 // Destructor
 j1Scene::~j1Scene()
 {}
+
+void j1Scene::Init() {
+	enabled = false;
+	active = true;
+}
 
 // Called before render is available
 bool j1Scene::Awake(pugi::xml_node&config)
@@ -38,16 +42,17 @@ bool j1Scene::Awake(pugi::xml_node&config)
 	LOG("Loading Scene");
 	bool ret = true;
 	map_name.create(config.child("map_name").attribute("name").as_string());
-	App->entities->Disable();
-	App->map->Disable();
-	App->collisions->Disable();
 	return ret;
 }
 
 // Called before the first frame
 bool j1Scene::Start()
 {
+	App->map->Enable();
+	App->entities->Enable();
+	App->collisions->Enable();
 	App->map->Load(map_name.GetString());
+	CurrentMap = 1;
 	int w, h;
 	uchar* data = NULL;
 	if (App->map->CreateWalkabilityMap(w, h, &data))

@@ -7,6 +7,7 @@
 #include "J1Collisions.h"
 #include "Enemy.h"
 #include "j1Window.h"
+#include "j1Textures.h"
 #include "brofiler/Brofiler/Brofiler.h"
 
 Entity::Entity(Types type) : type(type) {}
@@ -43,9 +44,12 @@ player* EntityManager::GetPlayer() const {
 	return nullptr;
 }
 
+void EntityManager::Init() {
+	enabled = false;
+	active = true;
+}
+
 bool EntityManager::Start() {
-	App->collisions->Enable();
-	App->map->Enable();
 	return true;
 }
 
@@ -257,6 +261,26 @@ bool EntityManager::Awake(pugi::xml_node&config) {
 
 bool EntityManager::CleanUp() {
 	key_inputs.Clear();
+	p2List_item<Entity*>* it;
+	it = Entity_list.start;
+	while (it != NULL)
+	{
+		p2List_item<Animation*>* ite;
+		ite = it->data->Animations.start;
+		while (ite != NULL) {
+			App->tex->UnLoad(ite->data->texture);
+			ite = ite->next;
+		}
+		p2List_item<TileSet*>* item;
+		item = it->data->sprite_tilesets.start;
+		while (item != NULL) {
+			App->tex->UnLoad(item->data->texture);
+			item = item->next;
+		}
+		it->data->Entity_doc.reset();
+		RELEASE(it->data);
+		it = it->next;
+	}
 	Entity_list.clear();
 	return true;
 }
