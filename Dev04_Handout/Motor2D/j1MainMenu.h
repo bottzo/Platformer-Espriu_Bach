@@ -16,9 +16,11 @@ public:
 	bool Awake(pugi::xml_node&config);
 	bool Start();
 	bool Update(float dt);
+	bool PostUpdate();
 	bool CleanUp();
 	void ui_callback(UiElement*element);
 private:
+	int buttonsound;
 	SDL_Texture*background_texture;
 	SDL_Texture*Title;
 	p2SString folder;

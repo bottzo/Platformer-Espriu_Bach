@@ -7,6 +7,7 @@
 #include "j1Fonts.h"
 #include "j1Scene.h"
 #include "p2Log.h"
+#include "j1Audio.h"
 
 j1MainMenu::j1MainMenu() : j1Module() {
 	name.create("MainMenu");
@@ -38,6 +39,7 @@ bool j1MainMenu::Start() {
 	App->gui->AddText(23, 7, "CONTINUE", ContinueFont, { 0,0,255,255 }, 36, false, false, Continue_button);
 	Exit_button = App->gui->AddButton(400, 630, { 642,169,229,69 }, { 0,113,229,69 }, { 411,169,229,69 }, true, false, nullptr, this);
 	App->gui->AddText(68, 2, "EXIT", MenuButtonsFont, { 0,0,255,255 }, 42, false, false, Exit_button);
+	buttonsound = App->audio->LoadFx("audio/fx/beep.wav");
 	return true;
 }
 
@@ -52,6 +54,16 @@ bool j1MainMenu::Update(float dt) {
 	}
 	return ret;
 }
+
+bool j1MainMenu::PostUpdate() {
+	
+    App->render->RenderMouse();
+	
+	bool ret = true;
+
+	return ret;
+}
+
 bool j1MainMenu::CleanUp() {
 	App->tex->UnLoad(background_texture);
 	App->tex->UnLoad(Title);
@@ -67,6 +79,7 @@ bool j1MainMenu::CleanUp() {
 
 void j1MainMenu::ui_callback(UiElement*element) {
 	if (element == Play_button) {
+		App->audio->PlayFx(buttonsound, 1);
 		App->fade->FadeToBlack(this, App->scene,1.5f);
 	}
 	if (element == Exit_button) {

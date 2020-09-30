@@ -59,7 +59,8 @@ bool j1Scene::Start()
 		App->pathfinding->SetMap(w, h, data);
 	RELEASE_ARRAY(data);
 	App->entities->spawn_entities();
-	App->audio->PlayMusic("audio/music/music.ogg");
+	App->audio->PlayMusic("audio/music/music.ogg", 0.0f);
+	SDL_ShowCursor(SDL_ENABLE);
 	return true;
 }
 
@@ -152,9 +153,10 @@ bool j1Scene::PostUpdate()
 {
 	bool ret = true;
 
+
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN&&!App->home->IsEneabled()) {
 		if (Settings_window == nullptr) {
-			Settings_window = App->gui->AddImage(-App->render->camera.x, -App->render->camera.y, { 0, 512, 483, 512 }, false, true);
+			Settings_window = App->gui->AddImage(-App->render->camera.x + 270, -App->render->camera.y + 120, { 0, 512, 483, 512 }, false, true);
 			SceneButtonsFont = App->font->Load("fonts/open_sans/OpenSans-ExtraBoldItalic.ttf", 42);
 			App->gui->AddText(170, 50, "PAUSE", SceneButtonsFont, { 0,0,255,255 }, 42, false, false, Settings_window);
 			Exit_button = App->gui->AddButton(120, 230, { 642,169,229,69 }, { 0,113,229,69 }, { 411,169,229,69 }, true, false, Settings_window, this);
@@ -162,6 +164,7 @@ bool j1Scene::PostUpdate()
 			ContinueFont = App->font->Load("fonts/open_sans/OpenSans-ExtraBoldItalic.ttf", 36);
 			Continue_button = App->gui->AddButton(120, 130, { 642,169,229,69 }, { 0,113,229,69 }, { 411,169,229,69 }, true, false, Settings_window, this);
 			App->gui->AddText(23, 7, "CONTINUE", ContinueFont, { 0,0,255,255 }, 36, false, false, Continue_button);
+			
 		}
 		App->freeze = true;
 	}
@@ -173,6 +176,7 @@ bool j1Scene::PostUpdate()
 			ConsoleTitle=App->gui->AddText(150, 50, "CONSOLE", SceneButtonsFont, { 0,0,255,255 }, 42, false, false, Console);
 			input_lable = App->gui->AddImage(65, 100, { 488, 569, 344, 61 }, true, false, Console, this);
 			default_input_text = App->gui->AddText(10, 0, "Type here", App->font->Load("fonts/open_sans/OpenSans-Light.ttf", 42), { 255,255,255,255 }, 42, false, false, input_lable);
+			App->render->RenderMouse();
 		}
 		else {
 			Console->SetLocalPos(-App->render->camera.x, -App->render->camera.y);
@@ -180,9 +184,11 @@ bool j1Scene::PostUpdate()
 			input_lable->SetLocalPos(65, 100);
 		}
 	}
-
+	
 	return ret;
 }
+
+
 
 
 // Called before quitting

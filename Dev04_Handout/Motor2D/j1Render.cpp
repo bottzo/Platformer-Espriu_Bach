@@ -8,7 +8,10 @@
 #include "j1Collisions.h"
 #include "Entity.h"
 #include "j1MainMenu.h"
+#include "j1Textures.h"
+#include "j1Input.h"
 #include "brofiler/Brofiler/Brofiler.h"
+
 
 #define VSYNC true
 
@@ -65,6 +68,8 @@ bool j1Render::Start()
 	LOG("render start");
 	// back background
 	SDL_RenderGetViewport(renderer, &viewport);
+	mousetext = App->tex->Load("gui/pointer.png");
+	SDL_ShowCursor(SDL_DISABLE);
 	return true;
 }
 
@@ -265,5 +270,24 @@ bool j1Render::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 b, U
 		ret = false;
 	}
 
+	
+
 	return ret;
+}
+
+void j1Render::RenderMouse()
+{
+	SDL_ShowCursor(SDL_DISABLE);
+
+	int x;
+	int y;
+	
+	App->input->GetMousePosition(x, y);
+
+	if (App->input->GetMouseButtonDown(1))
+	{
+		Blit(mousetext, x, y, &mouserect2);
+	}
+	else
+		Blit(mousetext, x, y, &mouserect);
 }
